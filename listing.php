@@ -73,7 +73,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   }
 
   $today=date("Y-m-d"); 
-  if (empty($_POST["date_l"])){
+  if (!empty($_POST["date_l"])&& strtotime($_POST["date_l"])){
+    $enddate=date("Y-m-d",strtotime($_POST["date_l"]));
+    $_POST["endmonth"]=$_POST["endday"]="";
+
+  }else{
+    $enddate="";
     if (empty($_POST["endday"]) || empty($_POST["endmonth"]) ||  $_POST["endday"]=="Day"|| $_POST["endmonth"]=="Month") {
         $dateErr = "Listing end date is required";
         }else{
@@ -87,8 +92,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $dateErr="";
         }
     }
-  } else{
-      $enddate=htmlentities($_POST["date_l"]);
   }
 
 

@@ -43,19 +43,19 @@ if (empty($productID)){
 $connection->close();
 }
 
-$productID="";
-$product_description="mouse";
-$price=2.5;
-$quantity=10;
-$categoryID="01";
-$conditionID="01";
-$sellerID="c1";
-$auctionable=0;
-$enddate="30/4/2019";
+// $productID="";
+// $product_description="mouse";
+// $price=2.5;
+// $quantity=10;
+// $categoryID="01";
+// $conditionID="01";
+// $sellerID="c1";
+// $auctionable=0;
+// $enddate="30/4/2019";
 
-$details=array("productID"=>$productID,"product_description"=>$product_description,"price"=>$price,"quantity"=>$quantity,
-"categoryID"=>$categoryID,"conditionID"=>$conditionID,"sellerID"=>$sellerID,"auctionable"=>$auctionable,"enddate"=>$enddate);
+// $details=array("productID"=>$productID,"product_description"=>$product_description,"price"=>$price,"quantity"=>$quantity,
+// "categoryID"=>$categoryID,"conditionID"=>$conditionID,"sellerID"=>$sellerID,"auctionable"=>$auctionable,"enddate"=>$enddate);
 
-newproduct($details);
+// newproduct($details);
 
 ?>
