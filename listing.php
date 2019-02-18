@@ -15,6 +15,7 @@ $product_description = $price = $quantity = $categoryname =$conditionname = $auc
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   if (empty($_POST["product_description"])) {
     $desErr = "Description is required";
+    $product_description="";
   } elseif (preg_match("/DROP TABLE/i",$_POST["product_description"])){
     $desErr="product description cannot contain Drop Table";
   }
@@ -30,16 +31,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $price=(float)$_POST["price"];
     } else {
     $priceErr="price must be between $0 and $10000";
+    $price="";
     }
   } else {
     $priceErr="price must be between $0 and $10000";
+    $price="";
   }
 
 
   if (empty($_POST["quantity"])||!(is_numeric($_POST["quantity"]))) {
     $qErr = "quantity must be between 1 and 10000.";
+    $quantity="";
   } elseif ((integer)$_POST["quantity"]<1||(integer)$_POST["quantity"]>10000){
     $qErr="quantity must be between 1 and 10000.";
+    $quantity="";
   }else {
     $quantity = test_input($_POST["quantity"]);
     $qErr="";
@@ -47,8 +52,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   if (empty($_POST["categoryname"])) {
     $caErr = "category is required";
+    $categoryname="";
   } elseif (!in_array($_POST["categoryname"],array("Electronics","Food","Fashion","Home","Health & Beauty","Sports","Toys & Games","Art & Music","Miscellaneous"))){
     $caErr="category is wrong";
+    $categoryname="";
   }else {
     $categoryname = test_input($_POST["categoryname"]);
     $caErr="";
@@ -56,8 +63,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   if (empty($_POST["conditionname"])) {
     $conErr = "condition is required";
+    $conditionname="";
   } elseif (!in_array($_POST["conditionname"],array("New","Refurbished","Used / Worn"))){
     $conErr="condition is wrong";
+    $conditionname="";
   }else {
     $conditionname = test_input($_POST["conditionname"]);
     $conErr="";
@@ -65,11 +74,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   if (empty($_POST["auctionable"])) {
     $auErr = "Select Yes / No";
+    $auctionable="";
   } elseif (!in_array($_POST["auctionable"],array("Yes","No"))){
     $auErr="only Yes/No";
+    $auctionable="";
   }else {
-    $auctionable = test_input($_POST["auctionable"]);
+    if ($_POST["auctionable"]=="Yes"){
+      $auctionable=1;
+    } elseif ($_POST["auctionable"]=="No"){
+    $auctionable =0;
     $auErr="";
+    }
   }
 
   $today=date("Y-m-d"); 
@@ -104,15 +119,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($er==true){
 
                 include "createnwproduct.php";
-                $productID="";
-                $product_description="mouse";
-                $price=2.5;
-                $quantity=10;
-                $categoryID="01";
-                $conditionID="01";
+
+                //look up the categoryID and conditionID based on user input
+                $sql="SELECT categoryID FROM Category WHERE categoryname=$categoryname";
+                $result=$connection->query($sql);
+                if ($result==TRUE){
+                    $row=$result->fetch_assoc();
+                    $categoryID=$row['categoryID'];
+                } else {
+                echo "Error: ". $sql . "<br>" . $connection->error;
+                }
+
+                $sql="SELECT conditionID FROM Condition WHERE conditionname=$conditionname";
+                $result=$connection->query($sql);
+                if ($result==TRUE){
+                    $row=$result->fetch_assoc();
+                    $conditionID=$row['conditionID'];
+                } else {
+                echo "Error: ". $sql . "<br>" . $connection->error;
+                }
+
+
+                //productID is auto-incremented
                 $sellerID="c1";
-                $auctionable=0;
-                $enddate="30/4/2019";
+
 
                 $details=array("productID"=>$productID,"product_description"=>$product_description,"price"=>$price,"quantity"=>$quantity,
                 "categoryID"=>$categoryID,"conditionID"=>$conditionID,"sellerID"=>$sellerID,"auctionable"=>$auctionable,"enddate"=>$enddate);
@@ -145,26 +175,27 @@ end date:<?php echo $enddate; ?><br>
 
 
 
-<form id="form1" method="post" action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>">
-<p>Product Description: <br></p>
-<input name="product_description" type="text" placeholders="max 150 characters" maxlength="150"
+<form id="form1" method="post" action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>"><br>
+<label for="product_description">Product Description (max 150 characters):</label><br>
+<input name="product_description" id="product_description" type="text" placeholders="max 150 characters" maxlength="150" size="200"  style="height:100px"
 value="<?php if(isset($_POST["product_description"])){echo htmlentities($_POST["product_description"]);}?>">
 
 <span class="error"> <?php echo $desErr;?></span><br><br>
-<button type="button" >Upload photos</button>
+<button type="button" >Upload photos</button><br><br>
 
-<p>Price:<br></p>
-<input name="price" type="number" placeholders="1.0" step="0.01" min="0" max="10000"
+<label for="price">Price:</label><br>
+<input name="price" id="price" type="number" placeholders="1.0" step="0.01" min="0" max="10000"
 value="<?php if(isset($_POST["price"])){echo htmlentities($_POST["price"]);}?>">
 <span class="error"> <?php echo $priceErr;?></span><br><br>
 
-<p>Quantity (must be at least one):<br></p>
-<input name="quantity" type="number" placeholders="1" min="1" max="10000"
+
+<label for="quantity">Quantity (must be at least one):</label><br>
+<input name="quantity" id="quantity" type="number" placeholders="1" min="1" max="10000"
 value="<?php if(isset($_POST["quantity"])){echo htmlentities($_POST["quantity"]);}?>">
 <span class="error"> <?php echo $qErr;?></span><br><br>
 
 
-<p>Category:<br></p>
+<label for="categoryname">Category:</label><br>
   <input type="radio" name="categoryname"id="categoryname1"
   value="Electronics"
   <?php if (isset($_POST['categoryname']) && htmlentities($_POST['categoryname']) == 'Electronics'){echo "checked";}else{echo "unchecked";}?> />Electronics<br>
@@ -196,18 +227,19 @@ value="<?php if(isset($_POST["quantity"])){echo htmlentities($_POST["quantity"])
 
 <span class="error"> <?php echo $caErr;?></span><br><br>
   
-<p>Condition:<br></p>
-  <input type="radio" name="conditionname"id="conditionname" value="New"
+<label for="conditionname">Condition:</label><br>
+  <input type="radio" name="conditionname"id="conditionname1" value="New"
   <?php if (isset($_POST['conditionname']) && htmlentities($_POST['conditionname']) == 'New'){echo "checked";}else{echo "unchecked";}?> />New<br>
-  <input type="radio" name="conditionname"id="conditionname"value="Refurbished"
+  <input type="radio" name="conditionname"id="conditionname2"value="Refurbished"
   <?php if (isset($_POST['conditionname']) && htmlentities($_POST['conditionname']) == 'Refurbished'){echo "checked";}else{echo "unchecked";}?> />Refurbished<br>
-  <input type="radio" name="conditionname"id="conditionname"value="Used / Worn"
+  <input type="radio" name="conditionname"id="conditionname3"value="Used / Worn"
   <?php if (isset($_POST['conditionname']) && htmlentities($_POST['conditionname']) == 'Used / Worn'){echo "checked";}else{echo "unchecked";}?> />Used / Worn<br>
   <br>
 
   <span class="error"> <?php echo $conErr;?></span><br><br>
 
-<p>Is your product auctionable?<br></p>
+
+<label for="auctionable">Is your product auctionable?</label><br>
   <input type="radio" name="auctionable"id="auctionable1" value="Yes" 
   <?php if (isset($_POST['auctionable']) && $_POST['auctionable'] == 'Yes'){echo "checked";}else{echo "unchecked";}?> />Yes<br>
   <input type="radio" name="auctionable"id="auctionable2"value="No"
@@ -217,7 +249,7 @@ value="<?php if(isset($_POST["quantity"])){echo htmlentities($_POST["quantity"])
   <span class="error"> <?php echo $auErr;?></span><br><br>
 
 
-<p>Listing ends on:<br></p>
+<label for="date_l">Listing ends on:</label><br>
 <input type="date" name="date_l" id="date_l" max="2019-12-31" value="<?php if(isset($_POST["date_l"])){echo htmlentities($_POST["date_l"]);}?>"/>
 
 <p>If calendar cannot be shown in the field above, use below to input:<br></p>
