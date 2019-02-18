@@ -195,55 +195,74 @@ value="<?php if(isset($_POST["quantity"])){echo htmlentities($_POST["quantity"])
 <span class="error"> <?php echo $qErr;?></span><br><br>
 
 
-<label for="categoryname">Category:</label><br>
-  <input type="radio" name="categoryname"id="categoryname1"
-  value="Electronics"
-  <?php if (isset($_POST['categoryname']) && htmlentities($_POST['categoryname']) == 'Electronics'){echo "checked";}else{echo "unchecked";}?> />Electronics<br>
-  <input type="radio" name="categoryname"id="categoryname2"
-  value="Food"
-  <?php if (isset($_POST['categoryname']) && htmlentities($_POST['categoryname']) == 'Food'){echo "checked";}else{echo "unchecked";}?> />Food<br>
-  <input type="radio" name="categoryname"id="categoryname3"
-  value="Fashion"
-  <?php if (isset($_POST['categoryname']) && htmlentities($_POST['categoryname']) == 'Fashion'){echo "checked";}else{echo "unchecked";}?> />Fashion<br>
-  <input type="radio" name="categoryname"id="categoryname4"
-  value="Home"
-  <?php if (isset($_POST['categoryname']) && htmlentities($_POST['categoryname']) == 'Home'){echo "checked";}else{echo "unchecked";}?> />Home<br>
-  <input type="radio" name="categoryname"id="categoryname5"
-  value="Health & Beauty"
-  <?php if (isset($_POST['categoryname']) && htmlentities($_POST['categoryname']) == 'Health & Beauty'){echo "checked";}else{echo "unchecked";}?> />Health & Beauty<br>
-  <input type="radio" name="categoryname"id="categoryname6"
-  value="Sports"
-  <?php if (isset($_POST['categoryname']) && htmlentities($_POST['categoryname']) == 'Sports'){echo "checked";}else{echo "unchecked";}?> />Sports<br>
-  <input type="radio" name="categoryname"id="categoryname7"
-  value="Toys & Games"
-  <?php if (isset($_POST['categoryname']) && htmlentities($_POST['categoryname']) == 'Toys & Games'){echo "checked";}else{echo "unchecked";}?> />Toys & Games<br>
-  <input type="radio" name="categoryname"id="categoryname8"
-  value="Art & Music"
-  <?php if (isset($_POST['categoryname']) && htmlentities($_POST['categoryname']) == 'Art & Music'){echo "checked";}else{echo "unchecked";}?> />Art & Music<br>
-  <input type="radio" name="categoryname"id="categoryname9"
-  value="Miscellaneous"
-  <?php if (isset($_POST['categoryname']) && htmlentities($_POST['categoryname']) == 'Miscellaneous'){echo "checked";}else{echo "unchecked";}?> />Miscellaneous<br>
+<p>Category:</p>
+
+  <input type="radio" name="categoryname"id="categoryname1"value="Electronics"
+  <?php if (isset($_POST['categoryname']) && htmlentities($_POST['categoryname']) == 'Electronics'){echo "checked";}else{echo "unchecked";}?> />
+  <label for="categoryname1">Electronics</label><br>
+  
+  <input type="radio" name="categoryname"id="categoryname2"value="Food"
+  <?php if (isset($_POST['categoryname']) && htmlentities($_POST['categoryname']) == 'Food'){echo "checked";}else{echo "unchecked";}?> />
+  <label for="categoryname2">Food</label><br>
+  
+  <input type="radio" name="categoryname"id="categoryname3"value="Fashion"
+  <?php if (isset($_POST['categoryname']) && htmlentities($_POST['categoryname']) == 'Fashion'){echo "checked";}else{echo "unchecked";}?> />
+  <label for="categoryname3">Fashion</label><br>
+  
+  <input type="radio" name="categoryname"id="categoryname4"value="Home"
+  <?php if (isset($_POST['categoryname']) && htmlentities($_POST['categoryname']) == 'Home'){echo "checked";}else{echo "unchecked";}?> />
+  <label for="categoryname4">Home</label><br>
+  
+  <input type="radio" name="categoryname"id="categoryname5"value="Health & Beauty"
+  <?php if (isset($_POST['categoryname']) && htmlentities($_POST['categoryname']) == 'Health & Beauty'){echo "checked";}else{echo "unchecked";}?> />
+  <label for="categoryname5">Health & Beauty</label><br>
+  
+  <input type="radio" name="categoryname"id="categoryname6"value="Sports"
+  <?php if (isset($_POST['categoryname']) && htmlentities($_POST['categoryname']) == 'Sports'){echo "checked";}else{echo "unchecked";}?> />
+  <label for="categoryname6">Sports</label><br>
+  
+  <input type="radio" name="categoryname"id="categoryname7"value="Toys & Games"
+  <?php if (isset($_POST['categoryname']) && htmlentities($_POST['categoryname']) == 'Toys & Games'){echo "checked";}else{echo "unchecked";}?> />
+  <label for="categoryname7">Toys & Games</label><br>
+  
+  <input type="radio" name="categoryname"id="categoryname8"value="Art & Music"
+  <?php if (isset($_POST['categoryname']) && htmlentities($_POST['categoryname']) == 'Art & Music'){echo "checked";}else{echo "unchecked";}?> />
+  <label for="categoryname8">Art & Music</label><br>
+  
+  <input type="radio" name="categoryname"id="categoryname9"value="Miscellaneous"
+  <?php if (isset($_POST['categoryname']) && htmlentities($_POST['categoryname']) == 'Miscellaneous'){echo "checked";}else{echo "unchecked";}?> />
+  <label for="categoryname9">Miscellaneous</label><br>
   <br>
 
 <span class="error"> <?php echo $caErr;?></span><br><br>
   
-<label for="conditionname">Condition:</label><br>
+<p>Condition:</p>
+  
   <input type="radio" name="conditionname"id="conditionname1" value="New"
-  <?php if (isset($_POST['conditionname']) && htmlentities($_POST['conditionname']) == 'New'){echo "checked";}else{echo "unchecked";}?> />New<br>
+  <?php if (isset($_POST['conditionname']) && htmlentities($_POST['conditionname']) == 'New'){echo "checked";}else{echo "unchecked";}?> />
+  <label for="conditionname1">New</label><br>
+  
   <input type="radio" name="conditionname"id="conditionname2"value="Refurbished"
-  <?php if (isset($_POST['conditionname']) && htmlentities($_POST['conditionname']) == 'Refurbished'){echo "checked";}else{echo "unchecked";}?> />Refurbished<br>
+  <?php if (isset($_POST['conditionname']) && htmlentities($_POST['conditionname']) == 'Refurbished'){echo "checked";}else{echo "unchecked";}?> />
+  <label for="conditionname2">Refurbished</label><br>
+  
   <input type="radio" name="conditionname"id="conditionname3"value="Used / Worn"
-  <?php if (isset($_POST['conditionname']) && htmlentities($_POST['conditionname']) == 'Used / Worn'){echo "checked";}else{echo "unchecked";}?> />Used / Worn<br>
+  <?php if (isset($_POST['conditionname']) && htmlentities($_POST['conditionname']) == 'Used / Worn'){echo "checked";}else{echo "unchecked";}?> />
+  <label for="conditionname3">Used / Worn</label><br>
   <br>
 
   <span class="error"> <?php echo $conErr;?></span><br><br>
 
 
-<label for="auctionable">Is your product auctionable?</label><br>
+<p>Is your product auctionable?</p>
+  
   <input type="radio" name="auctionable"id="auctionable1" value="Yes" 
-  <?php if (isset($_POST['auctionable']) && $_POST['auctionable'] == 'Yes'){echo "checked";}else{echo "unchecked";}?> />Yes<br>
+  <?php if (isset($_POST['auctionable']) && $_POST['auctionable'] == 'Yes'){echo "checked";}else{echo "unchecked";}?> />
+  <label for="auctionable1">Yes</label><br>
+  
   <input type="radio" name="auctionable"id="auctionable2"value="No"
-  <?php if (isset($_POST['auctionable']) && $_POST['auctionable'] == 'No'){echo "checked";}else{echo "unchecked";}?> />No<br>
+  <?php if (isset($_POST['auctionable']) && $_POST['auctionable'] == 'No'){echo "checked";}else{echo "unchecked";}?> />
+  <label for="auctionable2">No</label><br>
   <br>
 
   <span class="error"> <?php echo $auErr;?></span><br><br>
