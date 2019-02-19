@@ -1,3 +1,4 @@
+DROP DATABASE IF EXISTS DUMMY;
 CREATE DATABASE DUMMY
 DEFAULT CHARACTER SET utf8
 DEFAULT COLLATE utf8_general_ci;
@@ -17,7 +18,7 @@ CREATE TABLE IF NOT EXISTS Product
     conditionID VARCHAR(40),
     sellerID VARCHAR(40),
     auctionable BOOLEAN,
-    enddate VARCHAR(40),
+    enddate VARCHAR(40)
 ) 
 ENGINE = InnoDB;
 
@@ -50,3 +51,23 @@ CREATE TABLE IF NOT EXISTS Archive
     dealdate VARCHAR(40) NOT NULL
 ) 
 ENGINE = InnoDB;
+
+CREATE DATABASE IF NOT EXISTS E_COMMERCE_DB;
+
+USE E_COMMERCE_DB;
+
+CREATE TABLE IF NOT EXISTS Photos (
+	photo_id INT NOT NULL,
+	product_id INT NOT NULL,
+	file_path TEXT,
+	PRIMARY KEY (photo_id)
+) ENGINE=INNODB;
+
+CREATE TABLE IF NOT EXISTS BidEvents (
+	bid_id INT NOT NULL,
+    product_id INT NOT NULL,
+    buyer_id INT NOT NULL, 
+    payment BOOL NOT NULL,
+    bid_price TEXT,
+    PRIMARY KEY (bid_id)
+) ENGINE=INNODB;
