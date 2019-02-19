@@ -97,23 +97,23 @@ VALUES (2,'macbook pro',1300,1,1,1,16,1,0,'2019-01-10');
 INSERT INTO Archive (productID,product_description,dealprice,quantity,categoryID,conditionID,buyerID,sellerID,auctionable,dealdate)
 VALUES (3,'macbook pro',815,1,1,3,16,2,1,'2019-01-20');
 
-CREATE DATABASE IF NOT EXISTS E_COMMERCE_DB;
-
-USE E_COMMERCE_DB;
+/*
+CREATE PHOTOS TABLE 
+*/ 
 
 CREATE TABLE IF NOT EXISTS Photos (
-	photo_id INT NOT NULL,
-	product_id INT NOT NULL,
+	photoID INT NOT NULL,
+	productID INT NOT NULL,
 	file_path TEXT,
-	PRIMARY KEY (photo_id)
+	PRIMARY KEY (photoID)
 ) ENGINE=INNODB;
 
 CREATE TABLE IF NOT EXISTS BidEvents (
-	bid_id INT NOT NULL,
-    product_id INT NOT NULL,
-    buyer_id INT NOT NULL, 
+	bidID INT NOT NULL,
+    productID INT NOT NULL,
+    buyerID INT NOT NULL, 
     payment BOOL NOT NULL,
     bid_price TEXT,
-    PRIMARY KEY (bid_id)
+    PRIMARY KEY (bidID)
 ) ENGINE=INNODB;
 

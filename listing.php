@@ -110,49 +110,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   }
 
 
-    //call the create new product function
-    $er=true;
-    foreach ($_POST as $key=>$value){
-        if (empty($value)){
-        $er=false;}
-        
-        if ($er==true){
-
-                include "createnwproduct.php";
-
-                //look up the categoryID and conditionID based on user input
-                $sql="SELECT categoryID FROM Category WHERE categoryname=$categoryname";
-                $result=$connection->query($sql);
-                if ($result==TRUE){
-                    $row=$result->fetch_assoc();
-                    $categoryID=$row['categoryID'];
-                } else {
-                echo "Error: ". $sql . "<br>" . $connection->error;
-                }
-
-                $sql="SELECT conditionID FROM Condition WHERE conditionname=$conditionname";
-                $result=$connection->query($sql);
-                if ($result==TRUE){
-                    $row=$result->fetch_assoc();
-                    $conditionID=$row['conditionID'];
-                } else {
-                echo "Error: ". $sql . "<br>" . $connection->error;
-                }
-
-
-                //productID is auto-incremented
-                $sellerID="c1";
-
-
-                $details=array("productID"=>$productID,"product_description"=>$product_description,"price"=>$price,"quantity"=>$quantity,
-                "categoryID"=>$categoryID,"conditionID"=>$conditionID,"sellerID"=>$sellerID,"auctionable"=>$auctionable,"enddate"=>$enddate);
-
-                // newproduct($details);
-
-        header('Location: http://localhost:8888/testing2.php');
-        exit();
-        }
-    }
+  
 }
     
 function test_input($data) {
