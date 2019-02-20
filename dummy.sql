@@ -18,7 +18,8 @@ CREATE TABLE IF NOT EXISTS Product
     conditionID INTEGER,
     sellerID INTEGER,
     auctionable BOOLEAN,
-    enddate VARCHAR(40)
+    enddate VARCHAR(40),
+    inventoryQuantity INTEGER
 ) 
 ENGINE = InnoDB;
 
@@ -116,4 +117,33 @@ CREATE TABLE IF NOT EXISTS BidEvents (
     bid_price TEXT,
     PRIMARY KEY (bidID)
 ) ENGINE=INNODB;
+
+/*
+CREATE WATCHLIST TABLE
+*/
+
+CREATE TABLE IF NOT EXISTS Watchlist (
+    watchID INT NOT NULL,
+    buyerID INT NOT NULL,
+    productID INT NOT NULL,
+    recordedPrice INT NOT NULL
+)
+
+
+
+/*
+CREATE USERS TABLE ......?
+*/
+
+CREATE TABLE IF NOT EXISTS Users (
+    userID INT NOT NULL,
+    username TEXT,
+    password TEXT,
+    email TEXT,
+    phone TEXT,
+    accountbalance INTEGER,
+    DOB TEXT
+)
+/* interest categories? and do we parse input before adding to this or is it something to do with configuring the table? (eg password..?) we'll figure it out :) */
+
 
