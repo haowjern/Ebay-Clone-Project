@@ -1,4 +1,7 @@
-<!DOCTYPE html>
+<?php
+session_start();
+?>
+
 <html>
 <head>
 <h1>New Listing</h1>
@@ -8,7 +11,7 @@
 
 <?php
 
-// validate the input
+//validate the input
 $desErr = $priceErr=$qErr=$caErr=$conErr=$auErr=$dateErr="";
 $product_description = $price = $quantity = $categoryname =$conditionname = $auctionable = $enddate = "";
 
@@ -18,6 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $product_description="";
   } elseif (preg_match("/DROP TABLE/i",$_POST["product_description"])){
     $desErr="product description cannot contain Drop Table";
+    $product_description="";
   }
   else {
     $product_description = test_input($_POST["product_description"]);
@@ -107,11 +111,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $dateErr="";
         }
     }
-  }
+  }   
 
+    //call the create new product function
+    $er="filled";
+    //productID is new for new product
+    $productID="new";
+    $sellerID=1;
+    $details=array("productID"=>"new","product_description"=>$product_description,"price"=>$price,"quantity"=>$quantity,"conditionname"=>$conditionname,
+    "categoryname"=>$categoryname,"sellerID"=>$sellerID,"auctionable"=>$auctionable,"enddate"=>$enddate);
+ 
+    foreach(array_values($details)as $value){
+      if (empty($value)){
+        $er="missing";
+      }
+    }
+        
+    if ($er=="filled"){
+      $_SESSION["listing"]=$details;
+      }
 
-  
 }
+
     
 function test_input($data) {
     $data = trim($data);
@@ -122,18 +143,9 @@ function test_input($data) {
 
 ?>
 
-Your inputs are: <br>
-description: <?php echo $product_description; ?><br>
-price: <?php echo $price; ?><br>
-quantity:<?php echo $quantity; ?><br>
-category:<?php echo $categoryname; ?><br>
-condition:<?php echo $conditionname; ?><br>
-auctionable:<?php echo $auctionable; ?><br>
-end date:<?php echo $enddate; ?><br>
-
-
 
 <form id="form1" method="post" action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>"><br>
+
 <label for="product_description">Product Description (max 150 characters):</label><br>
 <input name="product_description" id="product_description" type="text" placeholders="max 150 characters" maxlength="150" size="200"  style="height:100px"
 value="<?php if(isset($_POST["product_description"])){echo htmlentities($_POST["product_description"]);}?>">
@@ -247,9 +259,49 @@ value="<?php if(isset($_POST["quantity"])){echo htmlentities($_POST["quantity"])
 <input type="submit" name="submit" value="Submit">
 </form>
 
+<div id="submission">
+Your inputs are:<br>
+description: <?php echo $product_description; ?><br>
+price: <?php echo $price; ?><br>
+quantity:<?php echo $quantity; ?><br>
+category:<?php echo $categoryname; ?><br>
+condition:<?php echo $conditionname; ?><br>
+auctionable:<?php echo $_POST["auctionable"]; ?><br>
+end date:<?php echo $enddate; ?><br>
 
+<!--submit button for user to confirm inputs. 'post' variables to createnewproduct.php. No variables except "submit" is posted, as this
+submit button is merely used as a normal button to call the file "createnewproduct.php"-->
+<form id="form2" method="post" action="createnewproduct.php";><br>
+<input type="submit" name="confirmbutton" id="confirmbutton">
+</form>
+
+<button name='return' id='return' onclick="document.getElementById('form1').style.display='inline';
+document.getElementById('submission').style.display='none';">Return to form</button>
+
+</div>
+
+
+
+<!-- changes the visability of the form, submission details and return button -->
+<?php
+if(array_key_exists('submit',$_POST)){
+    if($er=="filled"){
+    echo "<script type=\"text/javascript\">document.getElementById('form1').style.display=\"none\";</script>";
+    echo "<script type=\"text/javascript\">document.getElementById('submission').style.display=\"inline\";</script>";
+    }
+}else{
+    echo "<script type=\"text/javascript\">document.getElementById('return').style.display=\"none\";</script>";
+    echo "<script type=\"text/javascript\">document.getElementById('submission').style.display=\"none\";</script>";
+}
+
+// if(array_key_exists('confirmbutton',$_POST)){
+//   echo "<script type=\"text/javascript\">document.getElementById('form1').style.display=\"none\";</script>";
+//   echo "<script type=\"text/javascript\">document.getElementById('submission').style.display=\"none\";</script>";
+//   }
+?>
 
 <script>
+
 
 //create the drop-down list for end date
 var selectday = document.getElementById("endday");

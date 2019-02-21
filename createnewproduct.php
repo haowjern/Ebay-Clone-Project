@@ -1,20 +1,43 @@
 <?php
+session_start();
 
-function newproduct($details) {
+// [$productID,$product_description,$price,$quantity,$conditionname,$categoryname,$sellerID,$auctionable,$enddate]=include "listing.php";
+
+if (isset($_SESSION["listing"])) {
+
     //connect to database
     include 'database.php';
 
-    $productID=$details['productID'];
-    $product_description="'".$details['product_description']."'";
-    $price=$details['price'];
-    $quantity=$details['quantity'];
-    $categoryID=$details['categoryID'];
-    $conditionID=$details['conditionID'];
-    $sellerID="'".$details['sellerID']."'";
-    $auctionable=$details['auctionable'];
-    $enddate="'".$details['enddate']."'";
+    //set the variables with session values and escape mysql characters
+    $productID=mysqli_real_escape_string($connection,$_SESSION["listing"]["productID"]);
+    $product_description=mysqli_real_escape_string($connection,$_SESSION["listing"]["product_description"]);
+    $price=mysqli_real_escape_string($connection,$_SESSION["listing"]["price"]);
+    $quantity=mysqli_real_escape_string($connection,$_SESSION["listing"]["quantity"]);
+    $conditionname=mysqli_real_escape_string($connection,$_SESSION["listing"]["conditionname"]);
+    $categoryname=mysqli_real_escape_string($connection,$_SESSION["listing"]["categoryname"]);
+    $sellerID=mysqli_real_escape_string($connection,$_SESSION["listing"]["sellerID"]);
+    $auctionable=mysqli_real_escape_string($connection,$_SESSION["listing"]["auctionable"]);
+    $enddate=mysqli_real_escape_string($connection,$_SESSION["listing"]["enddate"]);
 
 
+    //look up the categoryID and conditionID based on user input
+    $sql="SELECT categoryID FROM Category WHERE categoryname='$categoryname'";
+        $result=$connection->query($sql);
+        if ($result==TRUE){
+            $row=$result->fetch_assoc();
+            $categoryID=$row['categoryID'];
+        } else {
+        echo "Error: ". $sql . "<br>" . $connection->error;
+        }
+
+    $sql="SELECT conditionID FROM ConditionIndex WHERE conditionname='$conditionname'";
+        $result=$connection->query($sql);
+        if ($result==TRUE){
+            $row=$result->fetch_assoc();
+            $conditionID=$row['conditionID'];
+        } else {
+        echo "Error: ". $sql . "<br>" . $connection->error;
+        }
 
     if (empty($productID)){
         //insert new row into product database with new productID
@@ -41,7 +64,13 @@ function newproduct($details) {
     }
 
     $connection->close();
+
+//add item to auction table if it is auctionable
+  if ($auctionable==1){
+    // call the query file to insert item into auction table
+  }
 }
+
 
 function set_photo($photo_obj, $instr) {
     /* Add photo to database 
@@ -96,20 +125,7 @@ function set_photo($photo_obj, $instr) {
     return $photo_obj;
 }
 
-
-// $productID="";
-// $product_description="mouse";
-// $price=2.5;
-// $quantity=10;
-// $categoryID="01";
-// $conditionID="01";
-// $sellerID="c1";
-// $auctionable=0;
-// $enddate="30/4/2019";
-
-// $details=array("productID"=>$productID,"product_description"=>$product_description,"price"=>$price,"quantity"=>$quantity,
-// "categoryID"=>$categoryID,"conditionID"=>$conditionID,"sellerID"=>$sellerID,"auctionable"=>$auctionable,"enddate"=>$enddate);
-
-// newproduct($details);
-
+//empty the session element and destroy session
+unset($_SESSION["listing"]);
+session_destroy();
 ?>
