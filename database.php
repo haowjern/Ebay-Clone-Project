@@ -32,10 +32,10 @@ define('DB_PASSWORD', $connectstr_dbpassword);
 define('DB_HOST', $connectstr_dbhost);
 
 // Custom testing
-echo $connectstr_dbname."\n";
-echo $connectstr_dbusername."\n";
-echo $connectstr_dbpassword."\n";
-echo $connectstr_dbhost."\n";
+echo $connectstr_dbname."    \n";
+echo $connectstr_dbusername."    \n";
+echo $connectstr_dbpassword."    \n";
+echo $connectstr_dbhost."    \n";
 
 $connection = $dbLink = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
