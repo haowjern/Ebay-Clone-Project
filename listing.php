@@ -113,7 +113,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
   }   
 
-
     //call the create new product function
     $er="filled";
     //productID is new for new product

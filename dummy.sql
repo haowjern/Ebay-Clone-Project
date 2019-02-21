@@ -1,3 +1,4 @@
+DROP DATABASE IF EXISTS DUMMY;
 CREATE DATABASE DUMMY
 DEFAULT CHARACTER SET utf8
 DEFAULT COLLATE utf8_general_ci;
@@ -95,3 +96,24 @@ VALUES (2,'macbook pro',1300,1,1,1,16,1,0,'2019-01-10');
 
 INSERT INTO Archive (productID,product_description,dealprice,quantity,categoryID,conditionID,buyerID,sellerID,auctionable,dealdate)
 VALUES (3,'macbook pro',815,1,1,3,16,2,1,'2019-01-20');
+
+/*
+CREATE PHOTOS TABLE 
+*/ 
+
+CREATE TABLE IF NOT EXISTS Photos (
+	photoID INT NOT NULL,
+	productID INT NOT NULL,
+	file_path TEXT,
+	PRIMARY KEY (photoID)
+) ENGINE=INNODB;
+
+CREATE TABLE IF NOT EXISTS BidEvents (
+	bidID INT NOT NULL,
+    productID INT NOT NULL,
+    buyerID INT NOT NULL, 
+    payment BOOL NOT NULL,
+    bid_price TEXT,
+    PRIMARY KEY (bidID)
+) ENGINE=INNODB;
+
