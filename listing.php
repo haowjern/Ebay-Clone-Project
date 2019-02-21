@@ -34,11 +34,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $priceErr="";
     $price=(float)$_POST["price"];
     } else {
-    $priceErr="price must be between $0 and $10000";
+    $priceErr="price must be between £0 and £10000";
     $price="";
     }
   } else {
-    $priceErr="price must be between $0 and $10000";
+    $priceErr="price must be between £0 and £10000";
     $price="";
   }
 
@@ -263,7 +263,7 @@ value="<?php if(isset($_POST["quantity"])){echo htmlentities($_POST["quantity"])
 <div id="submission">
 Your inputs are:<br>
 description: <?php echo $product_description; ?><br>
-price: <?php echo $price; ?><br>
+price (£): <?php echo $price; ?><br>
 quantity:<?php echo $quantity; ?><br>
 category:<?php echo $categoryname; ?><br>
 condition:<?php echo $conditionname; ?><br>
