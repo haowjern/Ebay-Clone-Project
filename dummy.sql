@@ -138,7 +138,7 @@ CREATE USERS TABLE ......?
 CREATE TABLE IF NOT EXISTS Users (
     userID INT NOT NULL,
     username TEXT,
-    password TEXT,
+    password1 TEXT,
     email TEXT,
     phone TEXT,
     accountbalance INTEGER,
