@@ -1,0 +1,33 @@
+
+                Update of progress:
+
+Annie
+
+
+Darren
+
+
+Haow Jern
+
+
+Sergi
+
+
+
+
+                Aims / todo:
+
+Annie
+
+
+Darren
+
+
+Haow Jern
+
+
+Sergi
+    - get azure sockets sorted so website connects to database file :)
+    - understand php cookies stuff, learn from ppl's code (run through what annie taught) (learn from hackingwithphp.com)
+    - read up on how ppl might try to basic-hack our php and sql :)
+    
