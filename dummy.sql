@@ -18,8 +18,7 @@ CREATE TABLE IF NOT EXISTS Product
     conditionID INTEGER,
     sellerID INTEGER,
     auctionable BOOLEAN,
-    enddate VARCHAR(40),
-    inventoryQuantity INTEGER
+    enddate VARCHAR(40)
 ) 
 ENGINE = InnoDB;
 
