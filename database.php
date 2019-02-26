@@ -2,7 +2,7 @@
 <html>
 <body>
 
-<p>Connect to Dummy database</p>
+<p>Connect to database</p>
  
 
 <?php
