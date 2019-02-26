@@ -126,7 +126,7 @@ CREATE TABLE IF NOT EXISTS Watchlist (
     buyerID INT NOT NULL,
     productID INT NOT NULL,
     recordedPrice INT NOT NULL
-)
+) ENGINE=INNODB;
 
 
 
@@ -142,7 +142,7 @@ CREATE TABLE IF NOT EXISTS Users (
     phone TEXT,
     accountbalance INTEGER,
     DOB TEXT
-)
+) ENGINE=INNODB;
 /* interest categories? and do we parse input before adding to this or is it something to do with configuring the table? (eg password..?) we'll figure it out :) */
 
 
