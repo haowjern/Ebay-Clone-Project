@@ -334,9 +334,9 @@ auctionable:<?php echo $_POST["auctionable"]; ?><br>
 end date:<?php echo $enddate; ?><br>
 image(s) uploaded:<?php echo $photoMsg; ?><br>
 
-<!--submit button for user to confirm inputs. 'post' variables to createnewproduct.php. No variables except "submit" is posted, as this
-submit button is merely used as a normal button to call the file "createnewproduct.php"-->
-<form id="form2" method="post" action="createnewproduct.php";><br>
+<!--submit button for user to confirm inputs. 'post' variables to product.php. No variables except "submit" is posted, as this
+submit button is merely used as a normal button to call the file product.php"-->
+<form id="form2" method="post" action="product.php";><br>
 <input type="submit" name="confirmbutton" id="confirmbutton">
 </form>
 

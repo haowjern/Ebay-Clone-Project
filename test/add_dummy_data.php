@@ -8,7 +8,7 @@ $photo_arr = array(
 
 function add_random_photos($photo_obj, $instr) {
     include 'database.php'; // connect to database 
-    include 'createnewproduct.php';
+    include 'product.php';
 
     $sql = "SELECT * FROM Product"; 
     $result = $connection->query($sql);
