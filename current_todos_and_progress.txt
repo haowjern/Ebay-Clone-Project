@@ -15,9 +15,9 @@ PAGES:
     - See seller details.
     - Bid for an auctionable item ############# HAOW JERN ############
 
-2. Buyer_listing.jpg - ############# ANNIE ##############
+2. Buyer_listing.jpg -
     I want to be able to:
-    - See list of product details depending on what I searched for. 
+    - See list of product details depending on what I searched for.  ############# ANNIE ##############
     - Filter what I see.
 
 3. Buying_confirmation_pop_up.jpg
