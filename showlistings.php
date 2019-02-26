@@ -4,7 +4,7 @@
 
 echo "Listings shown below: <br>";
 
-$sql="SELECT * FROM Product;
+$sql="SELECT * FROM Product";
 $result=$connection->query($sql);
 
 if ($result->num_rows>0){
