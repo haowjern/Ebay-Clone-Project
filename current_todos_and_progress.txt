@@ -107,6 +107,10 @@ Darren
 
 
 Haow Jern
+    - Created single product page to display to buyer - buyer_item.php 
+    - Linked bidding functionality. 
+
+    - Will create a listing page for buyers similar to what annie has done and i'll join it up with buyer_item to test things out. 
 
 
 Sergi
