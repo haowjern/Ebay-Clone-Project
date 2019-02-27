@@ -1,9 +1,14 @@
 <?php
 session_start();
 
-$_SESSION["userID"]=1;
 //fetch all the archive listing related to this seller
+$_SESSION["userID"]=1;
+
+unset($_SESSION["archive_search_criteria"]);
+$_SESSION["archive_search_criteria"]="sellerID";
+
 include 'fetcharchive.php';
+
 $count=count($_SESSION["all_archive_listings"]);
 if ($count==0){
     echo "no result found";
@@ -76,7 +81,7 @@ for (i=0;i<count;i++){
     cell_buyer.style.textAlign="center";
 
     //insert function/query to get buyername
-    
+
     cell_buyer.innerHTML=each_listing[i]["buyerID"];
 
     
