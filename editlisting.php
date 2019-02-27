@@ -4,11 +4,11 @@ session_start();
 
 <html>
 <head>
+
 <h1>Create/modify your Listing</h1>
 
 </head>
 <body>
-
 <?php
 
 
@@ -167,7 +167,7 @@ value="<?php if(isset($_POST["product_description"])){echo htmlentities($_POST["
 <span class="error"> <?php echo $desErr;?></span><br><br>
 <button type="button" >Upload photos</button><br><br>
 
-<label for="price">Price (£):</label><br>
+<label for="price">Start (Reserve) Price (£):</label><br>
 <input name="price" id="price" type="number" placeholders="1.0" step="0.01" min="0" max="10000"
 value="<?php if(isset($_POST["price"])){echo htmlentities($_POST["price"]);}?>">
 <span class="error"> <?php echo $priceErr;?></span><br><br>
@@ -269,10 +269,10 @@ value="<?php if(isset($_POST["quantity"])){echo htmlentities($_POST["quantity"])
 
 <span class="error"> <?php echo $dateErr;?></span><br><br>
 
-
 <input type="submit" name="submit" value="Submit">
 </form>
 
+<!-- this will only be displayed if all fields are filled and validated. -->
 <div id="submission">
 Your inputs are:<br>
 description: <?php echo $product_description; ?><br>
@@ -340,6 +340,17 @@ var today=new Date();
 var tomorrow=new Date();
 tomorrow.setDate(today.getDate()+1);
 enddate.min = tomorrow.toISOString().split("T")[0];
+
+
+  //if category is food, disable the radio button for "used/worn" or "refurbished" and make "new" default
+  // if (document.form1.categoryname2.checked==true){
+
+  //   document.getElementById("conditionname2").disabled=true;
+  //   document.getElementById("conditionname3").disabled=true;
+  // }else{
+  //   document.getElementById("conditionname2").disabled=false;
+  //   document.getElementById("conditionname3").disabled=false;
+  // }
 
 
 </script>
