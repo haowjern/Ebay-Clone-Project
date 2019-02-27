@@ -113,7 +113,7 @@ CREATE TABLE IF NOT EXISTS BidEvents (
     productID INT NOT NULL,
     buyerID INT NOT NULL, 
     payment BOOL NOT NULL,
-    bidPrice TEXT,
+    bidPrice NUMERIC NOT NULL,
     PRIMARY KEY (bidID)
 ) ENGINE=INNODB;
 
@@ -125,7 +125,7 @@ CREATE TABLE IF NOT EXISTS Watchlist (
     watchID INT NOT NULL,
     buyerID INT NOT NULL,
     productID INT NOT NULL,
-    recordedPrice INT NOT NULL
+    recordedPrice NUMERIC NOT NULL
 ) ENGINE=INNODB;
 
 
