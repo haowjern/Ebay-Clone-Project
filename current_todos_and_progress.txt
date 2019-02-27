@@ -2,17 +2,19 @@
                 Update of progress:
 
 Annie
-  - almost completed the functionality for viewing current listing per seller:
-	- html page almost completed
+  - completed the functionality for viewing current listing per seller:
+	- html page completed
 	- added "edit listing" functionality which connects to "editlisting.php", which 	will replace "newlisting.php". Edit listing uses the same UI as new listing.
-
 	- added "remove listing" functionality which connects to "removelisting.php"
+	- added button to go to bid event
   - updated product.php
 	- standardised date format (Y-m-d)
 	- changed actionable in $_POST from 0/1 to Yes/No to avoid empty error
   - updated product.csv
 	- changed the date format (Y-m-d) to match with product.php
   - created new script to store all condition and category names and indices as session 	variables to facilitate use
+  - completed selling history
+
 	
 
 Darren
@@ -29,11 +31,6 @@ Sergi
                 Aims / todo:
 
 Annie
-  - complete the functionality for viewing current listing
-	- filter function (not urgent)
-	- connect to bid event
-  - create the functionality for viewing selling history
-
 
 Darren
 
