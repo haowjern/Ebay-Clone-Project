@@ -4,32 +4,30 @@ session_start();
 
 <html>
 <head>
-<h1>New Listing</h1>
+
+<h1>Create/modify your Listing</h1>
 
 </head>
 <body>
-
 <?php
 
+
 //validate the input
-$desErr=$photoErr=$priceErr=$qErr=$caErr=$conErr=$auErr=$dateErr="";
-$product_description = $photos = $photoMsg = $price = $quantity = $categoryname =$conditionname = $auctionable = $enddate = "";
-$uploadOk = 1; // to verify if file can upload
+$desErr = $priceErr=$qErr=$caErr=$conErr=$auErr=$dateErr="";
+$product_description = $price = $quantity = $categoryname =$conditionname = $auctionable = $enddate = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
   if (empty($_POST["product_description"])) {
     $desErr = "Description is required";
     $product_description="";
-    $uploadOk = 0;
   } elseif (preg_match("/DROP TABLE/i",$_POST["product_description"])){
     $desErr="product description cannot contain Drop Table";
     $product_description="";
-    $uploadOk = 0;
   }
   else {
     $product_description = test_input($_POST["product_description"]);
     $desErr="";
+    
   }
 
   if (!empty($_POST["price"])&&is_numeric($_POST["price"])||$_POST["price"]==0) {
@@ -39,23 +37,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
     $priceErr="price must be between £0 and £10000";
     $price="";
-    $uploadOk = 0;
     }
   } else {
     $priceErr="price must be between £0 and £10000";
     $price="";
-    $uploadOk = 0;
   }
 
 
   if (empty($_POST["quantity"])||!(is_numeric($_POST["quantity"]))) {
     $qErr = "quantity must be between 1 and 10000.";
     $quantity="";
-    $uploadOk = 0;
   } elseif ((integer)$_POST["quantity"]<1||(integer)$_POST["quantity"]>10000){
     $qErr="quantity must be between 1 and 10000.";
     $quantity="";
-    $uploadOk = 0;
   }else {
     $quantity = test_input($_POST["quantity"]);
     $qErr="";
@@ -64,11 +58,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   if (empty($_POST["categoryname"])) {
     $caErr = "category is required";
     $categoryname="";
-    $uploadOk = 0;
   } elseif (!in_array($_POST["categoryname"],array("Electronics","Food","Fashion","Home","Health & Beauty","Sports","Toys & Games","Art & Music","Miscellaneous"))){
     $caErr="category is wrong";
     $categoryname="";
-    $uploadOk = 0;
   }else {
     $categoryname = test_input($_POST["categoryname"]);
     $caErr="";
@@ -77,11 +69,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   if (empty($_POST["conditionname"])) {
     $conErr = "condition is required";
     $conditionname="";
-    $uploadOk = 0;
   } elseif (!in_array($_POST["conditionname"],array("New","Refurbished","Used / Worn"))){
     $conErr="condition is wrong";
     $conditionname="";
-    $uploadOk = 0;
   }else {
     $conditionname = test_input($_POST["conditionname"]);
     $conErr="";
@@ -90,106 +80,61 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   if (empty($_POST["auctionable"])) {
     $auErr = "Select Yes / No";
     $auctionable="";
-    $uploadOk = 0;
   } elseif (!in_array($_POST["auctionable"],array("Yes","No"))){
     $auErr="only Yes/No";
     $auctionable="";
-    $uploadOk = 0;
   }else {
-    if ($_POST["auctionable"]=="Yes"){
-      $auctionable=1;
-    } elseif ($_POST["auctionable"]=="No"){
-    $auctionable =0;
+    $auctionable=$_POST["auctionable"];
     $auErr="";
     }
-  }
+  
+
 
   $today=date("Y-m-d"); 
-  if (!empty($_POST["date_l"])&& strtotime($_POST["date_l"])){
-    $enddate=date("Y-m-d",strtotime($_POST["date_l"]));
-    $_POST["endmonth"]=$_POST["endday"]="";
+  if (!empty($_POST["enddate"]) && date_create_from_format("Y-m-d",$_POST["enddate"])){
+    $enddate=date_create_from_format("Y-m-d",$_POST["enddate"]);
+    $_POST["endmonth"]=date_format($enddate,"F");
+    $_POST["endday"]=(integer)date_format($enddate,"d");
+    $enddate=$_POST["enddate"];
+    $dateErr="";
 
-  } else {
+  }else{
     $enddate="";
     if (empty($_POST["endday"]) || empty($_POST["endmonth"]) ||  $_POST["endday"]=="Day"|| $_POST["endmonth"]=="Month") {
         $dateErr = "Listing end date is required";
-        $uploadOk = 0;
-    } else {
-      date_default_timezone_set("Europe/London");
-      $enddate_str=$_POST["endday"]." ".$_POST["endmonth"]." 2019";
-      $enddate=date("Y-m-d",strtotime($enddate_str));
-      if ($enddate<=$today){
-        $dateErr="Listing must end in the future.";
-        $enddate="";
-        $uploadOk = 0;
-      } else {
-        $dateErr="";
-      }
+        }else{
+        date_default_timezone_set("Europe/London");
+        $enddate_str=$_POST["endday"]." ".$_POST["endmonth"]." 2019";
+        $enddate=date("Y-m-d",strtotime($enddate_str));
+        if ($enddate<=$today){
+            $dateErr="Listing must end in the future.";
+            $enddate="";
+        }else{
+            $dateErr="";
+        }
     }
-  }
-  
-  $target_dir = "uploads/";
-  $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
-  $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-  // Check if image file is a actual image or fake image
-  if (isset($_FILES["fileToUpload"])) {
-    if (!empty($_FILES["fileToUpload"]["tmp_name"])) {
-      $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
-      if($check == false) {
-          $photoErr = "File is not an image.";
-          $uploadOk = 0;
-      }
+  }   
 
-      // Check if file already exists
-      if (file_exists($target_file)) {
-        $photoErr = "Sorry, photo already exists.";
-        $uploadOk = 0;
-      }
-      // Check file size
-      if ($_FILES["fileToUpload"]["size"] > 500000) {
-          $photoErr = "Sorry, your file is too large.";
-          $uploadOk = 0;
-      }
-      // Allow certain file formats
-      if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-      && $imageFileType != "gif" ) {
-          $photoErr = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
-          $uploadOk = 0;
-      }
-      // Check if $uploadOk is set to 0 by an error
-      if ($uploadOk != 0) {
-          if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-              $photoMsg = basename($_FILES["fileToUpload"]["name"]);
-              $photos = $target_file; 
-          } else {
-              $photoErr = "Sorry, there was an error uploading your photo.";
-          }
-      }
-    } else {
-      $uploadOk = 0;
-    }
-  } else {
-    $uploadOk = 0;
-  }
-  
 
-  //call the create new product function
-  $er="filled";
-  //productID is new for new product
-  $productID="new";
-  $sellerID=1;
-  $details=array("productID"=>"new","product_description"=>$product_description,"photos"=>$photos,"price"=>$price,"quantity"=>$quantity,"conditionname"=>$conditionname,
-  "categoryname"=>$categoryname,"sellerID"=>$sellerID,"auctionable"=>$auctionable,"enddate"=>$enddate);
+    //assume all fields are field
+    $er="filled";
 
-  foreach(array_values($details)as $value){
-    if (empty($value)){
-      $er="missing";
-    }
-  }
+    $sellerID=$_SESSION["userID"];
+    $details=array("productID"=>$_POST["productID"],"product_description"=>$product_description,"price"=>$price,"quantity"=>$quantity,"conditionname"=>$conditionname,
+    "categoryname"=>$categoryname,"sellerID"=>$sellerID,"auctionable"=>$auctionable,"enddate"=>$enddate);
       
-  if ($er=="filled"){
-    $_SESSION["listing"]=$details;
-  }
+    //check if any value is missing
+    foreach(array_values($details)as $value){
+      if (empty($value)){
+        $er="missing";
+        break;
+      }
+    }
+        
+    if ($er=="filled"){
+      $_SESSION["editlisting"]=$details;
+
+      }
 
 }
 
@@ -204,20 +149,25 @@ function test_input($data) {
 ?>
 
 
-<form id="form1" method="post" action=<?php echo htmlentities($_SERVER['PHP_SELF']); ?> enctype="multipart/form-data"><br>
+<form id="form1" method="post" action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>"><br>
+
+<input name="productID" type="hidden" value="<?php
+    if(isset($_POST["productID"])){
+      echo $_POST["productID"];
+    }else{
+      //productID is new for new product
+      echo "new";}
+?>">
+
 
 <label for="product_description">Product Description (max 150 characters):</label><br>
 <input name="product_description" id="product_description" type="text" placeholders="max 150 characters" maxlength="150" size="200"  style="height:100px"
 value="<?php if(isset($_POST["product_description"])){echo htmlentities($_POST["product_description"]);}?>">
+
 <span class="error"> <?php echo $desErr;?></span><br><br>
+<button type="button" >Upload photos</button><br><br>
 
-
-<label for="image">Upload image(s):</label><br>
-<input type="file" name="fileToUpload" id="fileToUpload">
-<span class="error"> <?php echo $photoErr;?></span><br><br>
-
-
-<label for="price">Price:</label><br>
+<label for="price">Start (Reserve) Price (£):</label><br>
 <input name="price" id="price" type="number" placeholders="1.0" step="0.01" min="0" max="10000"
 value="<?php if(isset($_POST["price"])){echo htmlentities($_POST["price"]);}?>">
 <span class="error"> <?php echo $priceErr;?></span><br><br>
@@ -302,8 +252,8 @@ value="<?php if(isset($_POST["quantity"])){echo htmlentities($_POST["quantity"])
   <span class="error"> <?php echo $auErr;?></span><br><br>
 
 
-<label for="date_l">Listing ends on:</label><br>
-<input type="date" name="date_l" id="date_l" max="2019-12-31" value="<?php if(isset($_POST["date_l"])){echo htmlentities($_POST["date_l"]);}?>"/>
+<label for="enddate">Listing ends on:</label><br>
+<input type="date" name="enddate" id="enddate" max="2019-12-31" value="<?php if(isset($_POST["enddate"])){echo htmlentities($_POST["enddate"]);}?>"/>
 
 <p>If calendar cannot be shown in the field above, use below to input:<br></p>
 
@@ -319,10 +269,10 @@ value="<?php if(isset($_POST["quantity"])){echo htmlentities($_POST["quantity"])
 
 <span class="error"> <?php echo $dateErr;?></span><br><br>
 
-
 <input type="submit" name="submit" value="Submit">
 </form>
 
+<!-- this will only be displayed if all fields are filled and validated. -->
 <div id="submission">
 Your inputs are:<br>
 description: <?php echo $product_description; ?><br>
@@ -332,11 +282,11 @@ category:<?php echo $categoryname; ?><br>
 condition:<?php echo $conditionname; ?><br>
 auctionable:<?php echo $_POST["auctionable"]; ?><br>
 end date:<?php echo $enddate; ?><br>
-image(s) uploaded:<?php echo $photoMsg; ?><br>
 
 <!--submit button for user to confirm inputs. 'post' variables to product.php. No variables except "submit" is posted, as this
-submit button is merely used as a normal button to call the file product.php"-->
+submit button is merely used as a normal button to call the file "product.php"-->
 <form id="form2" method="post" action="product.php";><br>
+
 <input type="submit" name="confirmbutton" id="confirmbutton">
 </form>
 
@@ -349,20 +299,21 @@ document.getElementById('submission').style.display='none';">Return to form</but
 
 <!-- changes the visability of the form, submission details and return button -->
 <?php
-if(isset($_POST["submit"])){
+if(array_key_exists('submit',$_POST)){
     if($er=="filled"){
-        echo "<script type=\"text/javascript\">document.getElementById('form1').style.display=\"none\";</script>";
-        echo "<script type=\"text/javascript\">document.getElementById('submission').style.display=\"inline\";</script>";
+    echo "<script type=\"text/javascript\">document.getElementById('form1').style.display=\"none\";</script>";
+    echo "<script type=\"text/javascript\">document.getElementById('submission').style.display=\"inline\";</script>";
     }
 }else{
     echo "<script type=\"text/javascript\">document.getElementById('return').style.display=\"none\";</script>";
     echo "<script type=\"text/javascript\">document.getElementById('submission').style.display=\"none\";</script>";
 }
 
-// if(array_key_exists('confirmbutton',$_POST)){
-//   echo "<script type=\"text/javascript\">document.getElementById('form1').style.display=\"none\";</script>";
-//   echo "<script type=\"text/javascript\">document.getElementById('submission').style.display=\"none\";</script>";
-//   }
+if(array_key_exists('confirmbutton',$_POST)){
+
+  echo "<script type=\"text/javascript\">document.getElementById('form1').style.display=\"none\";</script>";
+  echo "<script type=\"text/javascript\">document.getElementById('submission').style.display=\"none\";</script>";
+  }
 ?>
 
 <script>
@@ -388,7 +339,18 @@ for(var i = 0; i < opt.length; i++) {
 var today=new Date();
 var tomorrow=new Date();
 tomorrow.setDate(today.getDate()+1);
-date_l.min = tomorrow.toISOString().split("T")[0];
+enddate.min = tomorrow.toISOString().split("T")[0];
+
+
+  //if category is food, disable the radio button for "used/worn" or "refurbished" and make "new" default
+  // if (document.form1.categoryname2.checked==true){
+
+  //   document.getElementById("conditionname2").disabled=true;
+  //   document.getElementById("conditionname3").disabled=true;
+  // }else{
+  //   document.getElementById("conditionname2").disabled=false;
+  //   document.getElementById("conditionname3").disabled=false;
+  // }
 
 
 </script>

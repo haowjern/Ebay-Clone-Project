@@ -1,12 +1,12 @@
-DROP DATABASE IF EXISTS DUMMY;
-CREATE DATABASE DUMMY
+DROP DATABASE IF EXISTS ebayDB;
+CREATE DATABASE ebayDB
 DEFAULT CHARACTER SET utf8
 DEFAULT COLLATE utf8_general_ci;
 GRANT SELECT,UPDATE,INSERT,DELETE
-ON DUMMY.*
+ON ebayDB.*
 TO 'at'@'localhost'
 IDENTIFIED BY '123';
-USE DUMMY;
+USE ebayDB;
 
 CREATE TABLE IF NOT EXISTS Product
 (
@@ -89,10 +89,10 @@ INSERT INTO ConditionIndex (conditionname)
 VALUES ('Used / Worn');
 
 INSERT INTO Archive (productID,product_description,dealprice,quantity,categoryID,conditionID,buyerID,sellerID,auctionable,dealdate)
-VALUES (1,'macbook pro',1300,4,1,1,16,1,0,'2019-01-15');
+VALUES (1,'macbook pro',1300,4,1,1,2,1,0,'2019-01-15');
 
 INSERT INTO Archive (productID,product_description,dealprice,quantity,categoryID,conditionID,buyerID,sellerID,auctionable,dealdate)
-VALUES (2,'macbook pro',1300,1,1,1,16,1,0,'2019-01-10');
+VALUES (2,'macbook pro',1300,1,1,2,4,1,0,'2019-01-10');
 
 INSERT INTO Archive (productID,product_description,dealprice,quantity,categoryID,conditionID,buyerID,sellerID,auctionable,dealdate)
 VALUES (3,'macbook pro',815,1,1,3,16,2,1,'2019-01-20');
@@ -113,7 +113,7 @@ CREATE TABLE IF NOT EXISTS BidEvents (
     productID INT NOT NULL,
     buyerID INT NOT NULL, 
     payment BOOL NOT NULL,
-    bid_price TEXT,
+    bidPrice NUMERIC NOT NULL,
     PRIMARY KEY (bidID)
 ) ENGINE=INNODB;
 
@@ -125,7 +125,7 @@ CREATE TABLE IF NOT EXISTS Watchlist (
     watchID INT NOT NULL,
     buyerID INT NOT NULL,
     productID INT NOT NULL,
-    recordedPrice INT NOT NULL
+    recordedPrice NUMERIC NOT NULL
 ) ENGINE=INNODB;
 
 
