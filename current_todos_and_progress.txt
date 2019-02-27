@@ -33,13 +33,20 @@ Sergi
 Annie
 
 Darren
+    from annie:
+    - sellinghistory.php: plz include query/function to fetch buyer info
 
 
 Haow Jern
+    from annie:
+    - sellershop.php: plz include the codes for image and bid events 
+    - product.php: resolve merge conflicts
+    - editlisting.php (previous newlisting.php): not sure if there's any conflict regarding the image
 
 
 Sergi
     - get azure sockets sorted so website connects to database file :)
     - understand php cookies stuff, learn from ppl's code (run through what annie taught) (learn from hackingwithphp.com)
     - read up on how ppl might try to basic-hack our php and sql :)
-    
+    from annie:
+    - sellinghistory.php, fetcharchive.php: should be very similar to your buyer purchase 	history!!
