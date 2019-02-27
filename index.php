@@ -6,7 +6,7 @@
     <a href="database.php" title="placeholder mouseover text">
         html link to database.php
     </a>
-    <a href="editlisting.php" title="placeholder mouseover text">
+    <a href="/activity/editlisting.php" title="placeholder mouseover text">
         html link to editlisting.php
     </a>
     <a href="/activity/sellershop.php" title="placeholder mouseover text">
