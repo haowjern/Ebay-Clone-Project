@@ -17,8 +17,18 @@ PAGES:
 
 2. Buyer_listing.jpg -
     I want to be able to:
-    - See list of product details depending on what I searched for.  ############# ANNIE ##############
+    - See list of product details depending on what I searched for. 
+   ############# 
+   annie: changed code logic so can now use fetchactivelisting.php based on search criteria:
+            - category
+            - auctionable
+            - all
+    can add more criteria but need to consider the search efficiency (maybe it's easier to do further filtering on client side)
+    #############
     - Filter what I see.
+     ############# 
+     annie: do filtering on the client side using javascript
+     #############
 
 3. Buying_confirmation_pop_up.jpg
     I want to be able to:
@@ -39,7 +49,10 @@ PAGES:
     - Go to see my cart page. 
     - Go to see my purchase history page. 
     - Go to see my selling history page. 
-    - Go to see my current selling page. (Missing page - to be discussed) ####### ANNIE #######
+    - Go to see my current selling page. (Missing page - to be discussed) 
+    ####### 
+    annie: current selling page is done - sellershop.php (connects to fetchactivelisting.php) 
+     #######
     - Go to see my profile (update_profile page). 
 
 6. Payment.jpg
@@ -54,15 +67,28 @@ PAGES:
     - See a list of products I bought or sold. 
     - See the price it was at, and when I bought/sold it. 
     - Confirm my choice.
+    ####### 
+    annie: sellinghistory page is done - sellinghistory.php (connects to fetcharchive.php) 
+           purchasehistory can also use fetcharchive.php to get the archived items per buyer.
+           price it was at: original price is not stored in archive table. Only deal price is available.
+     #######
 
 8. Seller_item.jpg
     I want to be able to:
     - Fill in a form that looks similar to Buyer_item.jpg. 
     - Confirm my choice. 
+    #######
+    annie: editlisting.php - form functionality completed. Some page used for modifying item.
+            need to add seller profile on it.
+            pending design etc.
+    #######
 
 9. Seller_listing.jpg
     I want to be able to:
     - See a page similar to Buyer_listing.jpg. 
+        #######
+        annie: same as current selling page?
+        #######
 
 10. Sign-in.jpg
     I want to be able to:
@@ -119,14 +145,22 @@ Sergi
 Annie
 
 Darren
+    from annie:
+    - sellinghistory.php: plz include query/function to fetch buyer info
 
 
 Haow Jern
+    from annie:
+    - sellershop.php: plz include the codes for image and bid events 
+    - product.php: resolve merge conflicts
+    - editlisting.php (previous newlisting.php): not sure if there's any conflict regarding the image
 
 
 Sergi
     - get azure sockets sorted so website connects to database file :)
     - understand php cookies stuff, learn from ppl's code (run through what annie taught) (learn from hackingwithphp.com)
     - read up on how ppl might try to basic-hack our php and sql :)
+    from annie:
+    - sellinghistory.php, fetcharchive.php: should be very similar to your buyer purchase 	history!!
     - make watchlist function(s) - ready to plug onto relevant pages (figure out where they'd go - listing page defo, any others?)
 
