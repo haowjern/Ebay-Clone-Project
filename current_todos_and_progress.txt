@@ -1,5 +1,91 @@
+                List of TODOs: 
+
+FIRST STEP:
+1. Have the functionlity to insert/update/delete/select data from the database.
+
+SERVER-SIDE FUNCTIONALITIES:
+1. Search 
+2. Watch ########### SERGI ########### 
+
+PAGES:
+1. Buyer_item.png ############ HAOW JERN ############
+    I want to be able to:
+    - See product details
+    - Buy item, add to cart, and watch an item. 
+    - See seller details.
+    - Bid for an auctionable item ############# HAOW JERN ############
+
+2. Buyer_listing.jpg -
+    I want to be able to:
+    - See list of product details depending on what I searched for.  ############# ANNIE ##############
+    - Filter what I see.
+
+3. Buying_confirmation_pop_up.jpg
+    I want to be able to:
+    - See a pop up telling me that my payment has gone through. 
+    - See this pop up on my home page.  
+
+4. Cart.jpg
+    I want to be able to:
+    - See a list of product details on what is in my cart.
+    - Remove items from the cart.
+    - Confirm my cart and go to the payment page. 
+
+5. Home.jpg
+    I want to be able to:
+    - Search for something based on keywords. 
+    - Search a category of items.
+    - See items on promotion. 
+    - Go to see my cart page. 
+    - Go to see my purchase history page. 
+    - Go to see my selling history page. 
+    - Go to see my current selling page. (Missing page - to be discussed) ####### ANNIE #######
+    - Go to see my profile (update_profile page). 
+
+6. Payment.jpg
+    I want to be able to:
+    - Fill in my details if I am not logged in, otherwise automatically filled. 
+    - Fill in my payment details. 
+    - Look at a summary of what I am buying.
+    - Confirm my payment. 
+
+7. Purchase_history.jpg / selling history 
+    I want to be able to:
+    - See a list of products I bought or sold. 
+    - See the price it was at, and when I bought/sold it. 
+    - Confirm my choice.
+
+8. Seller_item.jpg
+    I want to be able to:
+    - Fill in a form that looks similar to Buyer_item.jpg. 
+    - Confirm my choice. 
+
+9. Seller_listing.jpg
+    I want to be able to:
+    - See a page similar to Buyer_listing.jpg. 
+
+10. Sign-in.jpg
+    I want to be able to:
+    - Continue as a guest. 
+    - Login by filling up a form. 
+    - Go to account creation page (page is missing - to be discussed). 
+
+11. Update_profile.jpg
+    I want to be able to:
+    - See a summary of my profile
+    - Have the ability to edit my details. 
+
+12. Account_creation.jpg (page hasn't been discussed yet)
+    I want to be able to:
+    - See a similar page to update_profile.jpg
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
                 Update of progress:
+
 
 Annie
   - completed the functionality for viewing current listing per seller:
@@ -50,3 +136,5 @@ Sergi
     - read up on how ppl might try to basic-hack our php and sql :)
     from annie:
     - sellinghistory.php, fetcharchive.php: should be very similar to your buyer purchase 	history!!
+    - make watchlist function(s) - ready to plug onto relevant pages (figure out where they'd go - listing page defo, any others?)
+

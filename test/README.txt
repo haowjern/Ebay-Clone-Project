@@ -1,0 +1,1 @@
+Folder to be deleted during production - adds dummy data for photos
