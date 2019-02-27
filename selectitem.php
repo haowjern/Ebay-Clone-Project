@@ -1,6 +1,6 @@
 <?php include 'database.php';?>
 <?php
-$categoryID=01;
+$categoryID=1;
 
 $sql="SELECT * FROM Product WHERE categoryID=$categoryID";
 $result=$connection->query($sql);
