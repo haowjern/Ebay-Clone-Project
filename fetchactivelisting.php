@@ -4,7 +4,9 @@ session_start();
 //obtain all the active listing items of the seller
 
 //call getc&c.php to store all category and condition indices and names in session variables
-include "getc&c.php";
+if (!isset($_SESSION["category_all"])||!isset($_SESSION["condition_all"])){
+    include "getc&c.php";}
+
 include 'database.php';
 
 unset($_SESSION["all_active_listings"]);
