@@ -1,27 +1,24 @@
 <!DOCTYPE html>
 <html>
 <body>
-
 <h1>hello world! index.php PHP page</h1>
 <p>
     <a href="database.php" title="placeholder mouseover text">
-        html link to Database.php
+        html link to database.php
     </a>
-    <a href="listing.php" title="placeholder mouseover text">
-        html link to Listing.php
+    <a href="newlisting.php" title="placeholder mouseover text">
+        html link to newlisting.php
     </a>
     <a href="selectitem.php" title="placeholder mouseover text">
-        html link to SelectItem.php
+        html link to selectitem.php
     </a>
+    <a href="showlistings.php" title="placeholder mouseover text">
+        html link to showlistings.php
+    </a>
+
+    <?php
+    echo "hello world from php"
+    ?>
 </p>
-
-<?php
-echo "echoing from php\n";
-print "printing from php\n";
-echo "hello world 5";
-echo "hello world hj";
-echo "hello world dk";
-?> 
-
 </body>
 </html>

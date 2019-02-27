@@ -102,14 +102,14 @@ CREATE PHOTOS TABLE
 */ 
 
 CREATE TABLE IF NOT EXISTS Photos (
-	photoID INT NOT NULL,
+	photoID INT NOT NULL AUTO_INCREMENT,
 	productID INT NOT NULL,
 	file_path TEXT,
 	PRIMARY KEY (photoID)
 ) ENGINE=INNODB;
 
 CREATE TABLE IF NOT EXISTS BidEvents (
-	bidID INT NOT NULL,
+	bidID INT NOT NULL AUTO_INCREMENT,
     productID INT NOT NULL,
     buyerID INT NOT NULL, 
     payment BOOL NOT NULL,
@@ -126,7 +126,7 @@ CREATE TABLE IF NOT EXISTS Watchlist (
     buyerID INT NOT NULL,
     productID INT NOT NULL,
     recordedPrice INT NOT NULL
-)
+) ENGINE=INNODB;
 
 
 
@@ -142,7 +142,7 @@ CREATE TABLE IF NOT EXISTS Users (
     phone TEXT,
     accountbalance INTEGER,
     DOB TEXT
-)
+) ENGINE=INNODB;
 /* interest categories? and do we parse input before adding to this or is it something to do with configuring the table? (eg password..?) we'll figure it out :) */
 
 
