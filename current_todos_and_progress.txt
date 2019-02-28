@@ -161,10 +161,25 @@ Haow Jern
 
 
 Sergi
-    - get azure sockets sorted so website connects to database file :)
-    - understand php cookies stuff, learn from ppl's code (run through what annie taught) (learn from hackingwithphp.com)
-    - read up on how ppl might try to basic-hack our php and sql :)
-    from annie:
-    - sellinghistory.php, fetcharchive.php: should be very similar to your buyer purchase 	history!!
+    - sellinghistory.php, fetcharchive.php: should be very similar to your buyer purchase 	history!!   [<- from annie]
+
     - make watchlist function(s) - ready to plug onto relevant pages (figure out where they'd go - listing page defo, any others?)
 
+    - work out what people have coded (that would be relevant to my functions)
+    - work out how to go about coding my functions
+    - work out how to code each function
+
+    - which functions?
+        
+        watchlist:
+
+            add_watching
+            remove_watching
+            update_all_watchers
+        
+        search for item kinds & categories:
+
+            search_items
+        
+    
+    

@@ -20,8 +20,12 @@
         html link to /activity/sellinghistory.php
     <br>
     </a>
-    <a href="selectitem.php" title="placeholder mouseover text">
-        html link to selectitem.php
+    <a href="bid_product.php" title="placeholder mouseover text">
+        html link to bid_product.php
+    <br>
+    </a>
+    <a href="buyer_item.php" title="placeholder mouseover text">
+        html link to buyer_item.php
     <br>
     </a>
     <a href="showlistings.php" title="placeholder mouseover text">
