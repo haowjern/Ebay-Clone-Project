@@ -1,7 +1,7 @@
 <?php 
 session_start();
 
-//obtain all the achive listing items of the seller
+//obtain all the archive listing items of the seller
 
 //call getc&c.php to store all category and condition indices and names in session variables
 if (!isset($_SESSION["category_all"])||!isset($_SESSION["condition_all"])){

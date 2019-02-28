@@ -5,19 +5,19 @@ FIRST STEP:
 
 SERVER-SIDE FUNCTIONALITIES:
 1. Search 
-2. Watch ########### SERGI ########### 
+2. Watch ########### SERGI ########### (send email notifications? anything else meant by my name being here? :) )
 
 PAGES:
 1. Buyer_item.png ############ HAOW JERN ############
     I want to be able to:
     - See product details
-    - Buy item, add to cart, and watch an item. 
+    - Buy item, add to cart, and watch an item.                             #### Sergi - watch
     - See seller details.
     - Bid for an auctionable item ############# HAOW JERN ############
 
 2. Buyer_listing.jpg -
     I want to be able to:
-    - See list of product details depending on what I searched for. 
+    - See list of product details depending on what I searched for.                 #### Sergi - search by catgry/condtn
    ############# 
    annie: changed code logic so can now use fetchactivelisting.php based on search criteria:
             - category
@@ -25,7 +25,7 @@ PAGES:
             - all
     can add more criteria but need to consider the search efficiency (maybe it's easier to do further filtering on client side)
     #############
-    - Filter what I see.
+    - Filter what I see.                                                            #### Sergi - as above and see Annie's note below
      ############# 
      annie: do filtering on the client side using javascript
      #############
@@ -43,8 +43,8 @@ PAGES:
 
 5. Home.jpg
     I want to be able to:
-    - Search for something based on keywords. 
-    - Search a category of items.
+    - Search for something based on keywords.           ### ...Sergi's criteria(?)
+    - Search a category of items.                       ### Sergi's criteria
     - See items on promotion. 
     - Go to see my cart page. 
     - Go to see my purchase history page. 
@@ -140,6 +140,7 @@ Haow Jern
 
 
 Sergi
+    - 
 
 
 
@@ -182,4 +183,26 @@ Sergi
             search_items
         
     
-    
+    - current code that's relevant:
+
+
+            make:
+        buyer_item      (watch button!)
+        Buyer_listing   (search & filter by category/condition)
+        selling_history         (? search & filter by category/condition?)
+
+
+            using:
+        fetch_archive   [gets the archive listings of the seller]
+        getc&c.php      [gets condition and category]
+
+
+    - creating:
+        
+        watch_product.php       take a few hints from bid_product.php - and bid_product_interface.php
+
+
+
+    - question... are users searching & filtering by KEYWORDS as well as category & condition? 
+    - qu... what exactly is "home.jpg" in notes above? and why all .jpg/.png ???
+
