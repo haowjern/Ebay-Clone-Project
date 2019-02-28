@@ -89,10 +89,10 @@ INSERT INTO ConditionIndex (conditionname)
 VALUES ('Used / Worn');
 
 INSERT INTO Archive (productID,product_description,dealprice,quantity,categoryID,conditionID,buyerID,sellerID,auctionable,dealdate)
-VALUES (1,'macbook pro',1300,4,1,1,16,1,0,'2019-01-15');
+VALUES (1,'macbook pro',1300,4,1,1,2,1,0,'2019-01-15');
 
 INSERT INTO Archive (productID,product_description,dealprice,quantity,categoryID,conditionID,buyerID,sellerID,auctionable,dealdate)
-VALUES (2,'macbook pro',1300,1,1,1,16,1,0,'2019-01-10');
+VALUES (2,'macbook pro',1300,1,1,2,4,1,0,'2019-01-10');
 
 INSERT INTO Archive (productID,product_description,dealprice,quantity,categoryID,conditionID,buyerID,sellerID,auctionable,dealdate)
 VALUES (3,'macbook pro',815,1,1,3,16,2,1,'2019-01-20');
