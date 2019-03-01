@@ -34,6 +34,10 @@ if (!isset($_SESSION["category_all"])||!isset($_SESSION["condition_all"])){
         } elseif ($criteria=="all"){
 
             $sql="SELECT * FROM Product";
+        
+        } elseif ($criteria=="keyword"){
+            $value='%'.$value.'%';
+            $sql="SELECT * FROM Product WHERE product_description LIKE '$value'";
         }
 
         $result=$connection->query($sql);
