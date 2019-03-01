@@ -2,11 +2,8 @@
 <html>
 <body>
 
-<<<<<<< HEAD
 <p>Connect to database</p>
-=======
 <p>Database.php</p>
->>>>>>> f0ae2d9456c8722f14ebec37382e0b63273ef3d3
  
 
 <?php
@@ -27,10 +24,7 @@ foreach ($_SERVER as $key => $value)
     $connectstr_dbpassword = preg_replace("/^.*Password=(.+?)$/", "\\1", $value);
     echo $value;
 }
-<<<<<<< HEAD
 
-=======
->>>>>>> f0ae2d9456c8722f14ebec37382e0b63273ef3d3
 define('DB_NAME', $connectstr_dbname);
 define('DB_USER', $connectstr_dbusername);
 define('DB_PASSWORD', $connectstr_dbpassword);
