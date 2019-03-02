@@ -33,7 +33,7 @@ function set_watch($watch_arr, $instr) {
 
     // delete 
     } elseif ($instr = "delete") {
-        $sql="DELETE FROM watchEvents WHERE watchID = '$watchID'";  
+        $sql="DELETE FROM watchlist WHERE watchID = '$watchID'";  
         
         if ($connection_->query($sql)==TRUE) {
             echo("Deleted watch event successfully.");
