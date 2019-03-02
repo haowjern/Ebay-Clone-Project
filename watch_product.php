@@ -1,27 +1,20 @@
 <?php 
 session_start(); 
 
-include './activity/watch_product_interface.php'; 
-$_SESSION['userID'] = 1;
+include './activity/watch_product_interface.php';     
+$_SESSION['userID'] = 11;
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
-    // TODO: check this is correct WHEN darren puts in his user details into $_SESSION
-
-    $_SESSION['watch']['buyerID'] = $_SESSION['userID'];
+    $_SESSION['watch']['buyerID'] = $_SESSION['userID']; // set the current user to be the buyer 
     $_SESSION['watch']['productID'] = $_SESSION['product']['id'];
     $_SESSION['watch']['watchID'] = "";
 
-    set_watch($_SESSION['watch'], "insert");                 #################    set_watchEvent, insert!
+    set_watch($_SESSION['watch'], "insert");  
 } else {
-    echo "Not posting to bidding.";         ##### alternative for watch?
+    echo "Not posting to watchlist.";         
 }
-
-
-
-# can do an identical one (ish) for remove from watchlist with instruction "delete"
-
 
 ?>
 
