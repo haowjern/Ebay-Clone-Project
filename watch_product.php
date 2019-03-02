@@ -13,12 +13,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // TODO: check this is correct WHEN darren puts in his user details into $_SESSION
 
     $_SESSION['watch']['buyerID'] = $_SESSION['userID']; // set the current user to be the buyer 
-    $_SESSION['watch']['payment'] = 0; 
     $_SESSION['watch']['productID'] = $_SESSION['product']['id'];
     
     $_SESSION['watch']['watchID'] = "";                                                     ######   watchID 
 
-    set_watchEvent($_SESSION['watch'], "insert");                 #################    set_watchEvent, insert!
+    set_watch($_SESSION['watch'], "insert");                 #################    set_watchEvent, insert!
 } else {
     echo "Not posting to bidding.";         ##### alternative for watch?
 }
