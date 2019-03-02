@@ -1,15 +1,15 @@
 <?php 
-function set_watch($watch_arr, $instr) {                                   /* set_watchEvent    $watch_arr   
+function set_watch($watch_arr, $instr) {         
     /* Add watch event to database 
     Parameters: 
-    - <$product_arr>: Object with attributes - 
-    - <$instr>: 
+    - <$product_arr>: Object with attributes - productID, buyerID
+    - <$instr>: insert/delete
     */ 
 
     include 'database.php';
 
     // check object has the correct properties
-    $properties = ["watchID", "productID", "buyerID"];          ######### watchID equivalent to bidID?
+    $properties = ["watchID", "productID", "buyerID"]; 
     foreach ($properties as $value) {
         if (!array_key_exists($value, $watch_arr)) {
             echo "Parameter is not an object with the correct properties\n"; 
@@ -26,7 +26,7 @@ function set_watch($watch_arr, $instr) {                                   /* se
         $sql = "INSERT INTO watchlist (productID, buyerID) VALUES ('$productID', '$buyerID')";
         $result = $connection->query($sql); 
         if ($result==TRUE) {
-            echo("Inserted new bid events.\n");
+            echo("Inserted new watchlist item.\n");
         } else {
             echo("Error: " . $sql . "<br>" . $connection->error);
         }
