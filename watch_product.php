@@ -2,8 +2,8 @@
 session_start(); 
 
 include './activity/watch_product_interface.php'; 
-#$_SESSION['userID'] = 1;
-$_SESSION['users'] = ['username'='dummmy','age'=12];
+$_SESSION['userID'] = 1;
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     

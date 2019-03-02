@@ -6,8 +6,6 @@ function set_watch($watch_arr, $instr) {
     - <$instr>: "insert" / "delete"
     */ 
 
-    echo("Echoing from within watch_product_interface.php")
-
     include 'database.php';
 
     // check object has the correct properties

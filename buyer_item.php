@@ -38,6 +38,10 @@ if (isset($_SESSION["product"]["auctionable"]) && $_SESSION["product"]["auctiona
                         return false;
                     }
                 }
+                elseif (submit_button.value == "Watch") {
+                    error_msg.innerText = "";
+                    return true;
+                }
             }
         </script>
     </head>
