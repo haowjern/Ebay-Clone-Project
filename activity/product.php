@@ -5,7 +5,7 @@ session_start();
 if (isset($_SESSION["editlisting"])) {
 
     //connect to database
-    include 'database.php';
+    include '../database.php';
     include 'photos_interface.php';
 
     //set the variables with session values and escape mysql characters
@@ -18,6 +18,7 @@ if (isset($_SESSION["editlisting"])) {
     $sellerID=mysqli_real_escape_string($connection,$_SESSION["editlisting"]["sellerID"]);
     $auctionable=mysqli_real_escape_string($connection,$_SESSION["editlisting"]["auctionable"]);
     $enddate=mysqli_real_escape_string($connection,$_SESSION["editlisting"]["enddate"]);
+    $endtime=mysqli_real_escape_string($connection,$_SESSION["editlisting"]["endtime"]);
     $photo_arr["file_path"]=mysqli_real_escape_string($connection,$_SESSION["listing"]["photos"]);
     $photo_arr["productID"]=$productID;
     $photo_arr["photoID"]=0;
@@ -48,8 +49,8 @@ if (isset($_SESSION["editlisting"])) {
 
     if ($productID=="new"){
         //insert new row into product database with new productID
-        $sql="INSERT INTO Product (product_description,price,quantity,categoryID,conditionID,sellerID,auctionable,enddate) 
-            VALUES('$product_description','$price','$quantity','$categoryID','$conditionID','$sellerID','$auctionable','$enddate')";
+        $sql="INSERT INTO Product (product_description,price,quantity,categoryID,conditionID,sellerID,auctionable,enddate,endtime) 
+            VALUES('$product_description','$price','$quantity','$categoryID','$conditionID','$sellerID','$auctionable','$enddate','$endtime')";
         if ($connection->query($sql)==TRUE){
         echo "New record successfully created for product";
         } else {
@@ -79,7 +80,8 @@ if (isset($_SESSION["editlisting"])) {
             categoryID='$categoryID',
             conditionID='$conditionID',
             auctionable='$auctionable',
-            enddate='$enddate'
+            enddate='$enddate',
+            endtime='$endtime'
             WHERE productID=$productID";
 
         if ($connection->query($sql) === TRUE) {

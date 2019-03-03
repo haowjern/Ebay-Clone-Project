@@ -32,7 +32,7 @@ $link_newlisting="http://".$host.$uri."/".$extra;
 
 
 <!-- create table header -->
-<table id=active_listing_table width="1200">
+<table id=active_listing_table width="device-width,initial-scale=1">
     <tr>
         <th>Image</th>
         <th>Product Details</th>
@@ -82,7 +82,7 @@ for (i=0;i<count;i++){
 
     //insert listing enddate into the 4th column (listing enddate)
     cell_enddate.style.textAlign="center";
-    cell_enddate.innerHTML=each_listing[i]["enddate"];
+    cell_enddate.innerHTML=each_listing[i]["enddate"]+" "+each_listing[i]["endtime"];
 
     //insert listing auction status into the 5th column (auction)
     cell_auctionable.style.textAlign="center";

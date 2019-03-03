@@ -7,7 +7,7 @@ session_start();
 if (!isset($_SESSION["category_all"])||!isset($_SESSION["condition_all"])){
     include "getc&c.php";}
 
-    include 'database.php';
+    include '../database.php';
 
     unset($_SESSION["all_active_listings"]);
 

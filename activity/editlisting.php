@@ -4,6 +4,27 @@ session_start();
 
 <html>
 <head>
+<style>
+body{
+  margin:auto;
+  width: 90%;
+}
+span.error{
+  color: red;
+  font-style: italic;
+}
+label {
+  font-weight: bold; 
+  text-align: center;
+}
+#submitbutton,#confirmbutton{
+  font-size:16px;
+  padding: 20px 20px;
+}
+
+
+
+</style>
 
 <h1>Create/modify your Listing</h1>
 
@@ -11,117 +32,146 @@ session_start();
 <body>
 <?php
 
-
 //validate the input
-$desErr = $priceErr=$qErr=$caErr=$conErr=$auErr=$dateErr="";
-$product_description = $price = $quantity = $categoryname =$conditionname = $auctionable = $enddate = "";
+$desErr = $priceErr=$qErr=$caErr=$conErr=$auErr=$dateErr=$timeErr="";
+$product_description = $price = $quantity = $categoryname =$conditionname = $auctionable = $enddate = $endtime="";
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  if (empty($_POST["product_description"])) {
-    $desErr = "Description is required";
-    $product_description="";
-  } elseif (preg_match("/DROP TABLE/i",$_POST["product_description"])){
-    $desErr="product description cannot contain Drop Table";
-    $product_description="";
-  }
-  else {
-    $product_description = test_input($_POST["product_description"]);
-    $desErr="";
-    
-  }
+if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
+      unset($_SESSION["editlisting"]);
 
-  if (!empty($_POST["price"])&&is_numeric($_POST["price"])||$_POST["price"]==0) {
-    if ($_POST["price"]==0 || (float)$_POST["price"]>=0.0 && (float)$_POST["price"]<=10000){
-    $priceErr="";
-    $price=(float)$_POST["price"];
-    } else {
-    $priceErr="price must be between £0 and £10000";
-    $price="";
-    }
-  } else {
-    $priceErr="price must be between £0 and £10000";
-    $price="";
-  }
+      if (empty($_POST["product_description"])) {
+        $desErr = "Description is required";
+        $product_description="";
+      } elseif (preg_match("/DROP TABLE/i",$_POST["product_description"])){
+        $desErr="product description cannot contain Drop Table";
+        $product_description="";
+      }
+      else {
+        $product_description = test_input($_POST["product_description"]);
+        $desErr="";
+        
+      }
 
-
-  if (empty($_POST["quantity"])||!(is_numeric($_POST["quantity"]))) {
-    $qErr = "quantity must be between 1 and 10000.";
-    $quantity="";
-  } elseif ((integer)$_POST["quantity"]<1||(integer)$_POST["quantity"]>10000){
-    $qErr="quantity must be between 1 and 10000.";
-    $quantity="";
-  }else {
-    $quantity = test_input($_POST["quantity"]);
-    $qErr="";
-  }
-
-  if (empty($_POST["categoryname"])) {
-    $caErr = "category is required";
-    $categoryname="";
-  } elseif (!in_array($_POST["categoryname"],array("Electronics","Food","Fashion","Home","Health & Beauty","Sports","Toys & Games","Art & Music","Miscellaneous"))){
-    $caErr="category is wrong";
-    $categoryname="";
-  }else {
-    $categoryname = test_input($_POST["categoryname"]);
-    $caErr="";
-  }
-
-  if (empty($_POST["conditionname"])) {
-    $conErr = "condition is required";
-    $conditionname="";
-  } elseif (!in_array($_POST["conditionname"],array("New","Refurbished","Used / Worn"))){
-    $conErr="condition is wrong";
-    $conditionname="";
-  }else {
-    $conditionname = test_input($_POST["conditionname"]);
-    $conErr="";
-  }
-
-  if (empty($_POST["auctionable"])) {
-    $auErr = "Select Yes / No";
-    $auctionable="";
-  } elseif (!in_array($_POST["auctionable"],array("Yes","No"))){
-    $auErr="only Yes/No";
-    $auctionable="";
-  }else {
-    $auctionable=$_POST["auctionable"];
-    $auErr="";
-    }
-  
-
-
-  $today=date("Y-m-d"); 
-  if (!empty($_POST["enddate"]) && date_create_from_format("Y-m-d",$_POST["enddate"])){
-    $enddate=date_create_from_format("Y-m-d",$_POST["enddate"]);
-    $_POST["endmonth"]=date_format($enddate,"F");
-    $_POST["endday"]=(integer)date_format($enddate,"d");
-    $enddate=$_POST["enddate"];
-    $dateErr="";
-
-  }else{
-    $enddate="";
-    if (empty($_POST["endday"]) || empty($_POST["endmonth"]) ||  $_POST["endday"]=="Day"|| $_POST["endmonth"]=="Month") {
-        $dateErr = "Listing end date is required";
-        }else{
-        date_default_timezone_set("Europe/London");
-        $enddate_str=$_POST["endday"]." ".$_POST["endmonth"]." 2019";
-        $enddate=date("Y-m-d",strtotime($enddate_str));
-        if ($enddate<=$today){
-            $dateErr="Listing must end in the future.";
-            $enddate="";
-        }else{
-            $dateErr="";
+      if (!empty($_POST["price"])&&is_numeric($_POST["price"])||$_POST["price"]==0) {
+        if ($_POST["price"]==0 || (float)$_POST["price"]>=0.0 && (float)$_POST["price"]<=10000){
+        $priceErr="";
+        $price=(float)$_POST["price"];
+        } else {
+        $priceErr="price must be between £0 and £10000";
+        $price="";
         }
-    }
-  }   
+      } else {
+        $priceErr="price must be between £0 and £10000";
+        $price="";
+      }
 
 
-    //assume all fields are field
+      if (empty($_POST["quantity"])||!(is_numeric($_POST["quantity"]))) {
+        $qErr = "quantity must be between 1 and 10000.";
+        $quantity="";
+      } elseif ((integer)$_POST["quantity"]<1||(integer)$_POST["quantity"]>10000){
+        $qErr="quantity must be between 1 and 10000.";
+        $quantity="";
+      }else {
+        $quantity = test_input($_POST["quantity"]);
+        $qErr="";
+      }
+
+      if (empty($_POST["categoryname"])) {
+        $caErr = "category is required";
+        $categoryname="";
+      } elseif (!in_array($_POST["categoryname"],array("Electronics","Food","Fashion","Home","Health & Beauty","Sports","Toys & Games","Art & Music","Miscellaneous"))){
+        $caErr="category is wrong";
+        $categoryname="";
+      }else {
+        $categoryname = test_input($_POST["categoryname"]);
+        $caErr="";
+      }
+
+      if (empty($_POST["conditionname"])) {
+        $conErr = "condition is required";
+        $conditionname="";
+      } elseif (!in_array($_POST["conditionname"],array("New","Refurbished","Used / Worn"))){
+        $conErr="condition is wrong";
+        $conditionname="";
+      }else {
+        if ($categoryname=="Food" && $_POST["conditionname"]!="New"){
+          $conErr="condition must be new for food item";
+          $conditionname="";
+        }else{
+        $conditionname = test_input($_POST["conditionname"]);
+        $conErr="";
+        }
+      }
+
+      if (empty($_POST["auctionable"])) {
+        $auErr = "Select Yes / No";
+        $auctionable="";
+      } elseif (!in_array($_POST["auctionable"],array("Yes","No"))){
+        $auErr="only Yes/No";
+        $auctionable="";
+      }else {
+        $auctionable=$_POST["auctionable"];
+        $auErr="";
+        }
+      
+
+
+      $today=date("Y-m-d"); 
+      if (!empty($_POST["enddate"]) && date_create_from_format("Y-m-d",$_POST["enddate"])){
+        $enddate=date_create_from_format("Y-m-d",$_POST["enddate"]);
+        $_POST["endmonth"]=date_format($enddate,"F");
+        $_POST["endday"]=(integer)date_format($enddate,"d");
+        $enddate=$_POST["enddate"];
+        $dateErr="";
+
+      }else{
+        $enddate="";
+        if (empty($_POST["endday"]) || empty($_POST["endmonth"]) ||  $_POST["endday"]=="Day"|| $_POST["endmonth"]=="Month") {
+            $dateErr = "Listing end date is required";
+            }else{
+            date_default_timezone_set("Europe/London");
+            $enddate_str=$_POST["endday"]." ".$_POST["endmonth"]." 2019";
+            $enddate=date("Y-m-d",strtotime($enddate_str));
+            if ($enddate<$today){
+                $dateErr="Listing cannot be created in the past.";
+                $enddate="";
+            }else{
+                $dateErr="";
+            }
+        }
+      }   
+        //check end time
+        $endtime="";
+        $hr=explode(":",$_POST["endtime"])[0];
+        if (empty($_POST["endtime"]) || !(is_numeric($hr))){
+            $timeErr="Listing end time (hour) is required";
+        }else{
+            if ($enddate==$today){
+                  echo ($enddate==$today);
+                  //check if the time is earlier than now
+                  if ((integer)$hr<=idate('H',time())){
+                        $timeErr="Listing cannot be created in the past.";
+                      }else{
+                        $endtime=$_POST["endtime"];
+                        $timeErr="";
+                      }
+
+            } else{
+              $endtime=$_POST["endtime"];
+              $timeErr="";
+              }
+
+        }
+
+    
+
+    //assume all fields are filled
     $er="filled";
 
     $sellerID=$_SESSION["userID"];
     $details=array("productID"=>$_POST["productID"],"product_description"=>$product_description,"price"=>$price,"quantity"=>$quantity,"conditionname"=>$conditionname,
-    "categoryname"=>$categoryname,"sellerID"=>$sellerID,"auctionable"=>$auctionable,"enddate"=>$enddate);
+    "categoryname"=>$categoryname,"sellerID"=>$sellerID,"auctionable"=>$auctionable,"enddate"=>$enddate,"endtime"=>$endtime);
       
     //check if any value is missing
     foreach(array_values($details)as $value){
@@ -133,8 +183,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
     if ($er=="filled"){
       $_SESSION["editlisting"]=$details;
-
-      }
+      } 
 
 }
 
@@ -161,11 +210,11 @@ function test_input($data) {
 
 
 <label for="product_description">Product Description (max 150 characters):</label><br>
-<input name="product_description" id="product_description" type="text" placeholders="max 150 characters" maxlength="150" size="200"  style="height:100px"
+<input name="product_description" id="product_description" type="text" placeholders="max 150 characters" maxlength="150" size="150" style="height:100px"
 value="<?php if(isset($_POST["product_description"])){echo htmlentities($_POST["product_description"]);}?>">
 
 <span class="error"> <?php echo $desErr;?></span><br><br>
-<button type="button" >Upload photos</button><br><br>
+<button type="button" id="uploadphoto" >Upload photos</button><br><br>
 
 <label for="price">Start (Reserve) Price (£):</label><br>
 <input name="price" id="price" type="number" placeholders="1.0" step="0.01" min="0" max="10000"
@@ -179,7 +228,7 @@ value="<?php if(isset($_POST["quantity"])){echo htmlentities($_POST["quantity"])
 <span class="error"> <?php echo $qErr;?></span><br><br>
 
 
-<p>Category:</p>
+<label>Category:</label><br>
 
   <input type="radio" name="categoryname"id="categoryname1"value="Electronics"
   <?php if (isset($_POST['categoryname']) && htmlentities($_POST['categoryname']) == 'Electronics'){echo "checked";}else{echo "unchecked";}?> />
@@ -220,7 +269,7 @@ value="<?php if(isset($_POST["quantity"])){echo htmlentities($_POST["quantity"])
 
 <span class="error"> <?php echo $caErr;?></span><br><br>
   
-<p>Condition:</p>
+<label>Condition:</label><br>
   
   <input type="radio" name="conditionname"id="conditionname1" value="New"
   <?php if (isset($_POST['conditionname']) && htmlentities($_POST['conditionname']) == 'New'){echo "checked";}else{echo "unchecked";}?> />
@@ -238,7 +287,7 @@ value="<?php if(isset($_POST["quantity"])){echo htmlentities($_POST["quantity"])
   <span class="error"> <?php echo $conErr;?></span><br><br>
 
 
-<p>Is your product auctionable?</p>
+<label>Is your product auctionable?</label><br>
   
   <input type="radio" name="auctionable"id="auctionable1" value="Yes" 
   <?php if (isset($_POST['auctionable']) && $_POST['auctionable'] == 'Yes'){echo "checked";}else{echo "unchecked";}?> />
@@ -255,6 +304,13 @@ value="<?php if(isset($_POST["quantity"])){echo htmlentities($_POST["quantity"])
 <label for="enddate">Listing ends on:</label><br>
 <input type="date" name="enddate" id="enddate" max="2019-12-31" value="<?php if(isset($_POST["enddate"])){echo htmlentities($_POST["enddate"]);}?>"/>
 
+<select id="endtime" name="endtime">
+    <option><?php if(isset($_POST["endtime"])){echo htmlentities((string)$_POST["endtime"]);}else{echo "Hour";}?></option>
+</select>
+
+<span class="error"> <?php echo $dateErr;?></span><br>
+<span class="error"> <?php echo $timeErr;?></span><br>
+
 <p>If calendar cannot be shown in the field above, use below to input:<br></p>
 
   <select id="endday" name="endday">
@@ -264,12 +320,9 @@ value="<?php if(isset($_POST["quantity"])){echo htmlentities($_POST["quantity"])
     <option><?php if(isset($_POST["endmonth"])){echo htmlentities($_POST["endmonth"]);}else{echo "Month";}?></option>
 </select>
 
-<br>
+<br><br><br>
 
-
-<span class="error"> <?php echo $dateErr;?></span><br><br>
-
-<input type="submit" name="submit" value="Submit">
+<input type="submit" name="submit" id="submitbutton" value="Submit">
 </form>
 
 <!-- this will only be displayed if all fields are filled and validated. -->
@@ -282,6 +335,7 @@ category:<?php echo $categoryname; ?><br>
 condition:<?php echo $conditionname; ?><br>
 auctionable:<?php echo $_POST["auctionable"]; ?><br>
 end date:<?php echo $enddate; ?><br>
+end time:<?php echo $endtime; ?><br>
 
 <!--submit button for user to confirm inputs. 'post' variables to product.php. No variables except "submit" is posted, as this
 submit button is merely used as a normal button to call the file "product.php"-->
@@ -290,7 +344,7 @@ submit button is merely used as a normal button to call the file "product.php"--
 <input type="submit" name="confirmbutton" id="confirmbutton">
 </form>
 
-<button name='return' id='return' onclick="document.getElementById('form1').style.display='inline';
+<button type="button" name='return' id='return' onclick="document.getElementById('form1').style.display='inline';
 document.getElementById('submission').style.display='none';">Return to form</button>
 
 </div>
@@ -299,15 +353,15 @@ document.getElementById('submission').style.display='none';">Return to form</but
 
 <!-- changes the visability of the form, submission details and return button -->
 <?php
-if(array_key_exists('submit',$_POST)){
-    if($er=="filled"){
-    echo "<script type=\"text/javascript\">document.getElementById('form1').style.display=\"none\";</script>";
-    echo "<script type=\"text/javascript\">document.getElementById('submission').style.display=\"inline\";</script>";
-    }
-}else{
-    echo "<script type=\"text/javascript\">document.getElementById('return').style.display=\"none\";</script>";
-    echo "<script type=\"text/javascript\">document.getElementById('submission').style.display=\"none\";</script>";
-}
+// if(array_key_exists('submit',$_POST)){
+//     if($er=="filled"){
+//     echo "<script type=\"text/javascript\">document.getElementById('form1').style.display=\"none\";</script>";
+//     echo "<script type=\"text/javascript\">document.getElementById('submission').style.display=\"inline\";</script>";
+//     }
+// }else{
+//     echo "<script type=\"text/javascript\">document.getElementById('return').style.display=\"none\";</script>";
+//     echo "<script type=\"text/javascript\">document.getElementById('submission').style.display=\"none\";</script>";
+// }
 
 if(array_key_exists('confirmbutton',$_POST)){
 
@@ -317,8 +371,14 @@ if(array_key_exists('confirmbutton',$_POST)){
 ?>
 
 <script>
-
-
+//create the drop-down list for end time
+var selecttime = document.getElementById("endtime");
+for (var i = 0 ; i < 24; i++) {
+    var eld = document.createElement("option");
+    eld.textContent = i+':00';
+    eld.value = i+':00';
+    selecttime.appendChild(eld);
+}
 //create the drop-down list for end date
 var selectday = document.getElementById("endday");
 for (var i = 1; i < 32; i++) {
@@ -336,14 +396,28 @@ for(var i = 0; i < opt.length; i++) {
     elm.value = opt[i];
     selectmonth.appendChild(elm);}
 
+//set the calendar limit
 var today=new Date();
-var tomorrow=new Date();
-tomorrow.setDate(today.getDate()+1);
-enddate.min = tomorrow.toISOString().split("T")[0];
+// var tomorrow=new Date();
+// tomorrow.setDate(today.getDate()+1);
+enddate.min = today.toISOString().split("T")[0];
+
+//change the display of the two forms
+var filled=<?php echo json_encode($er);?>;
+if (filled=="filled"){
+  document.getElementById("form1").style.display="none";
+  document.getElementById("submission").style.display="inline";
+  document.getElementById("confirmbutton").disabled=false;
+} else{
+  document.getElementById("form1").style.display="inline";
+  document.getElementById("submission").style.display="none";
+  document.getElementById("confirmbutton").disabled=true;
+}
 
 
-  //if category is food, disable the radio button for "used/worn" or "refurbished" and make "new" default
-  // if (document.form1.categoryname2.checked==true){
+  // //if category is food, disable the radio button for "used/worn" or "refurbished" and make "new" default
+  // if (document.getElementById("categoryname2").checked){
+    
 
   //   document.getElementById("conditionname2").disabled=true;
   //   document.getElementById("conditionname3").disabled=true;
