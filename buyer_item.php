@@ -38,6 +38,10 @@ if (isset($_SESSION["product"]["auctionable"]) && $_SESSION["product"]["auctiona
                         return false;
                     }
                 }
+                elseif (submit_button.value == "Watch") {
+                    error_msg.innerText = "";
+                    return true;
+                }
             }
         </script>
     </head>
@@ -62,8 +66,10 @@ if (isset($_SESSION["product"]["auctionable"]) && $_SESSION["product"]["auctiona
             <p>Name: Seller Name</p>
 
             <input type="submit" value="Bid" onclick="return validateForm(this)" formaction="./bid_product.php" formmethod="post">
-            <input type="submit" value="Cart">
-            <input type="submit" value="Watch">
+            <input type="submit" value="Cart">            
+            <input type="submit" value="Watch" onclick="return validateForm(this)" formaction="./watch_product.php" formmethod="post">
+
+
         </form>
     </body>
 </html>
