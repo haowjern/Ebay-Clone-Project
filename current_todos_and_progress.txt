@@ -1,11 +1,22 @@
                List of TODOs: 
 
-FIRST STEP:
-1. Have the functionlity to insert/update/delete/select data from the database.
+#### - means you're/will be working on it!
+
+General:
+1. SQL INJECTION SAFE!
 
 SERVER-SIDE FUNCTIONALITIES:
 1. Search 
-2. Watch ########### SERGI ########### (send email notifications? anything else meant by my name being here? :) )
+2. Watch ########### SERGI ########### 
+    - Receive emailed updates on bids on items 
+    - Receive emailed updates when outbid
+3. Update
+    - Move active to archive
+    - archive will only items that are already bought
+4. Notify 
+    - Outcomes of bidding to buyer and seller
+    - If something is not sold within end date, notify seller, and item automatically extends by 30 days - (discussion with HJ and Annie)
+5. System itself refreshes every one hour.
 
 PAGES:
 1. Buyer_item.png ############ HAOW JERN ############
@@ -14,6 +25,9 @@ PAGES:
     - Buy item, add to cart, and watch an item.                             #### Sergi - watch
     - See seller details.
     - Bid for an auctionable item ############# HAOW JERN ############
+    - Seller cannot bid/buy an item they have listed – in the seller shop
+    - I don't want to see the reserve price. 
+    - See bids other users make
 
 2. Buyer_listing.jpg -
     I want to be able to:
@@ -54,6 +68,7 @@ PAGES:
     annie: current selling page is done - sellershop.php (connects to fetchactivelisting.php) 
      #######
     - Go to see my profile (update_profile page). 
+    - Filter collaborative
 
 6. Payment.jpg
     I want to be able to:
@@ -76,6 +91,8 @@ PAGES:
 8. Seller_item.jpg
     I want to be able to:
     - Fill in a form that looks similar to Buyer_item.jpg. 
+    - I want to be able to select a reserve price and edit it.
+    - I don't want to be able to edit my starting price.
     - Confirm my choice. 
     #######
     annie: editlisting.php - form functionality completed. Some page used for modifying item.
@@ -87,7 +104,7 @@ PAGES:
     I want to be able to:
     - See a page similar to Buyer_listing.jpg. 
         #######
-        annie: same as current selling page?
+        annie: same as current selling page? HJ: yeah! Like the front end will look similar like what you've done
         #######
 
 10. Sign-in.jpg
