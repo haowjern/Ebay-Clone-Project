@@ -11,7 +11,7 @@
         <button type="button">My Profile</button>
         <button type="button">Purchase History</button>
         <button type="button">Selling History</button>
-        <button type="button">Cart</button>
+        <button type="button">Carts</button>
     </head> 
 
     <body>
