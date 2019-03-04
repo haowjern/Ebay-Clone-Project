@@ -6,7 +6,7 @@ function set_photo($photo_arr, $instr) {
     - <$instr>: 
     */ 
 
-    include 'database.php';
+    include '../database.php';
     $pID = $photo_arr['productID'];
     $photoID = $photo_arr['photoID'];
     $file_path = $photo_arr['file_path'];

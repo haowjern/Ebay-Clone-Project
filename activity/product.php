@@ -21,7 +21,7 @@ if (isset($_SESSION["editlisting"])) {
     $startdate=mysqli_real_escape_string($connection,$_SESSION["editlisting"]["startdate"]);
     $enddate=mysqli_real_escape_string($connection,$_SESSION["editlisting"]["enddate"]);
     $endtime=mysqli_real_escape_string($connection,$_SESSION["editlisting"]["endtime"]);
-    $photo_arr["file_path"]=mysqli_real_escape_string($connection,$_SESSION["listing"]["photos"]);
+    $photo_arr["file_path"]=mysqli_real_escape_string($connection,$_SESSION["editlisting"]["photos"]);
     $photo_arr["productID"]=$productID;
     $photo_arr["photoID"]=0;
 
@@ -50,10 +50,11 @@ if (isset($_SESSION["editlisting"])) {
         }
 
     if ($productID=="new"){
-        //insert new row into product database with new productID
+        //insert new row into product database with new productID   
         $sql="INSERT INTO Product (product_description,start_price,reserve_price,quantity,categoryID,conditionID,sellerID,auctionable,startdate,enddate,endtime) 
-            VALUES('$product_description','$start_price','$reserve_price','$quantity','$categoryID','$conditionID','$sellerID','$auctionable','$startdate','$enddate','$endtime')";
-        
+        VALUES('$product_description','$start_price','$reserve_price','$quantity','$categoryID','$conditionID','$sellerID','$auctionable','$startdate','$enddate','$endtime')";
+
+
         if ($connection->query($sql)==TRUE){
         echo "New record successfully created for product";
         } else {
