@@ -1,0 +1,25 @@
+CREATE TABLE IF NOT EXISTS users (
+    userID INT NOT NULL AUTO_INCREMENT,
+    username TEXT,
+    password1 TEXT,
+    email TEXT,
+    phone TEXT,
+    accountbalance INTEGER,
+    DOB DATE,
+    PRIMARY KEY (userID)
+) 
+
+ENGINE=INNODB;
+
+INSERT into users (username, password1, email, phone, accountbalance, DOB) VALUES ('user1', 'abc123', 'user1@gmail.com', '02074685689', 0, '1965-02-26')
+
+CREATE TABLE IF NOT EXISTS admins (
+    adminID INT NOT NULL AUTO_INCREMENT,
+    username TEXT,
+    password1 TEXT,
+    PRIMARY KEY (adminID)
+) 
+
+ENGINE=INNODB;
+
+INSERT into admins (username, password1) VALUES ('admin1', 'abc123')
