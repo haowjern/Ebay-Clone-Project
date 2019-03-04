@@ -1,12 +1,12 @@
-DROP DATABASE IF EXISTS ebayDB;
-CREATE DATABASE ebayDB
+DROP DATABASE IF EXISTS EBAYDB;
+CREATE DATABASE EBAYDB
 DEFAULT CHARACTER SET utf8
 DEFAULT COLLATE utf8_general_ci;
 GRANT SELECT,UPDATE,INSERT,DELETE
-ON ebayDB.*
+ON EBAYDB.*
 TO 'at'@'localhost'
 IDENTIFIED BY '123';
-USE ebayDB;
+USE EBAYDB;
 
 CREATE TABLE IF NOT EXISTS Product
 (
@@ -90,10 +90,10 @@ INSERT INTO ConditionIndex (conditionname)
 VALUES ('Used / Worn');
 
 INSERT INTO Archive (productID,product_description,dealprice,quantity,categoryID,conditionID,buyerID,sellerID,auctionable,dealdate)
-VALUES (1,'macbook pro',1300,4,1,1,2,1,0,'2019-01-15');
+VALUES (1,'macbook pro',1300,4,1,1,16,1,0,'2019-01-15');
 
 INSERT INTO Archive (productID,product_description,dealprice,quantity,categoryID,conditionID,buyerID,sellerID,auctionable,dealdate)
-VALUES (2,'macbook pro',1300,1,1,2,4,1,0,'2019-01-10');
+VALUES (2,'macbook pro',1300,1,1,1,16,1,0,'2019-01-10');
 
 INSERT INTO Archive (productID,product_description,dealprice,quantity,categoryID,conditionID,buyerID,sellerID,auctionable,dealdate)
 VALUES (3,'macbook pro',815,1,1,3,16,2,1,'2019-01-20');
@@ -103,18 +103,18 @@ CREATE PHOTOS TABLE
 */ 
 
 CREATE TABLE IF NOT EXISTS Photos (
-	photoID INT NOT NULL AUTO_INCREMENT,
+	photoID INT NOT NULL,
 	productID INT NOT NULL,
 	file_path TEXT,
 	PRIMARY KEY (photoID)
 ) ENGINE=INNODB;
 
 CREATE TABLE IF NOT EXISTS BidEvents (
-	bidID INT NOT NULL AUTO_INCREMENT,
+	bidID INT NOT NULL,
     productID INT NOT NULL,
     buyerID INT NOT NULL, 
-    payment BOOLEAN NOT NULL,
-    bidPrice NUMERIC NOT NULL,
+    payment BOOL NOT NULL,
+    bid_price TEXT,
     PRIMARY KEY (bidID)
 ) ENGINE=INNODB;
 
@@ -123,13 +123,11 @@ CREATE WATCHLIST TABLE
 */
 
 CREATE TABLE IF NOT EXISTS Watchlist (
-    watchID INT NOT NULL AUTO_INCREMENT,
-
-    productID INT NOT NULL,
+    watchID INT NOT NULL,
     buyerID INT NOT NULL,
-
-    PRIMARY KEY (watchID)
-) ENGINE=INNODB;
+    productID INT NOT NULL,
+    recordedPrice INT NOT NULL
+)
 
 
 
@@ -145,9 +143,7 @@ CREATE TABLE IF NOT EXISTS Users (
     phone TEXT,
     accountbalance INTEGER,
     DOB TEXT
-) ENGINE=INNODB;
-
-
+)
 /* interest categories? and do we parse input before adding to this or is it something to do with configuring the table? (eg password..?) we'll figure it out :) */
 
 
