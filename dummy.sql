@@ -12,12 +12,14 @@ CREATE TABLE IF NOT EXISTS Product
 (
     productID INTEGER AUTO_INCREMENT PRIMARY KEY,
     product_description TEXT,
-    price NUMERIC,
+    start_price DECIMAL(8,2),
+    reserve_price DECIMAL(8,2),
     quantity INTEGER,
     categoryID INTEGER,
     conditionID INTEGER,
     sellerID INTEGER,
     auctionable BOOLEAN,
+    startdate VARCHAR(40),
     enddate VARCHAR(40),
     endtime TEXT
 ) 

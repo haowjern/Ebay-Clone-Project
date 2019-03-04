@@ -32,11 +32,15 @@ label {
 <body>
 <?php
 
+//testing. This line will be removed.
+$_SESSION["userID"]=1;
+
 //validate the input
-$desErr = $priceErr=$qErr=$caErr=$conErr=$auErr=$dateErr=$timeErr="";
-$product_description = $price = $quantity = $categoryname =$conditionname = $auctionable = $enddate = $endtime="";
+$desErr = $s_priceErr=$r_priceErr=$qErr=$caErr=$conErr=$auErr=$dateErr=$timeErr="";
+$product_description = $start_price = $reserve_price=$quantity = $categoryname =$conditionname = $auctionable = $startdate=$enddate = $endtime="";
 
 if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
+      unset($_SESSION["original_start_price"]);
       unset($_SESSION["editlisting"]);
 
       if (empty($_POST["product_description"])) {
@@ -52,17 +56,31 @@ if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
         
       }
 
-      if (!empty($_POST["price"])&&is_numeric($_POST["price"])||$_POST["price"]==0) {
-        if ($_POST["price"]==0 || (float)$_POST["price"]>=0.0 && (float)$_POST["price"]<=10000){
-        $priceErr="";
-        $price=(float)$_POST["price"];
+      //When updating existing product, start price cannot be changed.
+      if (isset($_POST["productID"])){
+            if (!isset($_SESSION["original_start_price"])){
+              //store the original start price as session variable
+                $_SESSION["original_start_price"]=$_POST["start_price"];
+            } else{
+                  //reject any changes to start price for auction event
+                  if ($_POST["auctionable"]=="Yes" && $_SESSION["original_start_price"]!=$_POST["start_price"]){
+                    $s_priceErr="Start price cannot be changed for auction event";
+                    $_POST["start_price"]=$_SESSION["original_start_price"];
+                  }
+            }
+      }
+
+      if (!empty($_POST["start_price"])&&is_numeric($_POST["start_price"])) {
+        if ((float)$_POST["start_price"]>=0.01 && (float)$_POST["start_price"]<=10000){
+        $s_priceErr="";
+        $start_price=(float)$_POST["start_price"];
         } else {
-        $priceErr="price must be between £0 and £10000";
-        $price="";
+        $s_priceErr="Start price must be between £0.01 and £10000";
+        $start_price="";
         }
       } else {
-        $priceErr="price must be between £0 and £10000";
-        $price="";
+        $s_priceErr="Start price must be between £0.01 and £10000";
+        $start_price="";
       }
 
 
@@ -111,10 +129,39 @@ if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
         $auErr="only Yes/No";
         $auctionable="";
       }else {
+
         $auctionable=$_POST["auctionable"];
         $auErr="";
-        }
+
+            if ($auctionable=="Yes"){
+
+                  //check reserve price, which is for auction event only
+                      if (empty($_POST["reserve_price"])){
+                          $r_priceErr="As reserve price is not provided, it is set to start price by default.";
+                          $_POST["reserve_price"]=$reserve_price=$start_price;
+
+                      }elseif(!empty($_POST["reserve_price"])&&is_numeric($_POST["reserve_price"])) {
+                          if ((float)$_POST["reserve_price"]>=0.01 && (float)$_POST["reserve_price"]<=10000 && (float)$_POST["reserve_price"]>=$start_price){
+                              $r_priceErr="";
+                              $reserve_price=(float)$_POST["reserve_price"];
+                          } else {
+                              $r_priceErr="Reserve price must be between £0.01 and £10000, and greater than or equal to start price.";
+                              $reserve_price="";
+                          }
+                        }
+                      }
       
+              else {
+                  //non-auction event does not have reserve price
+                if (!empty($_POST["reserve_price"])){
+                      $r_priceErr="Reserve price is not applicable for non-auction listing";
+                      $_POST["reserve_price"]="";
+                } 
+                //store reserve price as start price in database
+                $reserve_price=$start_price;
+
+              }
+      }
 
 
       $today=date("Y-m-d"); 
@@ -148,7 +195,6 @@ if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
             $timeErr="Listing end time (hour) is required";
         }else{
             if ($enddate==$today){
-                  echo ($enddate==$today);
                   //check if the time is earlier than now
                   if ((integer)$hr<=idate('H',time())){
                         $timeErr="Listing cannot be created in the past.";
@@ -164,14 +210,30 @@ if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
 
         }
 
-    
+    //created date is today
+    if (isset($_POST["startdate"])){
+      $startdate=$_POST["startdate"];
+    }else{
+      $startdate=$today;}
 
     //assume all fields are filled
     $er="filled";
 
+
     $sellerID=$_SESSION["userID"];
-    $details=array("productID"=>$_POST["productID"],"product_description"=>$product_description,"price"=>$price,"quantity"=>$quantity,"conditionname"=>$conditionname,
-    "categoryname"=>$categoryname,"sellerID"=>$sellerID,"auctionable"=>$auctionable,"enddate"=>$enddate,"endtime"=>$endtime);
+    $details=array("productID"=>$_POST["productID"],
+                  "product_description"=>$product_description,
+                  "start_price"=>$start_price,
+                  "reserve_price"=>$reserve_price,
+                  "quantity"=>$quantity,
+                  "conditionname"=>$conditionname,
+                  "categoryname"=>$categoryname,
+                  "sellerID"=>$sellerID,
+                  "auctionable"=>$auctionable,
+                  "startdate"=>$startdate,
+                  "enddate"=>$enddate,
+                  "endtime"=>$endtime
+                  );
       
     //check if any value is missing
     foreach(array_values($details)as $value){
@@ -197,6 +259,7 @@ function test_input($data) {
 
 ?>
 
+<!-- User input form -->
 
 <form id="form1" method="post" action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>"><br>
 
@@ -208,119 +271,126 @@ function test_input($data) {
       echo "new";}
 ?>">
 
+<span class="error">*required field</span><br><br>
 
-<label for="product_description">Product Description (max 150 characters):</label><br>
-<input name="product_description" id="product_description" type="text" placeholders="max 150 characters" maxlength="150" size="150" style="height:100px"
-value="<?php if(isset($_POST["product_description"])){echo htmlentities($_POST["product_description"]);}?>">
+<label for="product_description">Product Description (max 150 characters)*:</label><br>
+      <input name="product_description" id="product_description" type="text" placeholders="max 150 characters" maxlength="150" size="150" style="height:100px"
+      value="<?php if(isset($_POST["product_description"])){echo htmlentities($_POST["product_description"]);}?>">
 
-<span class="error"> <?php echo $desErr;?></span><br><br>
+      <span class="error"> <?php echo $desErr;?></span><br><br>
+
 <button type="button" id="uploadphoto" >Upload photos</button><br><br>
 
-<label for="price">Start (Reserve) Price (£):</label><br>
-<input name="price" id="price" type="number" placeholders="1.0" step="0.01" min="0" max="10000"
-value="<?php if(isset($_POST["price"])){echo htmlentities($_POST["price"]);}?>">
-<span class="error"> <?php echo $priceErr;?></span><br><br>
+<label for="start_price">Start Price (£)*:</label><br>
+        <input name="start_price" id="start_price" type="number" placeholders="1.0" step="0.01" min="0.01" max="10000"
+        value="<?php if(isset($_POST["start_price"])){echo htmlentities($_POST["start_price"]);}?>">
+        <span class="error"> <?php echo $s_priceErr;?></span><br><br>
 
 
-<label for="quantity">Quantity (must be at least one):</label><br>
-<input name="quantity" id="quantity" type="number" placeholders="1" min="1" max="10000"
-value="<?php if(isset($_POST["quantity"])){echo htmlentities($_POST["quantity"]);}?>">
-<span class="error"> <?php echo $qErr;?></span><br><br>
+<label for="quantity">Quantity (must be at least one)*:</label><br>
+      <input name="quantity" id="quantity" type="number" placeholders="1" min="1" max="10000"
+      value="<?php if(isset($_POST["quantity"])){echo htmlentities($_POST["quantity"]);}?>">
+      <span class="error"> <?php echo $qErr;?></span><br><br>
 
 
-<label>Category:</label><br>
+<label>Category*:</label><br>
 
-  <input type="radio" name="categoryname"id="categoryname1"value="Electronics"
-  <?php if (isset($_POST['categoryname']) && htmlentities($_POST['categoryname']) == 'Electronics'){echo "checked";}else{echo "unchecked";}?> />
-  <label for="categoryname1">Electronics</label><br>
+        <input type="radio" name="categoryname"id="categoryname1"value="Electronics"
+        <?php if (isset($_POST['categoryname']) && htmlentities($_POST['categoryname']) == 'Electronics'){echo "checked";}else{echo "unchecked";}?> />
+        <label for="categoryname1">Electronics</label><br>
+        
+        <input type="radio" name="categoryname"id="categoryname2"value="Food"
+        <?php if (isset($_POST['categoryname']) && htmlentities($_POST['categoryname']) == 'Food'){echo "checked";}else{echo "unchecked";}?> />
+        <label for="categoryname2">Food</label><br>
+        
+        <input type="radio" name="categoryname"id="categoryname3"value="Fashion"
+        <?php if (isset($_POST['categoryname']) && htmlentities($_POST['categoryname']) == 'Fashion'){echo "checked";}else{echo "unchecked";}?> />
+        <label for="categoryname3">Fashion</label><br>
+        
+        <input type="radio" name="categoryname"id="categoryname4"value="Home"
+        <?php if (isset($_POST['categoryname']) && htmlentities($_POST['categoryname']) == 'Home'){echo "checked";}else{echo "unchecked";}?> />
+        <label for="categoryname4">Home</label><br>
+        
+        <input type="radio" name="categoryname"id="categoryname5"value="Health & Beauty"
+        <?php if (isset($_POST['categoryname']) && htmlentities($_POST['categoryname']) == 'Health & Beauty'){echo "checked";}else{echo "unchecked";}?> />
+        <label for="categoryname5">Health & Beauty</label><br>
+        
+        <input type="radio" name="categoryname"id="categoryname6"value="Sports"
+        <?php if (isset($_POST['categoryname']) && htmlentities($_POST['categoryname']) == 'Sports'){echo "checked";}else{echo "unchecked";}?> />
+        <label for="categoryname6">Sports</label><br>
+        
+        <input type="radio" name="categoryname"id="categoryname7"value="Toys & Games"
+        <?php if (isset($_POST['categoryname']) && htmlentities($_POST['categoryname']) == 'Toys & Games'){echo "checked";}else{echo "unchecked";}?> />
+        <label for="categoryname7">Toys & Games</label><br>
+        
+        <input type="radio" name="categoryname"id="categoryname8"value="Art & Music"
+        <?php if (isset($_POST['categoryname']) && htmlentities($_POST['categoryname']) == 'Art & Music'){echo "checked";}else{echo "unchecked";}?> />
+        <label for="categoryname8">Art & Music</label><br>
+        
+        <input type="radio" name="categoryname"id="categoryname9"value="Miscellaneous"
+        <?php if (isset($_POST['categoryname']) && htmlentities($_POST['categoryname']) == 'Miscellaneous'){echo "checked";}else{echo "unchecked";}?> />
+        <label for="categoryname9">Miscellaneous</label><br>
+        <br>
+
+      <span class="error"> <?php echo $caErr;?></span><br><br>
   
-  <input type="radio" name="categoryname"id="categoryname2"value="Food"
-  <?php if (isset($_POST['categoryname']) && htmlentities($_POST['categoryname']) == 'Food'){echo "checked";}else{echo "unchecked";}?> />
-  <label for="categoryname2">Food</label><br>
+<label>Condition*:</label><br>
   
-  <input type="radio" name="categoryname"id="categoryname3"value="Fashion"
-  <?php if (isset($_POST['categoryname']) && htmlentities($_POST['categoryname']) == 'Fashion'){echo "checked";}else{echo "unchecked";}?> />
-  <label for="categoryname3">Fashion</label><br>
-  
-  <input type="radio" name="categoryname"id="categoryname4"value="Home"
-  <?php if (isset($_POST['categoryname']) && htmlentities($_POST['categoryname']) == 'Home'){echo "checked";}else{echo "unchecked";}?> />
-  <label for="categoryname4">Home</label><br>
-  
-  <input type="radio" name="categoryname"id="categoryname5"value="Health & Beauty"
-  <?php if (isset($_POST['categoryname']) && htmlentities($_POST['categoryname']) == 'Health & Beauty'){echo "checked";}else{echo "unchecked";}?> />
-  <label for="categoryname5">Health & Beauty</label><br>
-  
-  <input type="radio" name="categoryname"id="categoryname6"value="Sports"
-  <?php if (isset($_POST['categoryname']) && htmlentities($_POST['categoryname']) == 'Sports'){echo "checked";}else{echo "unchecked";}?> />
-  <label for="categoryname6">Sports</label><br>
-  
-  <input type="radio" name="categoryname"id="categoryname7"value="Toys & Games"
-  <?php if (isset($_POST['categoryname']) && htmlentities($_POST['categoryname']) == 'Toys & Games'){echo "checked";}else{echo "unchecked";}?> />
-  <label for="categoryname7">Toys & Games</label><br>
-  
-  <input type="radio" name="categoryname"id="categoryname8"value="Art & Music"
-  <?php if (isset($_POST['categoryname']) && htmlentities($_POST['categoryname']) == 'Art & Music'){echo "checked";}else{echo "unchecked";}?> />
-  <label for="categoryname8">Art & Music</label><br>
-  
-  <input type="radio" name="categoryname"id="categoryname9"value="Miscellaneous"
-  <?php if (isset($_POST['categoryname']) && htmlentities($_POST['categoryname']) == 'Miscellaneous'){echo "checked";}else{echo "unchecked";}?> />
-  <label for="categoryname9">Miscellaneous</label><br>
-  <br>
+        <input type="radio" name="conditionname"id="conditionname1" value="New"
+        <?php if (isset($_POST['conditionname']) && htmlentities($_POST['conditionname']) == 'New'){echo "checked";}else{echo "unchecked";}?> />
+        <label for="conditionname1">New</label><br>
+        
+        <input type="radio" name="conditionname"id="conditionname2"value="Refurbished"
+        <?php if (isset($_POST['conditionname']) && htmlentities($_POST['conditionname']) == 'Refurbished'){echo "checked";}else{echo "unchecked";}?> />
+        <label for="conditionname2">Refurbished</label><br>
+        
+        <input type="radio" name="conditionname"id="conditionname3"value="Used / Worn"
+        <?php if (isset($_POST['conditionname']) && htmlentities($_POST['conditionname']) == 'Used / Worn'){echo "checked";}else{echo "unchecked";}?> />
+        <label for="conditionname3">Used / Worn</label><br>
+        <br>
 
-<span class="error"> <?php echo $caErr;?></span><br><br>
-  
-<label>Condition:</label><br>
-  
-  <input type="radio" name="conditionname"id="conditionname1" value="New"
-  <?php if (isset($_POST['conditionname']) && htmlentities($_POST['conditionname']) == 'New'){echo "checked";}else{echo "unchecked";}?> />
-  <label for="conditionname1">New</label><br>
-  
-  <input type="radio" name="conditionname"id="conditionname2"value="Refurbished"
-  <?php if (isset($_POST['conditionname']) && htmlentities($_POST['conditionname']) == 'Refurbished'){echo "checked";}else{echo "unchecked";}?> />
-  <label for="conditionname2">Refurbished</label><br>
-  
-  <input type="radio" name="conditionname"id="conditionname3"value="Used / Worn"
-  <?php if (isset($_POST['conditionname']) && htmlentities($_POST['conditionname']) == 'Used / Worn'){echo "checked";}else{echo "unchecked";}?> />
-  <label for="conditionname3">Used / Worn</label><br>
-  <br>
-
-  <span class="error"> <?php echo $conErr;?></span><br><br>
+        <span class="error"> <?php echo $conErr;?></span><br><br>
 
 
-<label>Is your product auctionable?</label><br>
+<label>Is your product auctionable?*</label><br>
   
-  <input type="radio" name="auctionable"id="auctionable1" value="Yes" 
-  <?php if (isset($_POST['auctionable']) && $_POST['auctionable'] == 'Yes'){echo "checked";}else{echo "unchecked";}?> />
-  <label for="auctionable1">Yes</label><br>
-  
-  <input type="radio" name="auctionable"id="auctionable2"value="No"
-  <?php if (isset($_POST['auctionable']) && $_POST['auctionable'] == 'No'){echo "checked";}else{echo "unchecked";}?> />
-  <label for="auctionable2">No</label><br>
-  <br>
+        <input type="radio" name="auctionable"id="auctionable1" value="Yes" 
+        <?php if (isset($_POST['auctionable']) && $_POST['auctionable'] == 'Yes'){echo "checked";}else{echo "unchecked";}?> />
+        <label for="auctionable1">Yes</label><br>
+        
+        <input type="radio" name="auctionable"id="auctionable2"value="No"
+        <?php if (isset($_POST['auctionable']) && $_POST['auctionable'] == 'No'){echo "checked";}else{echo "unchecked";}?> />
+        <label for="auctionable2">No</label><br>
+        <br>
 
-  <span class="error"> <?php echo $auErr;?></span><br><br>
+        <span class="error"> <?php echo $auErr;?></span><br><br>
+
+  <label for="price">Reserve Price (£) (For auction event only. This will be set to start price if not provided):</label><br>
+        <input name="reserve_price" id="reserve_price" type="number" placeholders="1.0" step="0.01" min="0.01" max="10000"
+        value="<?php if(isset($_POST["reserve_price"])&&($_POST["auctionable"]=="Yes")){echo htmlentities($_POST["reserve_price"]);}?>">
+        <span class="error"> <?php echo $r_priceErr;?></span><br><br>
 
 
-<label for="enddate">Listing ends on:</label><br>
-<input type="date" name="enddate" id="enddate" max="2019-12-31" value="<?php if(isset($_POST["enddate"])){echo htmlentities($_POST["enddate"]);}?>"/>
+<label for="enddate">Listing ends on*:</label><br>
+        <input type="date" name="enddate" id="enddate" max="2019-12-31" value="<?php if(isset($_POST["enddate"])){echo htmlentities($_POST["enddate"]);}?>"/>
 
-<select id="endtime" name="endtime">
-    <option><?php if(isset($_POST["endtime"])){echo htmlentities((string)$_POST["endtime"]);}else{echo "Hour";}?></option>
-</select>
+        <select id="endtime" name="endtime">
+            <option><?php if(isset($_POST["endtime"])){echo htmlentities((string)$_POST["endtime"]);}else{echo "Hour";}?></option>
+        </select>
+        <br>
+        <span class="error"> <?php echo $dateErr;?></span><br>
+        <span class="error"> <?php echo $timeErr;?></span><br>
 
-<span class="error"> <?php echo $dateErr;?></span><br>
-<span class="error"> <?php echo $timeErr;?></span><br>
+        <p>If calendar cannot be shown in the field above, use below to input:<br></p>
 
-<p>If calendar cannot be shown in the field above, use below to input:<br></p>
+          <select id="endday" name="endday">
+            <option><?php if(isset($_POST["endday"])){echo htmlentities($_POST["endday"]);}else{echo "Day";}?></option>
+        </select>
+        <select id="endmonth" name="endmonth">
+            <option><?php if(isset($_POST["endmonth"])){echo htmlentities($_POST["endmonth"]);}else{echo "Month";}?></option>
+        </select>
 
-  <select id="endday" name="endday">
-    <option><?php if(isset($_POST["endday"])){echo htmlentities($_POST["endday"]);}else{echo "Day";}?></option>
-</select>
-<select id="endmonth" name="endmonth">
-    <option><?php if(isset($_POST["endmonth"])){echo htmlentities($_POST["endmonth"]);}else{echo "Month";}?></option>
-</select>
-
-<br><br><br>
+        <br><br><br>
 
 <input type="submit" name="submit" id="submitbutton" value="Submit">
 </form>
@@ -329,13 +399,16 @@ value="<?php if(isset($_POST["quantity"])){echo htmlentities($_POST["quantity"])
 <div id="submission">
 Your inputs are:<br>
 description: <?php echo $product_description; ?><br>
-price (£): <?php echo $price; ?><br>
+start price (£): <?php echo $start_price; ?><br>
 quantity:<?php echo $quantity; ?><br>
 category:<?php echo $categoryname; ?><br>
 condition:<?php echo $conditionname; ?><br>
 auctionable:<?php echo $_POST["auctionable"]; ?><br>
-end date:<?php echo $enddate; ?><br>
-end time:<?php echo $endtime; ?><br>
+reserve price (£): <?php if($_POST["auctionable"]=="Yes"){echo $reserve_price;}else{echo "N/A";};?><br>
+listing starts on:<?php echo $startdate; ?><br>
+listing end date:<?php echo $enddate; ?><br>
+listing end time:<?php echo $endtime; ?><br>
+
 
 <!--submit button for user to confirm inputs. 'post' variables to product.php. No variables except "submit" is posted, as this
 submit button is merely used as a normal button to call the file "product.php"-->
@@ -375,8 +448,8 @@ if(array_key_exists('confirmbutton',$_POST)){
 var selecttime = document.getElementById("endtime");
 for (var i = 0 ; i < 24; i++) {
     var eld = document.createElement("option");
-    eld.textContent = i+':00';
-    eld.value = i+':00';
+    eld.textContent = i+':00:00';
+    eld.value = i+':00:00';
     selecttime.appendChild(eld);
 }
 //create the drop-down list for end date
