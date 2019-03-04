@@ -5,9 +5,7 @@ function set_bidEvent($bid_arr, $instr) {
     - <$product_arr>: Object with attributes - 
     - <$instr>: 
     */ 
-
     include 'database.php';
-
     // check object has the correct properties
     $properties = ["bidID", "productID", "buyerID", "payment", "price"];
     foreach ($properties as $value) {
@@ -15,14 +13,11 @@ function set_bidEvent($bid_arr, $instr) {
             echo "Parameter is not an object with the correct properties\n"; 
         }
     }
-
     $bidID = $bid_arr['bidID'];
     $productID = $bid_arr['productID'];
     $buyerID = $bid_arr['buyerID'];
     $payment = $bid_arr['payment'];
     $bidPrice = $bid_arr['price'];
-
-
     // add new 
     if ($instr = "insert") {
         $sql = "INSERT INTO bidEvents (productID, buyerID, payment, bidPrice) VALUES ('$productID', '$buyerID', '$payment', $bidPrice)";
@@ -32,18 +27,15 @@ function set_bidEvent($bid_arr, $instr) {
         } else {
             echo("Error: " . $sql . "<br>" . $connection->error);
         }
-
     // update
     } elseif ($instr = "update") {
         $sql = "INSERT INTO bidEvents (productID,  buyerID, payment, bidPrice) VALUES ($productID', '$buyerID', '$payment', '$bidPrice');
         WHERE bidID = '$bidID'";
-
         if ($connection->query($sql)==TRUE) {
             echo("Updated bid events.");
         } else {
             echo("Error: " . $sql . "<br>" . $connection->error);
         }
-
     // delete 
     } elseif ($instr = "delete") {
         $sql="DELETE FROM bidEvents WHERE bidID = '$bidID'";
@@ -53,13 +45,10 @@ function set_bidEvent($bid_arr, $instr) {
         } else {
             echo("Error: " . $sql . "<br>" . $connection->error);
         }
-
     } else {
         echo("Error: Selected wrong instruction for set_bidEvent.");
     }
-
     return $bid_arr;
-
     $connection->close();
 }
 ?>

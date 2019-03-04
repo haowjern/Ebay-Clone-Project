@@ -1,11 +1,11 @@
-                List of TODOs: 
+               List of TODOs: 
 
 FIRST STEP:
 1. Have the functionlity to insert/update/delete/select data from the database.
 
 SERVER-SIDE FUNCTIONALITIES:
 1. Search 
-2. Watch ########### SERGI ########### (send email notifications? anything else meant by my name being here? :) nono it just means that this is your section)
+2. Watch ########### SERGI ########### (send email notifications? anything else meant by my name being here? :) )
 
 PAGES:
 1. Buyer_item.png ############ HAOW JERN ############
@@ -204,5 +204,4 @@ Sergi
 
 
     - question... are users searching & filtering by KEYWORDS as well as category & condition? 
-    - qu... what exactly is "home.jpg" in notes above? and why all .jpg/.png ???
-
+- qu... what exactly is "home.jpg" in notes above? and why all .jpg/.png ???
