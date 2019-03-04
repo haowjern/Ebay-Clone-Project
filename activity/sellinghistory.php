@@ -26,7 +26,7 @@ if ($count==0){
 
 
 <!-- create table header -->
-<table id=archive_listing_table width="1000">
+<table id=archive_listing_table width="device-width,initial-scale=1">
     <tr>
         <th>Image</th>
         <th>Product Details</th>

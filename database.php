@@ -6,11 +6,24 @@
 <p>Database.php</p>
  
   <?php
+<<<<<<< HEAD
   $host  = $_SERVER['HTTP_HOST'];
   if (strpos($host,"localhost")===0){
       $connection = mysqli_connect("localhost", "root", "", "ebaydb");
       if (mysqli_connect_errno()){
         echo 'Failed to connect to the MySQL server: '. mysqli_connect_error();}
+=======
+
+  $host  = $_SERVER['HTTP_HOST'];
+
+  if (strpos($host,"localhost")===0){
+
+      $connection = mysqli_connect("localhost", "root", "", "ebaydb");
+
+      if (mysqli_connect_errno()){
+        echo 'Failed to connect to the MySQL server: '. mysqli_connect_error();}
+
+>>>>>>> e6838aaa4da14c5a15812872b675f7e8a88c4b89
   }else{
     
     $connectstr_dbhost = '';
@@ -53,6 +66,10 @@
 
 <!-- <?php
 $connection = mysqli_connect("localhost", "root", "", "ebaydb");  
+<<<<<<< HEAD
+=======
+
+>>>>>>> e6838aaa4da14c5a15812872b675f7e8a88c4b89
 if (!$connection)
 {
     echo "Failed to connect to the database.\n";

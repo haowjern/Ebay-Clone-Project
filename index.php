@@ -17,23 +17,22 @@
     <body>
         <h1>hello world! index.php PHP page</h1>
         <p>
+            <a href="buyer_item.php" title="placeholder mouseover text">
+                BUYER_ITEM ,
             <a href="database.php" title="placeholder mouseover text">
-                html link to database.php
+                database.php ,
             </a>
             <a href="/activity/editlisting.php" title="placeholder mouseover text">
-                html link to editlisting.php
+                EDIT_LISTING ,
             </a>
             <a href="/activity/sellershop.php" title="placeholder mouseover text">
-                html link to /activity/sellershop.php
+                SELLER_SHOP ,
             </a>
             <a href="/activity/sellinghistory.php" title="placeholder mouseover text">
-                html link to /activity/sellinghistory.php
-            </a>
-            <a href="selectitem.php" title="placeholder mouseover text">
-                html link to selectitem.php
+                SELLING_HISTORY ,
             </a>
             <a href="showlistings.php" title="placeholder mouseover text">
-                html link to showlistings.php
+                SHOW_LISTINGS ,
             </a>
 
             <?php

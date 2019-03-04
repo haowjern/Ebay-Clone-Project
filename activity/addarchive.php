@@ -4,7 +4,7 @@ session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    include "database.php";
+    include "../database.php";
 
     //select item in product table
 

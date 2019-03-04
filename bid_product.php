@@ -1,5 +1,4 @@
 <?php 
-
 session_start(); 
 
 include './activity/bid_product_interface.php';

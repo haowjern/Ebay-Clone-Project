@@ -10,7 +10,7 @@ if (isset($_SESSION["condition_all"])){
     unset($_SESSION["condition_all"]);
 };
 
-include "database.php";
+include "../database.php";
 
 
 $sql="SELECT * FROM Category";
