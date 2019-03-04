@@ -6,7 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $productID=mysqli_real_escape_string($connection,$_POST["productID"]);
 
-    include "database.php";
+    include "../database.php";
 
 }else{
     

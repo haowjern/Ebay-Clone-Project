@@ -36,12 +36,13 @@ $link_newlisting="http://".$host.$uri."/".$extra;
     <tr>
         <th>Image</th>
         <th>Product Details</th>
-        <th>Start (Reserve) Price (£)</th>
+        <th>Start Price (£)</th>
+        <th>Reserve Price (£)</th>
+        <th>Listing starts on </th>
         <th>Listing ends on </th>
         <th>Auctionable?</th>
         <th>Action</th>
-        <th>listing created on</th>
-    </tr>
+    </tr>   
 </table>
 
 <script>
@@ -59,10 +60,12 @@ for (i=0;i<count;i++){
     var row=table.insertRow(-1);
     var cell_image=row.insertCell(0);
     var cell_details=row.insertCell(1);
-    var cell_price=row.insertCell(2);
-    var cell_enddate=row.insertCell(3);
-    var cell_auctionable=row.insertCell(4);
-    var cell_action=row.insertCell(5);
+    var cell_startprice=row.insertCell(2);
+    var cell_reserveprice=row.insertCell(3);
+    var cell_startdate=row.insertCell(4);
+    var cell_enddate=row.insertCell(5);
+    var cell_auctionable=row.insertCell(6);
+    var cell_action=row.insertCell(7);
  
     //insert image iin the 1st column (image)
     cell_image.style.textAlign="center";
@@ -76,18 +79,30 @@ for (i=0;i<count;i++){
                                 "<br>category: "+each_listing[i]["categoryname"]+
                                 "<br>condition: "+each_listing[i]["conditionname"]+"<br><br>";
 
-    //insert start(reserve) price into the 3rd column (start/reserve price)
-    cell_price.style.textAlign="center";
-    cell_price.innerHTML=each_listing[i]["price"];
+    //insert start price into the 3rd column (start price)
+    cell_startprice.style.textAlign="center";
+    cell_startprice.innerHTML=each_listing[i]["start_price"];
 
-    //insert listing enddate into the 4th column (listing enddate)
+    //insert reserve price into the 4th column (reserve price)
+    cell_reserveprice.style.textAlign="center";
+    if (each_listing[i]["auctionable"]==="1"){
+        cell_reserveprice.innerHTML=each_listing[i]["reserve_price"];
+        }else{
+            cell_reserveprice.innerHTML="N/A";
+            }
+
+    //insert listing startdate into the 5th column (listing startdate)
+    cell_startdate.style.textAlign="center";
+    cell_startdate.innerHTML=each_listing[i]["startdate"];
+
+    //insert listing enddate into the 6th column (listing enddate)
     cell_enddate.style.textAlign="center";
     cell_enddate.innerHTML=each_listing[i]["enddate"]+" "+each_listing[i]["endtime"];
 
     //insert listing auction status into the 5th column (auction)
     cell_auctionable.style.textAlign="center";
 
-    if (each_listing[i]["auctionable"]=="0"){
+    if (each_listing[i]["auctionable"]==="0"){
         each_listing[i]["auctionable"]="No";
         cell_auctionable.innerHTML="No";
         }else{
