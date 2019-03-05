@@ -9,12 +9,6 @@ button {
 h1,h2 {
     text-align: center;
 }
-input {
-    margin:auto;
-    display:block;
-    text-align: center;
-    width: 50%;
-}
 
 table {
     width:80%;
