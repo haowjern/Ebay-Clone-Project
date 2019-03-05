@@ -23,6 +23,10 @@ button {
     <body>
         <h1>Team 15 EBAY SITE</h1>
         <p>
+            <a> href="https://ebaydatabasegithub.azurewebsites.net/">
+                    azure homepage
+            </a>
+            
             <a href="buyer_item.php" title="placeholder mouseover text">
                 BUYER_ITEM ,
             <a href="database.php" title="placeholder mouseover text">

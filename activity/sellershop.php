@@ -2,10 +2,10 @@
 session_start();
 
 //fetch all the active listing related to this seller
-$_SESSION["userID"]=1;
+$_SESSION["sellerID"]=1;
 
 unset($_SESSION["product_search_criteria"]);
-$_SESSION["product_search_criteria"]=["sellerID"];
+$_SESSION["product_search_criteria"]=$_SESSION["sellerID"];
 
 include 'fetchactivelisting.php';
 
@@ -166,7 +166,7 @@ for (i=0;i<count;i++){
 
 
     var hiddenField_remove=document.createElement("input");
-        hiddenField_remove.setAttribute("type","hidden");
+        hiddenField_remove.setAttribute("type","text");
         hiddenField_remove.setAttribute("name","productID");
         hiddenField_remove.setAttribute("value",each_listing[i]["productID"]);
 

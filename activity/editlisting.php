@@ -403,8 +403,8 @@ start price (£): <?php echo $start_price; ?><br>
 quantity:<?php echo $quantity; ?><br>
 category:<?php echo $categoryname; ?><br>
 condition:<?php echo $conditionname; ?><br>
-auctionable:<?php echo $_POST["auctionable"]; ?><br>
-reserve price (£): <?php if($_POST["auctionable"]=="Yes"){echo $reserve_price;}else{echo "N/A";};?><br>
+auctionable:<?php echo $auctionable; ?><br>
+reserve price (£): <?php if([$auctionable]=="Yes"){echo $reserve_price;}else{echo "N/A";};?><br>
 listing starts on:<?php echo $startdate; ?><br>
 listing end date:<?php echo $enddate; ?><br>
 listing end time:<?php echo $endtime; ?><br>
