@@ -15,8 +15,13 @@
     </head> 
 
     <body>
-        <h1>hello world! index.php PHP page</h1>
+        <h1>Links:</h1>
+           
         <p>
+            <a> href="https://ebaydatabasegithub.azurewebsites.net/">
+                    azure homepage
+            </a/>
+            
             <a href="buyer_item.php" title="placeholder mouseover text">
                 BUYER_ITEM ,
             <a href="database.php" title="placeholder mouseover text">
