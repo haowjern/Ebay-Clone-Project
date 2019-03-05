@@ -9,6 +9,7 @@ if (isset($_SESSION["editlisting"])) {
     include 'photos_interface.php';
 
     //set the variables with session values and escape mysql characters
+    $product_name=mysqli_real_escape_string($connection,$_SESSION["editlisting"]["product_name"]);
     $productID=mysqli_real_escape_string($connection,$_SESSION["editlisting"]["productID"]);
     $product_description=mysqli_real_escape_string($connection,$_SESSION["editlisting"]["product_description"]);
     $start_price=mysqli_real_escape_string($connection,$_SESSION["editlisting"]["start_price"]);
@@ -51,8 +52,8 @@ if (isset($_SESSION["editlisting"])) {
 
     if ($productID=="new"){
         //insert new row into product database with new productID
-        $sql="INSERT INTO Product (product_description,start_price,reserve_price,quantity,categoryID,conditionID,sellerID,auctionable,startdate,enddate,endtime) 
-            VALUES('$product_description','$start_price','$reserve_price','$quantity','$categoryID','$conditionID','$sellerID','$auctionable','$startdate','$enddate','$endtime')";
+        $sql="INSERT INTO Product (product_name,product_description,start_price,reserve_price,quantity,categoryID,conditionID,sellerID,auctionable,startdate,enddate,endtime) 
+            VALUES('$product_name','$product_description','$start_price','$reserve_price','$quantity','$categoryID','$conditionID','$sellerID','$auctionable','$startdate','$enddate','$endtime')";
         
         if ($connection->query($sql)==TRUE){
         echo "New record successfully created for product";
@@ -78,7 +79,8 @@ if (isset($_SESSION["editlisting"])) {
     }else{
         //for existing product, startdate cannot be changed. 
         $sql="UPDATE Product 
-            SET product_description='$product_description',
+            SET product_name='$product_name',
+            product_description='$product_description',
             start_price='$start_price', 
             reserve_price='$reserve_price',
             quantity='$quantity',
