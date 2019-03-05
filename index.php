@@ -1,21 +1,27 @@
 <?php session_start(); ?>
 
 <!DOCTYPE html>
-<html>    
+<html>   
 <head>
+<style>
+button {
+    font-size:15px;
+  padding: 15px 20px;
+}
+</style>
         <button type="button">Sign In</button>
         <button type="button" formaction=index.php>Home</button>
         <input type="text" placeholder="Search... Whatever you write here will redirect to a SELECT ALL SQL statement"
             formmethod="post" formaction="search.php">
-        <button type="button">My Shop</button>
+        <button (onclick)="/activity/sellershop.php" type="button">My Shop</button>
         <button type="button">My Profile</button>
         <button type="button">Purchase History</button>
-        <button type="button">Selling History</button>
+        <button href="/activity/sellinghistory.php" type="button">Selling History</button>
         <button type="button">Cart</button>
     </head> 
 
     <body>
-        <h1>hello world! index.php PHP page</h1>
+        <h1>Team 15 EBAY SITE</h1>
         <p>
             <a href="buyer_item.php" title="placeholder mouseover text">
                 BUYER_ITEM ,
