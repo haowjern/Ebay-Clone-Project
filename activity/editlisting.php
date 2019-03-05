@@ -228,50 +228,58 @@ if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
 
         }
     
-    // please do not change the below if else block - HJ
+    // UPLOADING PHOTOS FUNCTIONALITY 
     $target_dir = "../uploads/";
-    $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
-    $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-    // Check if image file is a actual image or fake image
-    if (isset($_FILES["fileToUpload"])) {
-      if (!empty($_FILES["fileToUpload"]["tmp_name"])) {
-        $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
-        if($check == false) {
-            $photoErr = "File is not an image.";
-            $uploadOk = 0;
-        }
+    foreach ($_FILES["fileToUpload"]["name"] as $file_index=>$file_name) {
+      $target_file = $target_dir . basename($file_name);
+      $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 
-        // Check if file already exists
-        if (file_exists($target_file)) {
-          $photoErr = "Sorry, photo already exists.";
+      // Check if image file is a actual image or fake image
+      if (isset($_FILES["fileToUpload"])) {
+        if (!empty($_FILES["fileToUpload"]["tmp_name"][$file_index])) {
+          $check = getimagesize($_FILES["fileToUpload"]["tmp_name"][$file_index]);
+          if($check == false) {
+              $photoErr = "File is not an image.";
+              $uploadOk = 0;
+          }
+
+          // Check if file already exists
+          if (file_exists($target_file)) {
+            $photoErr = "Sorry, photo already exists.";
+            $uploadOk = 0;
+          }
+          // Check file size
+          if ($_FILES["fileToUpload"]["size"][$file_index] > 500000) {
+              $photoErr = "Sorry, your file is too large.";
+              $uploadOk = 0;
+          }
+          // Allow certain file formats
+          if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+          && $imageFileType != "gif" ) {
+              $photoErr = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+              $uploadOk = 0;
+          }
+          // Check if $uploadOk is set to 0 by an error
+          if ($uploadOk != 0) {
+              if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"][$file_index], $target_file)) {
+                  $photoMsg = basename($_FILES["fileToUpload"]["name"][$file_index]);
+                  $photo_arr["file_path"][$file_index] = $target_file; 
+                  $photo_arr["productID"][$file_index] = $_POST["productID"];
+                  $photo_arr["photoID"][$file_index] = 0; // default value
+                  $photos = $photo_arr; 
+              } else {
+                  $photoErr = "Sorry, there was an error uploading your photo.";
+              }
+          }
+        } else {
           $uploadOk = 0;
-        }
-        // Check file size
-        if ($_FILES["fileToUpload"]["size"] > 500000) {
-            $photoErr = "Sorry, your file is too large.";
-            $uploadOk = 0;
-        }
-        // Allow certain file formats
-        if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-        && $imageFileType != "gif" ) {
-            $photoErr = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
-            $uploadOk = 0;
-        }
-        // Check if $uploadOk is set to 0 by an error
-        if ($uploadOk != 0) {
-            if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-                $photoMsg = basename($_FILES["fileToUpload"]["name"]);
-                $photos = $target_file; 
-            } else {
-                $photoErr = "Sorry, there was an error uploading your photo.";
-            }
         }
       } else {
         $uploadOk = 0;
       }
-    } else {
-      $uploadOk = 0;
     }
+
+    
     
     //created date is today
     if (isset($_POST["startdate"])){
@@ -344,7 +352,7 @@ function test_input($data) {
       <span class="error"> <?php echo $desErr;?></span><br><br>
 
 <label for="image">Upload Image(s):</label><br>
-      <input type="file" name="fileToUpload" id="fileToUpload">
+      <input type="file" name="fileToUpload[]" id="fileToUpload" multiple>
       <span class="error"> <?php echo $photoErr;?></span><br><br>
 
 <label for="start_price">Start Price (£)*:</label><br>

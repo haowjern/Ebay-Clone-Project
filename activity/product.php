@@ -21,9 +21,7 @@ if (isset($_SESSION["editlisting"])) {
     $startdate=mysqli_real_escape_string($connection,$_SESSION["editlisting"]["startdate"]);
     $enddate=mysqli_real_escape_string($connection,$_SESSION["editlisting"]["enddate"]);
     $endtime=mysqli_real_escape_string($connection,$_SESSION["editlisting"]["endtime"]);
-    $photo_arr["file_path"]=mysqli_real_escape_string($connection,$_SESSION["editlisting"]["photos"]);
-    $photo_arr["productID"]=$productID;
-    $photo_arr["photoID"]=0;
+    $photos_file_path= $_SESSION["editlisting"]["photos"]["file_path"]; // as this can contain multiple photos, each photo is indexed with a key starting from 0 in the order they were added. 
 
     if ($auctionable=="Yes"){
         $auctionable="1";
@@ -73,8 +71,15 @@ if (isset($_SESSION["editlisting"])) {
         }
 
         // upload photo to database
-        $photo_arr['productID'] = $productID;
-        set_photo($photo_arr, "insert");
+        foreach ($photos_file_path as $file_index=>$val) {
+            
+            $photo_arr['productID'] = $productID;
+            $photo_arr['photoID'] = 0; 
+            $photo_arr['file_path'] = mysqli_real_escape_string($connection, $val);
+
+            $new_photo_arr= set_photo($photo_arr, "insert");
+            $_SESSION["editlisting"]["photos"]["photoID"][$file_index] = $new_photo_arr['photoID']; // update photos with new photoID
+        }
 
     }else{
         //for existing product, startdate cannot be changed. 

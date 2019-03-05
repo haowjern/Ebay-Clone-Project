@@ -7,9 +7,6 @@ function set_photo($photo_arr, $instr) {
     */ 
 
     include '../database.php';
-    $pID = $photo_arr['productID'];
-    $photoID = $photo_arr['photoID'];
-    $file_path = $photo_arr['file_path'];
 
     // check object has the correct properties
     $properties = ["photoID", "productID", "file_path"];
@@ -19,12 +16,28 @@ function set_photo($photo_arr, $instr) {
         }
     }
 
+    $pID = $photo_arr['productID'];
+    $photoID = $photo_arr['photoID'];
+    $file_path = $photo_arr['file_path'];
+
     // add new photo 
     if ($instr = "insert") {
         $sql = "INSERT INTO Photos (productID, file_path) VALUES ('$pID', '$file_path')";
         $result = $connection->query($sql); 
         if ($result==TRUE) {
             echo("Inserted new photos.\n");
+            
+            //fetch new photoID
+            $sql="SELECT LAST_INSERT_ID()";
+            $result=$connection->query($sql);
+            if ($result->num_rows>0) {
+                while($row = $result->fetch_assoc()){
+                    $photo_arr['photoID'] = $row["LAST_INSERT_ID()"];    
+                }
+            } else {
+                echo("Error: " . $sql . "<br>" . $connection->error);
+            }
+
         } else {
             echo("Error: " . $sql . "<br>" . $connection->error);
         }
