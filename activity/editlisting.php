@@ -17,9 +17,9 @@ label {
   font-weight: bold; 
   text-align: center;
 }
-#submitbutton,#confirmbutton{
+/* #submitbutton,#confirmbutton{
   font-size:16px;
-  padding: 20px 20px;
+  padding: 20px 20px; */
 }
 
 
