@@ -1,6 +1,8 @@
 <?php
 session_start();
 
+include '../header.php';
+
 //fetch all the active listing related to this seller
 $_SESSION["userID"]=1;
 
@@ -23,11 +25,12 @@ $link_newlisting="http://".$host.$uri."/".$extra;
 
 <html>
 <head>
+<h1>Seller's Shop</h1>
 </head>
 
 <body>
-<p>My Shop</p>
-<button onclick="window.location.href = '<?php echo $link_newlisting; ?>'">Create new listing</button>
+
+<button type="button" onclick="window.location.href = '<?php echo $link_newlisting; ?>'">Create new listing</button>
 <p id="t"></p>
 
 
@@ -194,3 +197,9 @@ function warning_msg(){
 </body>
 
 </html>
+
+<?php
+
+include '../footer.php';
+
+?>
