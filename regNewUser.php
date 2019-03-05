@@ -97,7 +97,6 @@ if ($result==TRUE) {
     $result = mysqli_stmt_get_result($result_users);
     $rows_users = ($result->num_rows);
 
-
     if ($rows_users == 1) {
         while($row = $result->fetch_assoc()) {
             $userID = $row['userID'];
@@ -110,8 +109,6 @@ if ($result==TRUE) {
     echo("Error: " . $sql_insert . "<br>" . $connection->error);
     }
 }
-
-
 ?>
 
 

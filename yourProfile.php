@@ -30,19 +30,22 @@ User can choose to modify -- ON SEPARATE PAGES
     $_SESSION["username"] = 'abc2'; // this is fixed for example only - DELETE
     $userID = $_SESSION["userID"];
     $username = $_SESSION["username"];
-    // echo $userID ."<br>";
+    echo $userID ."<br>";
     echo $username ."<br>";
     echo "Successfully retrieved userID from SESSION variables";
 
     // Search for username in users table
-    $sql_users = "SELECT * FROM users WHERE userID = '$userID'";
-    $result_users = $connection->query($sql_users);
+    $sql_users = "SELECT * FROM users WHERE userID = ?";
+    $result_users = mysqli_prepare($connection, $sql_users);
+    mysqli_stmt_bind_param($result_users, 's', $userID);
+    mysqli_stmt_execute($result_users);
+    $result = mysqli_stmt_get_result($result_users);
+    $rows_users = ($result->num_rows);
     echo "connected to users" . "<br>";
 
-    if ($result_users->num_rows == 1) {
+    if ($rows_users == 1) {
         echo ($username . " has been found in users table" . "<br>"); // Delete this ########
-        
-        while($row = $result_users->fetch_assoc()) {
+        while($row = $result->fetch_assoc()) {
             $password = $row["password1"]."<br>";
             $email = $row["email"] ."<br>";
             $DOB = $row["DOB"] ."<br>";
@@ -80,8 +83,10 @@ else {
 
             // Update database - email
             $newEmail = trim($_POST['newEmail']);
-            $sql_Email = "UPDATE users SET email = '$newEmail' WHERE userID = '$userID'";
-            $result_Email = $connection->query($sql_Email);
+            $sql_Email = "UPDATE users SET email = '$newEmail' WHERE userID = ?";
+            $result_Email = mysqli_prepare($connection, $sql_Email);
+            mysqli_stmt_bind_param($result_Email, 's', $userID);
+            mysqli_stmt_execute($result_Email);
             echo "Email Address has been modified in database"."<br>";
             return TRUE;
         }
@@ -96,8 +101,10 @@ else {
             // Update database - password1 - hashed
             $passwordFromPost = trim($_POST['newPassWord']);
             $hash = password_hash($passwordFromPost, PASSWORD_BCRYPT);
-            $sql_Password = "UPDATE users SET password1 = '$hash' WHERE userID = '$userID'";
-            $result_Password = $connection->query($sql_Password);
+            $sql_Password = "UPDATE users SET password1 = '$hash' WHERE userID = ?";
+            $result_Password = mysqli_prepare($connection, $sql_Password);
+            mysqli_stmt_bind_param($result_Password, 's', $userID);
+            mysqli_stmt_execute($result_Password);
             echo "Password has been modified in database"."<br>";
             return TRUE;
         }
@@ -109,8 +116,10 @@ else {
         else {
             // Update database - DOB
             $newDOB = trim($_POST['newDOB']);
-            $sql_DOB = "UPDATE users SET DOB = '$newDOB' WHERE userID = '$userID'";
-            $result_DOB = $connection->query($sql_DOB);
+            $sql_DOB = "UPDATE users SET DOB = '$newDOB' WHERE userID = ?";
+            $result_DOB = mysqli_prepare($connection, $sql_DOB);
+            mysqli_stmt_bind_param($result_DOB, 's', $userID);
+            mysqli_stmt_execute($result_DOB);
             echo "Date of Birth has been modified in database"."<br>";
             return TRUE;
         }
@@ -118,15 +127,33 @@ else {
 
         // upAccBalance
         if (!isset($_POST['upAccBalance']) or trim($_POST['upAccBalance']) == '') {
-            // Nothing entered for DOB
+            // Nothing entered for accountBalance
         }
         else {
-            // Update database - DOB
-            $upAccBalance = trim($_POST['upAccBalance']);
-            $upAccBalance = "UPDATE users SET accountbalance = $upAccBalance WHERE userID = '$userID'";
-            $result_AccBalance = $connection->query($upAccBalance);
-            echo "Account Balance has been topped up in database"."<br>";
-            return TRUE;
+            // Update database - accountBalance
+            $sql_currBalance = "SELECT accountbalance FROM users WHERE userID = ?";
+            $result_currBalance = mysqli_prepare($connection, $sql_currBalance);
+            mysqli_stmt_bind_param($result_currBalance, 's', $userID);
+            mysqli_stmt_execute($result_currBalance);
+            $result = mysqli_stmt_get_result($result_currBalance);
+            $rows_users = ($result->num_rows);
+            echo "connected to users" . "<br>";
+        
+            if ($rows_users == 1) {
+                echo ($username . "'s current Account Balance has been found in users table" . "<br>"); // Delete this ########
+                while($row = $result->fetch_assoc()) {
+                    $currAccBalance = $row["accountbalance"]."<br>";
+                    $upAccBalance = trim($_POST['upAccBalance']);
+                    $sumBalance = ((int)$currAccBalance + (int)$upAccBalance);
+
+                    $sql_upAccBalance = "UPDATE users SET accountbalance = $sumBalance WHERE userID = ?";
+                    $result_AccBalance = mysqli_prepare($connection, $sql_upAccBalance);
+                    mysqli_stmt_bind_param($result_AccBalance, 's', $userID);
+                    mysqli_stmt_execute($result_AccBalance);
+                    echo "Account Balance has been topped up in database"."<br>";
+                    return TRUE;
+                }
+            }
         }
 
         // newPhoneNo
@@ -136,8 +163,10 @@ else {
         else {
             // Update database - phone
             $newPhoneNo = trim($_POST['newPhoneNo']);
-            $sql_Phone = "UPDATE users SET phone = '$newPhoneNo' WHERE userID = '$userID'";
-            $result_Phone = $connection->query($sql_Phone);
+            $sql_Phone = "UPDATE users SET phone = '$newPhoneNo' WHERE userID = ?";
+            $result_Phone = mysqli_prepare($connection, $sql_Phone);
+            mysqli_stmt_bind_param($result_Phone, 's', $userID);
+            mysqli_stmt_execute($result_Phone);
             echo "Phone Number has been modified in database"."<br>";
             return TRUE;
         }
