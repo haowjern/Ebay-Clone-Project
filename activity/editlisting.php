@@ -21,9 +21,6 @@ label {
   font-size:16px;
   padding: 20px 20px; */
 }
-
-
-
 </style>
 
 <h1>Create/modify your Listing</h1>
@@ -31,19 +28,15 @@ label {
 </head>
 <body>
 <?php
-
 //testing. This line will be removed.
 $_SESSION["userID"]=1;
 $er="missing";
-
 //validate the input
 $desErr = $s_priceErr=$r_priceErr=$qErr=$caErr=$conErr=$auErr=$dateErr=$timeErr="";
 $product_description = $start_price = $reserve_price=$quantity = $categoryname =$conditionname = $auctionable = $startdate=$enddate = $endtime="";
-
 if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
       unset($_SESSION["original_start_price"]);
       unset($_SESSION["editlisting"]);
-
       if (empty($_POST["product_description"])) {
         $desErr = "Description is required";
         $product_description="";
@@ -56,7 +49,6 @@ if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
         $desErr="";
         
       }
-
       //When updating existing product, start price cannot be changed.
       if (isset($_POST["productID"])){
             if (!isset($_SESSION["original_start_price"])){
@@ -70,7 +62,6 @@ if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
                   }
             }
       }
-
       if (!empty($_POST["start_price"])&&is_numeric($_POST["start_price"])) {
         if ((float)$_POST["start_price"]>=0.01 && (float)$_POST["start_price"]<=10000){
         $s_priceErr="";
@@ -83,8 +74,6 @@ if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
         $s_priceErr="Start price must be between £0.01 and £10000";
         $start_price="";
       }
-
-
       if (empty($_POST["quantity"])||!(is_numeric($_POST["quantity"]))) {
         $qErr = "quantity must be between 1 and 10000.";
         $quantity="";
@@ -95,7 +84,6 @@ if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
         $quantity = test_input($_POST["quantity"]);
         $qErr="";
       }
-
       if (empty($_POST["categoryname"])) {
         $caErr = "category is required";
         $categoryname="";
@@ -106,7 +94,6 @@ if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
         $categoryname = test_input($_POST["categoryname"]);
         $caErr="";
       }
-
       if (empty($_POST["conditionname"])) {
         $conErr = "condition is required";
         $conditionname="";
@@ -122,7 +109,6 @@ if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
         $conErr="";
         }
       }
-
       if (empty($_POST["auctionable"])) {
         $auErr = "Select Yes / No";
         $auctionable="";
@@ -130,17 +116,13 @@ if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
         $auErr="only Yes/No";
         $auctionable="";
       }else {
-
         $auctionable=$_POST["auctionable"];
         $auErr="";
-
             if ($auctionable=="Yes"){
-
                   //check reserve price, which is for auction event only
                       if (empty($_POST["reserve_price"])){
                           $r_priceErr="As reserve price is not provided, it is set to start price by default.";
                           $_POST["reserve_price"]=$reserve_price=$start_price;
-
                       }elseif(!empty($_POST["reserve_price"])&&is_numeric($_POST["reserve_price"])) {
                           if ((float)$_POST["reserve_price"]>=0.01 && (float)$_POST["reserve_price"]<=10000 && (float)$_POST["reserve_price"]>=$start_price){
                               $r_priceErr="";
@@ -160,11 +142,8 @@ if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
                 } 
                 //store reserve price as start price in database
                 $reserve_price=$start_price;
-
               }
       }
-
-
       $today=date("Y-m-d"); 
       if (!empty($_POST["enddate"]) && date_create_from_format("Y-m-d",$_POST["enddate"])){
         $enddate=date_create_from_format("Y-m-d",$_POST["enddate"]);
@@ -172,7 +151,6 @@ if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
         $_POST["endday"]=(integer)date_format($enddate,"d");
         $enddate=$_POST["enddate"];
         $dateErr="";
-
       }else{
         $enddate="";
         if (empty($_POST["endday"]) || empty($_POST["endmonth"]) ||  $_POST["endday"]=="Day"|| $_POST["endmonth"]=="Month") {
@@ -203,24 +181,18 @@ if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
                         $endtime=$_POST["endtime"];
                         $timeErr="";
                       }
-
             } else{
               $endtime=$_POST["endtime"];
               $timeErr="";
               }
-
         }
-
     //created date is today
     if (isset($_POST["startdate"])){
       $startdate=$_POST["startdate"];
     }else{
       $startdate=$today;}
-
     //assume all fields are filled
     $er="filled";
-
-
     $sellerID=$_SESSION["userID"];
     $details=array("productID"=>$_POST["productID"],
                   "product_description"=>$product_description,
@@ -247,9 +219,7 @@ if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
     if ($er=="filled"){
       $_SESSION["editlisting"]=$details;
       } 
-
 }
-
     
 function test_input($data) {
     $data = trim($data);
@@ -257,7 +227,6 @@ function test_input($data) {
     $data = htmlspecialchars($data);
     return $data;
   }
-
 ?>
 
 <!-- User input form -->
@@ -436,15 +405,11 @@ if(array_key_exists('submit',$_POST)){
     echo "<script type=\"text/javascript\">document.getElementById('return').style.display=\"none\";</script>";
     echo "<script type=\"text/javascript\">document.getElementById('submission').style.display=\"none\";</script>";
 }
-
 if(array_key_exists('confirmbutton',$_POST)){
-
   echo "<script type=\"text/javascript\">document.getElementById('form1').style.display=\"none\";</script>";
   echo "<script type=\"text/javascript\">document.getElementById('submission').style.display=\"none\";</script>";
   }
 ?>
-
-
 
 <script>
 //create the drop-down list for end time
@@ -463,7 +428,6 @@ for (var i = 1; i < 32; i++) {
     eld.value = i;
     selectday.appendChild(eld);
 }
-
 var selectmonth = document.getElementById("endmonth");
 var opt=["January","February","March","April","May","June","July","August","September","October","November","December"];
 for(var i = 0; i < opt.length; i++) {
@@ -471,13 +435,11 @@ for(var i = 0; i < opt.length; i++) {
     elm.textContent = opt[i];
     elm.value = opt[i];
     selectmonth.appendChild(elm);}
-
 //set the calendar limit
 var today=new Date();
 // var tomorrow=new Date();
 // tomorrow.setDate(today.getDate()+1);
 enddate.min = today.toISOString().split("T")[0];
-
 //change the display of the two forms
 var filled=<?php echo json_encode($er);?>;
 if (filled=="filled"){
@@ -489,20 +451,15 @@ if (filled=="filled"){
   document.getElementById("submission").style.display="none";
   document.getElementById("confirmbutton").disabled=true;
 }
-
-
   // //if category is food, disable the radio button for "used/worn" or "refurbished" and make "new" default
   // if (document.getElementById("categoryname2").checked){
     
-
   //   document.getElementById("conditionname2").disabled=true;
   //   document.getElementById("conditionname3").disabled=true;
   // }else{
   //   document.getElementById("conditionname2").disabled=false;
   //   document.getElementById("conditionname3").disabled=false;
   // }
-
-
 </script>
 
 </body>
