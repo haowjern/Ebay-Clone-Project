@@ -5,7 +5,7 @@
 <p>Connect to database</p>
 <p>Database.php</p>
  
-  <?php
+<?php
 
   $host  = $_SERVER['HTTP_HOST'];
 
@@ -58,7 +58,6 @@
 
 <!-- <?php
 $connection = mysqli_connect("localhost", "root", "", "ebaydb");  
-
 if (!$connection)
 {
     echo "Failed to connect to the database.\n";
