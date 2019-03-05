@@ -32,17 +32,21 @@ label {
 $_SESSION["userID"]=1;
 $er="missing";
 //validate the input
-$desErr = $s_priceErr=$r_priceErr=$qErr=$caErr=$conErr=$auErr=$dateErr=$timeErr="";
-$product_description = $start_price = $reserve_price=$quantity = $categoryname =$conditionname = $auctionable = $startdate=$enddate = $endtime="";
+$desErr = $s_priceErr=$r_priceErr=$qErr=$caErr=$conErr=$auErr=$dateErr=$timeErr=$photoErr="";
+$product_description = $start_price = $reserve_price=$quantity = $categoryname =$conditionname = $auctionable = $startdate=$enddate = $endtime = $photos = $photoMsg="";
+$uploadOk = 1; // to verify if file can upload
+
 if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
       unset($_SESSION["original_start_price"]);
       unset($_SESSION["editlisting"]);
       if (empty($_POST["product_description"])) {
         $desErr = "Description is required";
         $product_description="";
+        $uploadOk = 0;
       } elseif (preg_match("/DROP TABLE/i",$_POST["product_description"])){
         $desErr="product description cannot contain Drop Table";
         $product_description="";
+        $uploadOk = 0;
       }
       else {
         $product_description = test_input($_POST["product_description"]);
@@ -69,17 +73,21 @@ if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
         } else {
         $s_priceErr="Start price must be between £0.01 and £10000";
         $start_price="";
+        $uploadOk = 0;
         }
       } else {
         $s_priceErr="Start price must be between £0.01 and £10000";
         $start_price="";
+        $uploadOk = 0;
       }
       if (empty($_POST["quantity"])||!(is_numeric($_POST["quantity"]))) {
         $qErr = "quantity must be between 1 and 10000.";
         $quantity="";
+        $uploadOk = 0;
       } elseif ((integer)$_POST["quantity"]<1||(integer)$_POST["quantity"]>10000){
         $qErr="quantity must be between 1 and 10000.";
         $quantity="";
+        $uploadOk = 0;
       }else {
         $quantity = test_input($_POST["quantity"]);
         $qErr="";
@@ -87,9 +95,11 @@ if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
       if (empty($_POST["categoryname"])) {
         $caErr = "category is required";
         $categoryname="";
+        $uploadOk = 0;
       } elseif (!in_array($_POST["categoryname"],array("Electronics","Food","Fashion","Home","Health & Beauty","Sports","Toys & Games","Art & Music","Miscellaneous"))){
         $caErr="category is wrong";
         $categoryname="";
+        $uploadOk = 0;
       }else {
         $categoryname = test_input($_POST["categoryname"]);
         $caErr="";
@@ -97,9 +107,11 @@ if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
       if (empty($_POST["conditionname"])) {
         $conErr = "condition is required";
         $conditionname="";
+        $uploadOk = 0;
       } elseif (!in_array($_POST["conditionname"],array("New","Refurbished","Used / Worn"))){
         $conErr="condition is wrong";
         $conditionname="";
+        $uploadOk = 0;
       }else {
         if ($categoryname=="Food" && $_POST["conditionname"]!="New"){
           $conErr="condition must be new for food item";
@@ -112,9 +124,11 @@ if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
       if (empty($_POST["auctionable"])) {
         $auErr = "Select Yes / No";
         $auctionable="";
+        $uploadOk = 0;
       } elseif (!in_array($_POST["auctionable"],array("Yes","No"))){
         $auErr="only Yes/No";
         $auctionable="";
+        $uploadOk = 0;
       }else {
         $auctionable=$_POST["auctionable"];
         $auErr="";
@@ -129,6 +143,7 @@ if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
                               $reserve_price=(float)$_POST["reserve_price"];
                           } else {
                               $r_priceErr="Reserve price must be between £0.01 and £10000, and greater than or equal to start price.";
+                              $uploadOk = 0;
                               $reserve_price="";
                           }
                         }
@@ -155,6 +170,7 @@ if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
         $enddate="";
         if (empty($_POST["endday"]) || empty($_POST["endmonth"]) ||  $_POST["endday"]=="Day"|| $_POST["endmonth"]=="Month") {
             $dateErr = "Listing end date is required";
+            $uploadOk = 0;
             }else{
             date_default_timezone_set("Europe/London");
             $enddate_str=$_POST["endday"]." ".$_POST["endmonth"]." 2019";
@@ -162,6 +178,7 @@ if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
             if ($enddate<$today){
                 $dateErr="Listing cannot be created in the past.";
                 $enddate="";
+                $uploadOk = 0;
             }else{
                 $dateErr="";
             }
@@ -172,11 +189,13 @@ if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
         $hr=explode(":",$_POST["endtime"])[0];
         if (empty($_POST["endtime"]) || !(is_numeric($hr))){
             $timeErr="Listing end time (hour) is required";
+            $uploadOk = 0;
         }else{
             if ($enddate==$today){
                   //check if the time is earlier than now
                   if ((integer)$hr<=idate('H',time())){
                         $timeErr="Listing cannot be created in the past.";
+                        $uploadOk = 0;
                       }else{
                         $endtime=$_POST["endtime"];
                         $timeErr="";
@@ -186,6 +205,60 @@ if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
               $timeErr="";
               }
         }
+    
+    // UPLOADING PHOTOS FUNCTIONALITY 
+    $target_dir = "../uploads/";
+    foreach ($_FILES["fileToUpload"]["name"] as $file_index=>$file_name) {
+      $target_file = $target_dir . basename($file_name);
+      $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+
+      // Check if image file is a actual image or fake image
+      if (isset($_FILES["fileToUpload"])) {
+        if (!empty($_FILES["fileToUpload"]["tmp_name"][$file_index])) {
+          $check = getimagesize($_FILES["fileToUpload"]["tmp_name"][$file_index]);
+          if($check == false) {
+              $photoErr = "File is not an image.";
+              $uploadOk = 0;
+          }
+
+          // Check if file already exists
+          if (file_exists($target_file)) {
+            $photoErr = "Sorry, photo already exists.";
+            $uploadOk = 0;
+          }
+          // Check file size
+          if ($_FILES["fileToUpload"]["size"][$file_index] > 500000) {
+              $photoErr = "Sorry, your file is too large.";
+              $uploadOk = 0;
+          }
+          // Allow certain file formats
+          if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+          && $imageFileType != "gif" ) {
+              $photoErr = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+              $uploadOk = 0;
+          }
+          // Check if $uploadOk is set to 0 by an error
+          if ($uploadOk != 0) {
+              if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"][$file_index], $target_file)) {
+                  $photoMsg = basename($_FILES["fileToUpload"]["name"][$file_index]);
+                  $photo_arr["file_path"][$file_index] = $target_file; 
+                  $photo_arr["productID"][$file_index] = $_POST["productID"];
+                  $photo_arr["photoID"][$file_index] = 0; // default value
+                  $photos = $photo_arr; 
+              } else {
+                  $photoErr = "Sorry, there was an error uploading your photo.";
+              }
+          }
+        } else {
+          $uploadOk = 0;
+        }
+      } else {
+        $uploadOk = 0;
+      }
+    }
+
+    
+    
     //created date is today
     if (isset($_POST["startdate"])){
       $startdate=$_POST["startdate"];
@@ -196,6 +269,7 @@ if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
     $sellerID=$_SESSION["userID"];
     $details=array("productID"=>$_POST["productID"],
                   "product_description"=>$product_description,
+                  "photos"=>$photos, 
                   "start_price"=>$start_price,
                   "reserve_price"=>$reserve_price,
                   "quantity"=>$quantity,
@@ -231,7 +305,7 @@ function test_input($data) {
 
 <!-- User input form -->
 
-<form id="form1" method="post" action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>"><br>
+<form id="form1" method="post" action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>" enctype="multipart/form-data"><br>
 
 <input name="productID" type="hidden" value="<?php
     if(isset($_POST["productID"])){
@@ -249,7 +323,9 @@ function test_input($data) {
 
       <span class="error"> <?php echo $desErr;?></span><br><br>
 
-<button type="button" id="uploadphoto" >Upload photos</button><br><br>
+<label for="image">Upload Image(s):</label><br>
+      <input type="file" name="fileToUpload[]" id="fileToUpload" multiple>
+      <span class="error"> <?php echo $photoErr;?></span><br><br>
 
 <label for="start_price">Start Price (£)*:</label><br>
         <input name="start_price" id="start_price" type="number" placeholders="1.0" step="0.01" min="0.01" max="10000"
@@ -369,6 +445,7 @@ function test_input($data) {
 <div id="submission">
 Your inputs are:<br>
 description: <?php echo $product_description; ?><br>
+image(s) uploaded:<?php echo $photoMsg; ?><br>
 start price (£): <?php echo $start_price; ?><br>
 quantity:<?php echo $quantity; ?><br>
 category:<?php echo $categoryname; ?><br>
