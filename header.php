@@ -15,6 +15,16 @@ input {
     text-align: center;
     width: 50%;
 }
+
+table {
+    width:80%;
+}
+
+body{
+    margin:auto;
+    width:90%;
+}
+
 </style>
     
     <button type="button">Sign In</button>

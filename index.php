@@ -20,7 +20,19 @@ include "header.php";
            
             <a href="database.php" title="placeholder mouseover text">
                 database.php
-            </a>
+            </a> 
+            <br>
+            <a>print out all session variables: </a><br><br>
+            <?php 
+            
+            foreach ($_SESSION as $key => $value){
+                print_r($key."<br>");   
+                print_r($value."<br>");
+            }
+            
+            
+            ?>
+
     
         </p>
     </body>
