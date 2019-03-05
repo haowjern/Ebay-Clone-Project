@@ -34,7 +34,7 @@ label {
 
 //testing. This line will be removed.
 $_SESSION["userID"]=1;
-$er = "";
+$er="missing";
 
 //validate the input
 $desErr = $s_priceErr=$r_priceErr=$qErr=$caErr=$conErr=$auErr=$dateErr=$timeErr="";
@@ -427,15 +427,15 @@ document.getElementById('submission').style.display='none';">Return to form</but
 
 <!-- changes the visability of the form, submission details and return button -->
 <?php
-// if(array_key_exists('submit',$_POST)){
-//     if($er=="filled"){
-//     echo "<script type=\"text/javascript\">document.getElementById('form1').style.display=\"none\";</script>";
-//     echo "<script type=\"text/javascript\">document.getElementById('submission').style.display=\"inline\";</script>";
-//     }
-// }else{
-//     echo "<script type=\"text/javascript\">document.getElementById('return').style.display=\"none\";</script>";
-//     echo "<script type=\"text/javascript\">document.getElementById('submission').style.display=\"none\";</script>";
-// }
+if(array_key_exists('submit',$_POST)){
+    if($er=="filled"){
+    echo "<script type=\"text/javascript\">document.getElementById('form1').style.display=\"none\";</script>";
+    echo "<script type=\"text/javascript\">document.getElementById('submission').style.display=\"inline\";</script>";
+    }
+}else{
+    echo "<script type=\"text/javascript\">document.getElementById('return').style.display=\"none\";</script>";
+    echo "<script type=\"text/javascript\">document.getElementById('submission').style.display=\"none\";</script>";
+}
 
 if(array_key_exists('confirmbutton',$_POST)){
 
