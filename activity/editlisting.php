@@ -34,6 +34,7 @@ label {
 
 //testing. This line will be removed.
 $_SESSION["userID"]=1;
+$er="missing";
 
 //validate the input
 $desErr = $s_priceErr=$r_priceErr=$qErr=$caErr=$conErr=$auErr=$dateErr=$timeErr="";
