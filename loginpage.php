@@ -2,11 +2,9 @@
 <?php session_start(); ?>
 
 <?php
-// Troubleshooting - PHP:
-// 1) ***** How do I revert back to loginpage to give error message "Please enter correct username and password combination"
-// 2) Change password1 field into password in the users and admins tables of the database
-// 3) include connection as a SEPARATE php file -- Needs to connect to Azure database file
-// 4) How do I suggest a NEW USER REGISTRATION? Register button doesn't link to other .php file -- IS THIS CORRECTLY DONE using an <a href>?
+
+// Initialise error messages
+$usernameErr=$passwordErr=$loginErr="";
 
 if(!isset($_POST["signIn"])) {
     // Do nothing since no $_POST variables created i.e. no signIn form submission
@@ -21,26 +19,25 @@ else {
     }        
 
     // Recognise user input
-    function hasDataInput() {
-        $errorMessage = null;
+    function hasDataInput($usernameErr,$passwordErr) {
+        
         if (!isset($_POST['userName']) or trim($_POST['userName']) == '') {
-            $errorMessage = 'Please enter a valid username';
-        }
-        else if (!isset($_POST['passWord']) or trim($_POST['passWord']) == '') {
-            $errorMessage = 'Please enter a valid password';
-        }
-        
-        if ($errorMessage !== null) {
-            echo "Server-side validation failed";
+            $usernameErr = 'Please enter a valid username';
             return FALSE;
-            }
-        
-        echo "Server-side validation passed"."<br>"; // Delete this ########
-        return TRUE;
         }
+        elseif (!isset($_POST['passWord']) or trim($_POST['passWord']) == '') {
+            $passwordErr = 'Please enter a valid password';
+            return FALSE;
+        }
+        
+        if ($usernameErr == "" and $passwordErr == "") {
+            echo $_POST['userName'] . " and " . $_POST['passWord'] ." successfully submitted to server-side validation"."<br>"; // Delete this ########
+            return TRUE;
+        }
+    }
         
     // Validation process
-    if (hasDataInput() == TRUE) {
+    if (hasDataInput($usernameErr,$passwordErr) == TRUE) {
         // Need to include connection as a SEPARATE php file - 
         $connection = mysqli_connect('localhost', 'root', '','dummy') or die(mysqli_error()); 
         if (mysqli_connect_errno()){
@@ -51,17 +48,14 @@ else {
         }
                                                                                                                                                                                                             
 
-        // Step 1 - Sanitise and Instantiate from $_POST array
+        // Step 1 - Sanitise username and password and Instantiate from $_POST array
         $username = trim($_POST["userName"]);
+        $username = mysqli_escape_string($connection, $username);
         $user_pass = trim($_POST["passWord"]);
         echo $username."<br>";
         echo $user_pass."<br>";
 
-        // Sanitise username - Do I need to sanitize? Unnecessary on Plaintext if bind_param is used correctly ==== DELETE ##########
-        // $username = filter_var($username_to_sanitise, FILTER_SANITIZE_STRING);
-
-
-        // Step 3 - Search for username and password in admins database and users database
+        // Step 2 - Search for username and password in admins database and users database
 
         // Search for username in admins table
         $sql_admins = "SELECT username FROM admins WHERE username = ?"; 
@@ -103,6 +97,7 @@ else {
                     echo "Successfully created Session variable"."<br>";
                 }
                 else {
+                    $loginErr = "Invalid username and password entered.";
                     echo "Invalid password entered"."<br>";
                 }
             }   
@@ -127,23 +122,22 @@ else {
                     echo "Successfully created Session variable"."<br>";
                 }
                 else {
+                    $loginErr = "Invalid username and password entered.";
                     echo "Invalid password entered"."<br>";
                 }
             }
         }
         else {
+            $loginErr = $username . " is not a registered user. Please register as a new user." . "<br>"; // Delete this ########
             echo ($username . " is not registered in the database. Do you wish to register as a new user?" . "<br>"); // Delete this ########
         }
     }
     else {
+        $loginErr = "Invalid username or password entered.";
         echo "Data did not pass validation";
     }
 }
 ?>
-
-<!-- Troubleshooting / To Dos - HTML / JS: 
-2) How to add javascript to return error messages from server side if incorrect input given
--->
 
 <html lang="en">
     <head>
@@ -155,18 +149,21 @@ else {
     <body>
 
         <h3> Please log in </h3>
-        <form name="login_form" action="" method="post">
+        <form name="login_form" action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>"> method="post">
         <label for="userName">Username:</label><br>
         <input type="text" name="userName" placeholder="Username" pattern=".{3,}" required title="Minimum 3 characters or more"><span id="error_userName"></span>
+        <span class="error"> <?php echo $usernameErr;?></span>
         <br>
         <br>
         <label for="passWord">Password:</label><br>
         <input type="password" name="passWord" placeholder="Password" pattern=".{6,}" required title="Minimum 6 characters or more"><span id="error_passWord"></span>
+        <span class="error"> <?php echo $passwordErr;?></span>
         <br>
         <br>
-        <p><input type="submit" onclick="return validateForm(this)" name="signIn" value="Sign in"></p>  <!-- Should I remove the onclick? -->
-        <a href="./regNewUser.php"><input type="button" name="regNewUser" value="Register"></a> 
+        <p><input type="submit" onclick="return validateForm(this)" name="signIn" value="Sign in"> 
+        <a href="./regNewUser.php"><input type="button" name="regNewUser" value="Register"></a> </p>
         <br>
+        <span class="error"> <?php echo $loginErr;?></span>
         </form>
             
     </body>
