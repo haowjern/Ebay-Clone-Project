@@ -34,6 +34,7 @@ label {
 
 //testing. This line will be removed.
 $_SESSION["userID"]=1;
+$er = "";
 
 //validate the input
 $desErr = $s_priceErr=$r_priceErr=$qErr=$caErr=$conErr=$auErr=$dateErr=$timeErr="";
@@ -442,6 +443,8 @@ if(array_key_exists('confirmbutton',$_POST)){
   echo "<script type=\"text/javascript\">document.getElementById('submission').style.display=\"none\";</script>";
   }
 ?>
+
+
 
 <script>
 //create the drop-down list for end time
