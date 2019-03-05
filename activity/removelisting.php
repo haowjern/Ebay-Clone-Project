@@ -1,12 +1,14 @@
 <?php
 session_start();
 
+include "../header.php";
+
 //script to remove listing from product table.
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    $productID=mysqli_real_escape_string($connection,$_POST["productID"]);
-
     include "../database.php";
+
+    $productID=mysqli_real_escape_string($connection,$_POST["productID"]);
 
 }else{
     
@@ -35,9 +37,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     header("Location: http://$host$uri/$extra");
 }
+
+include "../footer.php";
 ?>
-<html>
-<body>
-    <!-- <button onclick="window.location.href = '<?php echo $link; ?>'">Go back to myshop</button> -->
-</body>
-</html>
+
+

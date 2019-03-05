@@ -8,6 +8,16 @@ include "header.php";
 
 <!DOCTYPE html>
 <html>   
+<head>
+<style>
+input {
+    margin:auto;
+    display:block;
+    text-align: center;
+    width: 50%;
+}
+</style>
+</head>
 
     <body>
         <h1>Team 10 EBAY SITE</h1>
@@ -24,10 +34,22 @@ include "header.php";
             <br>
             <a>print out all session variables: </a><br><br>
             <?php 
+
+            // print_r($_SESSION);
             
             foreach ($_SESSION as $key => $value){
-                print_r($key."<br>");   
-                print_r($value."<br>");
+                print_r("session variable name: ".$key."<br>");  
+                print_r("session variable value: <br>"); 
+
+                if (is_array($value)){
+                    foreach ($value as $v){
+                        print_r($v."<br>");
+                    }
+                } else{
+                    print_r($value."<br>");
+                }
+                print_r("<br>");
+                
             }
             
             

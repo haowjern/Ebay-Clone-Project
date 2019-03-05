@@ -1,5 +1,6 @@
 <?php
 session_start();
+include "../header.php";
 ?>
 
 <html>
@@ -17,6 +18,8 @@ label {
   font-weight: bold; 
   text-align: center;
 }
+
+
 /* #submitbutton,#confirmbutton{
   font-size:16px;
   padding: 20px 20px; */
@@ -405,7 +408,7 @@ quantity:<?php echo $quantity; ?><br>
 category:<?php echo $categoryname; ?><br>
 condition:<?php echo $conditionname; ?><br>
 auctionable:<?php echo $auctionable; ?><br>
-reserve price (£): <?php if([$auctionable]=="Yes"){echo $reserve_price;}else{echo "N/A";};?><br>
+reserve price (£): <?php if($auctionable=="Yes"){echo $reserve_price;}else{echo "N/A";};?><br>
 listing starts on:<?php echo $startdate; ?><br>
 listing end date:<?php echo $enddate; ?><br>
 listing end time:<?php echo $endtime; ?><br>
@@ -505,3 +508,7 @@ if (filled=="filled"){
 
 </body>
 </html>
+
+<?php
+include "../footer.php";
+?>

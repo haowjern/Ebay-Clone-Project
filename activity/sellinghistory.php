@@ -1,6 +1,8 @@
 <?php
 session_start();
 
+include "../header.php";
+
 //fetch all the archive listing related to this seller
 $_SESSION["userID"]=1;
 
@@ -18,10 +20,11 @@ if ($count==0){
 
 <html>
 <head>
+<h1>My Selling History</h1>
 </head>
 
 <body>
-<p>My Selling History</p>
+
 <p id="t"></p>
 
 
@@ -98,3 +101,8 @@ function warning_msg(){
 </body>
 
 </html>
+
+<?php
+
+include "../footer.php";
+?>
