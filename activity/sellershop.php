@@ -32,18 +32,35 @@ $link_newlisting="http://".$host.$uri."/".$extra;
 
 <button type="button" onclick="window.location.href = '<?php echo $link_newlisting; ?>'">Create new listing</button>
 <p id="t"></p>
-
+<button onclick="reset_filter()">Reset all filters</button>
 
 <!-- create table header -->
 <table id=active_listing_table width="device-width,initial-scale=1">
     <tr>
         <th>Image</th>
         <th>Product Name</th>
-        <th>Product Details</th>
-        <th>Start Price (£)</th>
-        <th>Reserve Price (£)</th>
-        <th>Listing starts on </th>
-        <th>Listing ends on </th>
+        <th>Product Details
+        <br><br>
+        <input type="text" id="search_details" onkeyup="search_filter('search_details',2,'text')" placeholder="type something" title="Type something">
+        </th>
+        <th>Start Price (£)
+        <br><br>
+        <input type="number" id="search_s_price" onkeyup="search_filter('search_s_price',3,'price')" placeholder="higher than..." title="Type something">
+        </th>
+        <th>Reserve Price (£)
+        <br><br>
+        <input type="number" id="search_r_price" onkeyup="search_filter('search_r_price',4,'price')" placeholder="higher than..." title="Type something">
+        </th>
+        <th>Listing starts on
+        <br><br>
+        <input type="date" id="search_startdate" onchange="search_filter('search_startdate',5,'startdate')" >
+        <br><span style="font-size:12px">(on/after)</span>
+        </th>
+        <th>Listing ends on
+        <br><br>
+        <input type="date" id="search_enddate" onchange="search_filter('search_enddate',6,'enddate')">
+        <br><span style="font-size:12px">(on/before)</span>
+        </th>
         <th>Auctionable?</th>
         <th>Action</th>
     </tr>   
@@ -58,9 +75,9 @@ var each_listing=<?php echo json_encode($_SESSION['all_active_listings'],JSON_PR
 
 <?php unset($_SESSION["all_active_listings"]);?>;
 
+var table=document.getElementById("active_listing_table");
 for (i=0;i<count;i++){
     //for each active listing, create a row in the table.
-    var table=document.getElementById("active_listing_table");
     var row=table.insertRow(-1);
     var cell_image=row.insertCell(0);
     var cell_productname=row.insertCell(1);
@@ -196,6 +213,82 @@ for (i=0;i<count;i++){
 function warning_msg(){
     return confirm("confirm remove this listing?");
     }
+
+//remove all filtering
+function reset_filter(){
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+        tr[i].style.display="";
+    }
+}
+
+//do filtering
+function search_filter(inputid,col,type) {
+    var filter, tr, td, i, txtValue;
+    filter = document.getElementById(inputid).value;
+    tr = table.getElementsByTagName("tr");
+
+    for (i = 0; i < tr.length; i++) {
+
+        td = tr[i].getElementsByTagName("td")[col];
+
+            if (td) {
+
+                    switch (type){
+                        case 'text':
+                                txtValue = td.innerText.toLowerCase();
+                                var filter_l = (filter.toLowerCase()).split(" ");
+
+                                for (j=0;j<filter_l.length;j++){
+                                    if (txtValue.indexOf(filter_l[j]) > -1) {
+                                    tr[i].style.display = "";
+                                } else {
+                                    tr[i].style.display = "none";
+                                }
+                                }
+                                
+                                 break;
+
+                        case 'price':
+                            
+                                txtValue = parseFloat(td.innerText);
+                                filter = parseFloat(filter);
+
+                                if (txtValue>=filter) {
+                                    tr[i].style.display = "";
+                                } else {
+                                    tr[i].style.display = "none";
+                                }
+                                break;
+                        
+                        case 'startdate':
+                            
+                                txtValue = new Date(td.innerText);
+                                filter=new Date(filter);
+                    
+                                if ((txtValue>=filter)) {
+                                    tr[i].style.display = "";
+                                } else {
+                                    tr[i].style.display = "none";
+                                }
+                                break;
+                        
+                        case 'enddate':
+                            
+                                txtValue = new Date(td.innerText);
+                                filter=new Date(filter);
+                    
+                                if ((txtValue<=filter)) {
+                                    tr[i].style.display = "";
+                                } else {
+                                    tr[i].style.display = "none";
+                                }
+                                break;
+                    }       
+            } 
+    }
+}
+
 
 </script>
 

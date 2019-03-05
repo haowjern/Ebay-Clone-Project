@@ -11,7 +11,7 @@ h1,h2 {
 }
 
 table {
-    width:80%;
+    width:100%;
 }
 
 body{
@@ -31,5 +31,7 @@ body{
     <button onclick="window.location.href = '/activity/sellinghistory.php';" type="button">Selling History</button>
     <button type="button">Cart</button>
     <br>
+    <p>User Name: <?php echo $_SESSION["username"] ;?></p>
+    <p>UserID: <?php echo $_SESSION["userID"] ;?>;</p>
 
-</head> 
+</head>
