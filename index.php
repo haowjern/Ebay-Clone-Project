@@ -41,7 +41,7 @@ button {
             <a href="/activity/sellinghistory.php" title="placeholder mouseover text">
                 SELLING_HISTORY ,
             </a>
-            <a href="showlistings.php" title="placeholder mouseover text">
+            <a href="/test/showlistings.php" title="placeholder mouseover text">
                 SHOW_LISTINGS ,
             </a>
 

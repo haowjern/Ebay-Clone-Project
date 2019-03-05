@@ -78,18 +78,12 @@ function get_photo($productID) {
     */
     include '../database.php';
 
-    // check parameter is a number. 
-    if (is_numeric($productID)){
-        echo "Parameter is not a number / cannot be converted to an number.";
-    }
-
     // select and return photo array
     // there are two cases - select user ID, or u select photo ID - currently I just want to select for productID
-
-    $sql = "SELECT * FROM Photos WHERE productID = ((int)$productID) ";
+    $sql = "SELECT * FROM Photos WHERE productID = ($productID) ";
     $result = $connection->query($sql);
     if ($result->num_rows>0) {
-        echo("Returned new photos.\n");
+        
 
         $photos = [];
         while ($row = $result->fetch_assoc()){
@@ -97,13 +91,14 @@ function get_photo($productID) {
             $photo_arr['productID'] = $row['productID'];
             $photo_arr['file_path'] = $row['file_path']; 
 
-            $photos.push($photo_arr);
+            array_push($photos, $photo_arr);
         }
 
     } else {
         echo("Error: " . $sql . "<br>" . $connection->error);
     }
 
+    echo("Returned new photos.\n");
     return $photos;
 
     $connection->close();
