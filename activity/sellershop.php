@@ -25,6 +25,14 @@ $link_newlisting="http://".$host.$uri."/".$extra;
 
 <html>
 <head>
+
+<style>
+th {
+    vertical-align: top;
+    padding: 20px 20px;
+}
+</style>
+
 <h1>Seller's Shop</h1>
 </head>
 
