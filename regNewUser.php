@@ -21,7 +21,7 @@ else {
      echo "Successfully connected to server\n";
  }
 
- // Instantiate username from POST variables
+ // Instantiate user account details from POST variables
  $username = trim($_POST["userName"]);
  $password = trim($_POST["passWord"]);
  $email = trim($_POST["email"]);
@@ -30,8 +30,8 @@ else {
 
  echo $username ."<br>";
 
-// Sanitise username?? --- DELETE ##########
-
+// Sanitise username
+$username = mysqli_real_escape_string($connection, $username);
 
 // Check for duplicate username in users table and admins table
 $sql_users = "SELECT username FROM users WHERE username = ?";
@@ -53,37 +53,65 @@ echo "connected to admins" . "<br>";
 
 if (($rows_users == 0) and ($rows_admins == 0)) {
     echo ($username . " is available (users and admins - OK)" . "<br>"); // Delete this ########
-    
 }
 else {
-echo ($username . " - duplicate found. Please choose another username" . "<br>"); // Delete this ######## 
-
+    $usernameErr = $username . " - duplicate found. Please choose another username" . "<br>";
+    echo ($username . " - duplicate found. Please choose another username" . "<br>"); // Delete this ######## 
 }
 
 
 // Sanitize email
-if (empty($_POST['email']) or empty($_POST['confEmail'])) {
-    echo "Please enter a matching valid email address";
+if (!isset($_POST['email']) or !isset($_POST['confEmail'])) {
+    $emailErr = "Please enter matching valid email addresses";
+    echo "Please enter matching valid email addresses";
+} elseif (trim($_POST['email']) !== trim($_POST['confEmail'])) {
+    $emailErr = "Please enter matching valid email addresses";
+    echo "Please enter matching valid email addresses";
+} else {
+    $orig_email = trim($_POST['email']);
+    $clean_email = filter_var(trim($_POST['confEmail']), FILTER_SANITIZE_EMAIL);
+    
+    if ($orig_email == $clean_email and filter_var($orig_email, FILTER_VALIDATE_EMAIL)) {
+        echo "User-entered email address is safe for storage!";
+    }
+    else {
+        $emailErr = "Please enter valid email addresses";
+        echo "User-entered email address NOT SAFE!";
+    }
 }
-
-$orig_email = trim($_POST['email']);
-$clean_email = filter_var(trim($_POST['confEmail']), FILTER_SANITIZE_EMAIL);
-if ($orig_email == $clean_email and filter_var($orig_email, FILTER_VALIDATE_EMAIL)) {
-    echo "User-entered email address is safe for storage!";
-}
-else {
-    echo "User-entered email address NOT SAFE!";
-}
-
 
 // Hash plaintext password for storage in database
 $hash = password_hash($password, PASSWORD_BCRYPT);
+
+
+// Sanitise Date of Birth
+if (!empty($_POST["DOB"]) && date_create_from_format("Y-m-d",$_POST["DOB"])){
+    $DOB=date_create_from_format("Y-m-d",$_POST["DOB"]);  
+    $DOB_year = (integer)date_format($DOB,"Y");
+    $DOB_month = (integer)date_format($DOB,"m");
+    $DOB_day = (integer)date_format($DOB,"d");
+    $DOB_str = (string)$DOB_year . "-" . (string)$DOB_month . "-" . (string)$DOB_day;
+}
+else {
+    $DOBErr = "Please enter a valid date in YYYY-MM-DD format";
+    echo "User-entered date of birth is NOT SAFE!";
+}
+
+
+// Check phone number
+if (!empty($_POST["phoneNo"]) && is_numeric($_POST["phoneNo"])){
+    $phoneNo = trim($_POST["phoneNo"]);
+}
+else {
+    $phoneErr = "Please enter a valid phone number (all numeric input)";
+    echo "User-entered Phone Number is NOT SAFE!";
+}
 
 // INSERT new row to database
 $sql_insert = "INSERT INTO users (username, password1, email, phone, accountbalance, DOB) VALUES (?, ?, ?, ?, ?, ?)";
 $insert_user = mysqli_prepare($connection, $sql_insert);
 $zero = 0;
-mysqli_stmt_bind_param($insert_user, 'ssssis', $username, $hash, $email, $phoneNo, $zero, $DOB);
+mysqli_stmt_bind_param($insert_user, 'ssssis', $username, $hash, $email, $phoneNo, $zero, $DOB_str);
 $result = mysqli_stmt_execute($insert_user);
 
 if ($result==TRUE) {
