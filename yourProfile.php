@@ -4,17 +4,51 @@ session_start();
 ?>
 
 <!-- Troubleshooting / To dos:
+// ********* Database will continue to update, even if NOT all fields to be modified are correct 
 1) How do I include multiple error messages for each input box? WITHOUT CLEARING ENTIRE FORM
-2) ***** SQL injection preventative changes - use USERID since its been instantiated. ##### NOTE: UserID IS NOT instantiated for regNewUser NOR loginpage
-3) SEPARATE PAGES for the individual fields the User can modify
 
-// Separate the modifications they are to make
-User can choose to modify -- ON SEPARATE PAGES
-- Email Address (Enter new email TWICE to confirm, Enter current password to confirm)
-- Password (Enter Old, Enter new password TWICE to confirm)
+
+1) include header and footer - all pages
+2) include database.php and check SQL ../ or ./   - all pages
+3) Add dummy variables to database   
+4) onclick / href button all links into index.php
+5) <form id="form1" method="post" action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>"><br> calls upon own PHP
+3) editlisting php - copy Annie's warning message replication to all pages with user input
+7) MAKE SURE Back end validation works - front-end validation is for user only
+
+
+
+
+3) SEPARATE PAGES for the individual fields the User can modify 
+
+// if ($_SERVER["REQUEST_METHOD"] == "POST") {
+//     // include "database.php";
+//     $rem_userID=mysqli_real_escape_string($connection,$_POST["userID"]);
+// }
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    $connection->close();
+
+    $host  = $_SERVER['HTTP_HOST'];
+    $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+    $extra = 'manageUsers.php';
+    $link="http://".$host.$uri."/".$extra;
+
+    header("Location: http://$host$uri/$extra");
+}
+?>
+
+<body>
+    <button onclick="window.location.href = '<?php echo $link; ?>'">Go back to Manage Users</button> 
+</body>
+
 -->
-
+        <!-- <button onclick="window.location.href = '<?php echo $link_newlisting; ?>'">Create new listing</button> -->
 <?php
+    // Instantiate error messages
+    $emailErr=$passwordErr=$DOBErr=$upAccBalanceErr=$phoneErr="";
+    $successMsg="";
 
     // Need to include connection as a SEPARATE php file - 
     $connection = mysqli_connect('localhost', 'root', '','dummy') or die(mysqli_error()); 
@@ -63,7 +97,10 @@ if(!isset($_POST["newUserDetails"])) {
 else {
 // Step 1 - Validate user input
     
-    function hasDataChanged($userID) {       
+
+    function hasDataChanged($userID,$emailErr,$passwordErr,$DOBErr,$upAccBalanceErr,$phoneErr) {            
+        $updated = "";
+        
         // Need to include connection as a SEPARATE php file - 
         $connection = mysqli_connect('localhost', 'root', '','dummy') or die(mysqli_error()); 
         if (mysqli_connect_errno()){
@@ -77,27 +114,35 @@ else {
         if ((!isset($_POST['newEmail']) or trim($_POST['newEmail']) == '') and (!isset($_POST['newConfEmail']) or trim($_POST['newConfEmail']) == '')) {
             // Nothing entered for email
         }
+        elseif (trim($_POST['newEmail']) !== trim($_POST['newConfEmail'])) {
+            $emailErr = "Please enter matching emails";
+            return FALSE;
+        }
         else {
-            // Sanitise email input against SQL injection
-
+            // Sanitise email input
+            $newEmail = trim($_POST['newEmail']);
+            $clean_email = filter_var(trim($_POST['newConfEmail']), FILTER_SANITIZE_EMAIL);
+            if ($newEmail == $clean_email and filter_var($newEmail, FILTER_VALIDATE_EMAIL)) {
 
             // Update database - email
-            $newEmail = trim($_POST['newEmail']);
             $sql_Email = "UPDATE users SET email = '$newEmail' WHERE userID = ?";
             $result_Email = mysqli_prepare($connection, $sql_Email);
             mysqli_stmt_bind_param($result_Email, 's', $userID);
             mysqli_stmt_execute($result_Email);
             echo "Email Address has been modified in database"."<br>";
-            return TRUE;
+            $updated = TRUE;
+            }
         }
 
         // newPassWord and newConfPassWord
         if ((!isset($_POST['newPassWord']) or trim($_POST['newPassWord']) == '') and (!isset($_POST['newConfPassWord']) or trim($_POST['newConfPassWord']) == '')) {
             // Nothing entered for passwords
         }
+        elseif (trim($_POST['newPassWord']) !== trim($_POST['newConfPassWord'])) {
+            $passwordErr = "Please enter matching passwords";
+            return FALSE;
+        }
         else {
-            // Sanitise password input against SQL injection - TO BE ADDED
-
             // Update database - password1 - hashed
             $passwordFromPost = trim($_POST['newPassWord']);
             $hash = password_hash($passwordFromPost, PASSWORD_BCRYPT);
@@ -106,22 +151,31 @@ else {
             mysqli_stmt_bind_param($result_Password, 's', $userID);
             mysqli_stmt_execute($result_Password);
             echo "Password has been modified in database"."<br>";
-            return TRUE;
+            $updated = TRUE;
         }
         
         // newDOB
         if (!isset($_POST['newDOB']) or trim($_POST['newDOB']) == '') {
             // Nothing entered for DOB
         }
-        else {
+        elseif (!empty($_POST["newDOB"]) && date_create_from_format("Y-m-d",trim($_POST["newDOB"]))){
+            $newDOB = date_create_from_format("Y-m-d", trim($_POST["newDOB"]));
+            $DOB_year = (integer)date_format($newDOB,"Y");
+            $DOB_month = (integer)date_format($newDOB,"m");
+            $DOB_day = (integer)date_format($newDOB,"d");
+            $newDOB_str = (string)$DOB_year . "-" . (string)$DOB_month . "-" . (string)$DOB_day;
+
             // Update database - DOB
-            $newDOB = trim($_POST['newDOB']);
-            $sql_DOB = "UPDATE users SET DOB = '$newDOB' WHERE userID = ?";
+            $sql_DOB = "UPDATE users SET DOB = '$newDOB_str' WHERE userID = ?";
             $result_DOB = mysqli_prepare($connection, $sql_DOB);
             mysqli_stmt_bind_param($result_DOB, 's', $userID);
             mysqli_stmt_execute($result_DOB);
             echo "Date of Birth has been modified in database"."<br>";
-            return TRUE;
+            $updated = TRUE;
+        }
+        else {
+            $DOBErr = "Please enter a valid date in YYYY-MM-DD format";
+            return FALSE;
         }
 
 
@@ -129,7 +183,10 @@ else {
         if (!isset($_POST['upAccBalance']) or trim($_POST['upAccBalance']) == '') {
             // Nothing entered for accountBalance
         }
-        else {
+        elseif (is_numeric(trim($_POST['upAccBalance']))) {
+            // Sanitise number input
+            $upAccBalance = trim($_POST['upAccBalance']);
+            
             // Update database - accountBalance
             $sql_currBalance = "SELECT accountbalance FROM users WHERE userID = ?";
             $result_currBalance = mysqli_prepare($connection, $sql_currBalance);
@@ -140,10 +197,9 @@ else {
             echo "connected to users" . "<br>";
         
             if ($rows_users == 1) {
-                echo ($username . "'s current Account Balance has been found in users table" . "<br>"); // Delete this ########
+                echo ($userID . "'s current Account Balance has been found in users table" . "<br>"); // Delete this ########
                 while($row = $result->fetch_assoc()) {
                     $currAccBalance = $row["accountbalance"]."<br>";
-                    $upAccBalance = trim($_POST['upAccBalance']);
                     $sumBalance = ((int)$currAccBalance + (int)$upAccBalance);
 
                     $sql_upAccBalance = "UPDATE users SET accountbalance = $sumBalance WHERE userID = ?";
@@ -151,16 +207,20 @@ else {
                     mysqli_stmt_bind_param($result_AccBalance, 's', $userID);
                     mysqli_stmt_execute($result_AccBalance);
                     echo "Account Balance has been topped up in database"."<br>";
-                    return TRUE;
+                    $updated = TRUE;
                 }
             }
+        }
+        else {
+            $upAccBalanceErr = "Please enter a valid number";
+            return FALSE;
         }
 
         // newPhoneNo
         if (!isset($_POST['newPhoneNo']) or trim($_POST['newPhoneNo']) == '') {
             // Nothing entered for PhoneNo
         }
-        else {
+        elseif (is_numeric(trim($_POST['newPhoneNo']))) {
             // Update database - phone
             $newPhoneNo = trim($_POST['newPhoneNo']);
             $sql_Phone = "UPDATE users SET phone = '$newPhoneNo' WHERE userID = ?";
@@ -168,22 +228,59 @@ else {
             mysqli_stmt_bind_param($result_Phone, 's', $userID);
             mysqli_stmt_execute($result_Phone);
             echo "Phone Number has been modified in database"."<br>";
+            $updated = TRUE;
+        }
+        else {
+            $phoneErr = "Please enter a valid phone number (all numeric input)";
+            return FALSE;
+        }
+
+        if ($updated == TRUE) {
+            echo "Data HAS changed. Server-side validation passed"."<br>"; // Delete this ########
             return TRUE;
+        } else {
+            echo "Data HAS NOT changed. Server-side validation passed"."<br>"; // Delete this ########
+            return FALSE;
         }
-
-        echo "Data HAS NOT changed. Server-side validation passed"."<br>"; // Delete this ########
-        return TRUE;
-        }
-
+    }
     
-    if (hasDataChanged($userID) == TRUE) {
-        echo "Successfully updated database"."<br>";
+    if (hasDataChanged($userID,$emailErr,$passwordErr,$DOBErr,$upAccBalanceErr,$phoneErr) == TRUE) {
+        $successMsg = "Your account details have been successfully updated";
     }
 }
 ?>
 
 <html lang="en">
     <head>
+
+    <style>
+    div.centered
+    {
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    div.centered table
+    {
+    margin:0 auto;
+    }
+
+    .column {
+        margin: 0 auto;
+        float: left;
+        width: 50%;
+    }
+
+    /* Clear floats after the columns */
+    .row:after 
+    {
+        margin: 0 auto;
+        content: "";
+        display: table;
+        clear: both;
+    }
+    </style>
+    
     <script language='javascript' type='text/javascript'>
         // Basic validation on client-side
         function validateForm() {
@@ -212,6 +309,8 @@ else {
 
     </head>
     <body>
+        <div class="row">
+        <div class="column">
         <h3> Current User Details </h3>
         <label>Username:</label><br>
         <?php echo $username; ?><br><br>
@@ -225,7 +324,11 @@ else {
         £ <?php echo $accountbalance; ?><br>
         <label>Phone Number:</label><br>
         <?php echo $phoneNo; ?><br>
+        <br>
+        <?php echo $successMsg;?><br>
+        </div>
 
+        <div class="column">
         <h3> Modify User Details </h3>
         <form name="newDetails_form" action="" onsubmit="return validateForm()" method="post">
         <label for="email">New Email Address:</label><br>
@@ -233,7 +336,7 @@ else {
         <br>
         <br>
         <label for="newConfEmail">Confirm New Email Address:</label><br>
-        <input type="email" name="newConfEmail" placeholder="Re-Enter New Email">
+        <input type="email" name="newConfEmail" placeholder="Re-Enter New Email"> <span class="error"><?php echo $emailErr;?></span>
         <br>
         <br>
         <label for="newPassWord">Password:</label><br>
@@ -241,24 +344,26 @@ else {
         <br>
         <br>
         <label for="newConfPassWord">Confirm Password:</label><br>
-        <input type="password" name="newConfPassWord" placeholder="Re-Enter New Password" pattern=".{6,}" title="Minimum 6 characters or more">
+        <input type="password" name="newConfPassWord" placeholder="Re-Enter New Password" pattern=".{6,}" title="Minimum 6 characters or more"> <span class="error"><?php echo $passwordErr;?></span>
         <br>
         <br>
         <label for="newDOB">Date of Birth:</label><br>
-        <input type="date" name="newDOB">
+        <input type="date" name="newDOB"><span class="error"><?php echo $DOBErr;?></span>
         <br>
         <br>
         <label for="upAccBalance">Top-Up Account Balance:</label><br>
-        £ <input type="number" name="upAccBalance" min="0" max="1000" step="25">
+        £ <input type="number" name="upAccBalance" min="0" max="1000" step="25"> <span class="error"><?php echo $upAccBalanceErr;?></span>
         <br>
         <br>
         <label for="newPhoneNo">Phone Number:</label><br>
-        + <input type="text" name="newPhoneNo" pattern="(.*\d)" placeholder="New Phone Number" maxlength=15 title="Numeric characters only, up to 15 characters">
+        + <input type="text" name="newPhoneNo" pattern="(.*\d)" placeholder="New Phone Number" maxlength=15 title="Numeric characters only, up to 15 characters"> <span class="error"><?php echo $phoneErr;?></span>
         <br>
         <br>
         <p><input type="submit" name="newUserDetails" value="Submit Changes"></p>
         <br>
         </form>
+        </div>
+        </div>
 
     </body>
 </html>
