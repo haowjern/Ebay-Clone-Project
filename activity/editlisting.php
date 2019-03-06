@@ -1,5 +1,7 @@
 <?php
 session_start();
+
+include "../header.php";
 include "photos_interface.php";
 ?>
 
@@ -82,6 +84,7 @@ include "photos_interface.php";
 $_SESSION["userID"]=1;
 $er="missing";
 //validate the input
+  
 $desErr = $s_priceErr=$r_priceErr=$qErr=$caErr=$conErr=$auErr=$dateErr=$timeErr=$photoErr="";
 $product_description = $start_price = $reserve_price=$quantity = $categoryname =$conditionname = $auctionable = $startdate=$enddate = $endtime = $photos = $photoMsg="";
 $uploadOk = 1; // to verify if file can upload
@@ -89,6 +92,22 @@ $uploadOk = 1; // to verify if file can upload
 if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
       unset($_SESSION["original_start_price"]);
       unset($_SESSION["editlisting"]);
+      if (empty($_POST["product_name"])) {
+        $nameErr = "Product name is required";
+        $product_name="";
+      } elseif (preg_match("/DROP TABLE/i",$_POST["product_name"])){
+        $nameErr="product name cannot contain Drop Table";
+        $product_name="";
+      } elseif(strlen($_POST["product_name"])>20){
+        $nameErr="product name cannot exceed 20 characters";
+        $product_name="";
+      }
+      else {
+        $product_name = test_input($_POST["product_name"]);
+        $nameErr="";
+        
+      }
+  
       if (empty($_POST["product_description"])) {
         $desErr = "Description is required";
         $product_description="";
@@ -97,8 +116,11 @@ if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
         $desErr="product description cannot contain Drop Table";
         $product_description="";
         $uploadOk = 0;
-      }
-      else {
+      } elseif(strlen($_POST["product_description"])>150){
+        $desErr="product description cannot exceed 150 characters";
+        $product_description="";
+        $uploadOk = 0;
+      }else {
         $product_description = test_input($_POST["product_description"]);
         $desErr="";
         
@@ -318,6 +340,7 @@ if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
     $er="filled";
     $sellerID=$_SESSION["userID"];
     $details=array("productID"=>$_POST["productID"],
+                  "product_name"=>$product_name,
                   "product_description"=>$product_description,
                   "photos"=>$photos, 
                   "start_price"=>$start_price,
@@ -366,6 +389,13 @@ function test_input($data) {
 ?>">
 
 <span class="error">*required field</span><br><br>
+
+<label for="product_name">Product Name (max 20 characters)*:</label><br>
+      <input name="product_name" id="product_name" type="text" placeholders="max 20 characters" maxlength="20" size="30" 
+      value="<?php if(isset($_POST["product_name"])){echo htmlentities($_POST["product_name"]);}?>">
+
+      <span class="error"> <?php echo $nameErr;?></span><br><br>
+
 
 <label for="product_description">Product Description (max 150 characters)*:</label><br>
       <input name="product_description" id="product_description" type="text" placeholders="max 150 characters" maxlength="150" size="150" style="height:100px"
@@ -517,6 +547,7 @@ if (isset($_POST['productID'])){ // if we are currently editing the listing
 <!-- this will only be displayed if all fields are filled and validated. -->
 <div id="submission">
 Your inputs are:<br>
+product name: <?php echo $product_name; ?><br>
 description: <?php echo $product_description; ?><br>
 image(s) uploaded:<?php echo $photoMsg; ?><br>
 start price (£): <?php echo $start_price; ?><br>
@@ -524,7 +555,7 @@ quantity:<?php echo $quantity; ?><br>
 category:<?php echo $categoryname; ?><br>
 condition:<?php echo $conditionname; ?><br>
 auctionable:<?php echo $auctionable; ?><br>
-reserve price (£): <?php if([$auctionable]=="Yes"){echo $reserve_price;}else{echo "N/A";};?><br>
+reserve price (£): <?php if($auctionable=="Yes"){echo $reserve_price;}else{echo "N/A";};?><br>
 listing starts on:<?php echo $startdate; ?><br>
 listing end date:<?php echo $enddate; ?><br>
 listing end time:<?php echo $endtime; ?><br>
@@ -614,3 +645,7 @@ if (filled=="filled"){
 
 </body>
 </html>
+
+<?php
+include "../footer.php";
+?>

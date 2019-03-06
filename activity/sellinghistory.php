@@ -1,6 +1,8 @@
 <?php
 session_start();
 
+include "../header.php";
+
 //fetch all the archive listing related to this seller
 $_SESSION["userID"]=1;
 
@@ -18,10 +20,11 @@ if ($count==0){
 
 <html>
 <head>
+<h1>My Selling History</h1>
 </head>
 
 <body>
-<p>My Selling History</p>
+
 <p id="t"></p>
 
 
@@ -29,6 +32,7 @@ if ($count==0){
 <table id=archive_listing_table width="device-width,initial-scale=1">
     <tr>
         <th>Image</th>
+        <th>Product Name</th>
         <th>Product Details</th>
         <th>Deal Price (£)</th>
         <th>Deal Date</th>
@@ -50,16 +54,22 @@ for (i=0;i<count;i++){
     var table=document.getElementById("archive_listing_table");
     var row=table.insertRow(-1);
     var cell_image=row.insertCell(0);
-    var cell_details=row.insertCell(1);
-    var cell_dealprice=row.insertCell(2);
-    var cell_dealdate=row.insertCell(3);
-    var cell_buyer=row.insertCell(4);
+    var cell_productname=row.insertCell(1);
+    var cell_details=row.insertCell(2);
+    var cell_dealprice=row.insertCell(3);
+    var cell_dealdate=row.insertCell(4);
+    var cell_buyer=row.insertCell(5);
  
     //insert image iin the 1st column (image)
     cell_image.style.textAlign="center";
     cell_image.innerHTML="(image)";
 
-    //insert product details into the 2nd column (Details)
+    //insert product name into the 2nd column (product name)
+    cell_productname.style.textAlign="center";
+
+    cell_productname.innerHTML=each_listing[i]["product_name"];
+
+    //insert product details into the 3rd column (Details)
     cell_details.style.textAlign="center";
 
     cell_details.innerHTML=each_listing[i]["product_description"]+
@@ -68,16 +78,16 @@ for (i=0;i<count;i++){
                                 "<br>category: "+each_listing[i]["categoryname"]+
                                 "<br>condition: "+each_listing[i]["conditionname"]+"<br><br>";
 
-    //insert buyer into the 3rd column (deal price)
+    //insert buyer into the 4th column (deal price)
     cell_dealprice.style.textAlign="center";
     cell_dealprice.innerHTML=each_listing[i]["dealprice"];
     
     
-    //insert deal date into the 4th column (deal date)
+    //insert deal date into the 5th column (deal date)
     cell_dealdate.style.textAlign="center";
     cell_dealdate.innerHTML=each_listing[i]["dealdate"];
 
-    //insert buyer into the 5th column (buyer)
+    //insert buyer into the 6th column (buyer)
     cell_buyer.style.textAlign="center";
 
     //insert function/query to get buyername
@@ -98,3 +108,8 @@ function warning_msg(){
 </body>
 
 </html>
+
+<?php
+
+include "../footer.php";
+?>

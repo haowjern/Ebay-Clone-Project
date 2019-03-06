@@ -1,58 +1,70 @@
-<?php session_start(); ?>
+<?php 
+session_start(); 
+
+include "header.php";
+?>
+
+
 
 <!DOCTYPE html>
 <html>   
 <head>
 <style>
-button {
-    font-size:15px;
-  padding: 15px 20px;
+input {
+    margin:auto;
+    display:block;
+    text-align: center;
+    width: 50%;
 }
 </style>
-        <button type="button">Sign In</button>
-        <button type="button" formaction=index.php>Home</button>
-        <input type="text" placeholder="Search... Whatever you write here will redirect to a SELECT ALL SQL statement"
-            formmethod="post" formaction="search.php">
-        <button (onclick)="/activity/sellershop.php" type="button">My Shop</button>
-        <button type="button">My Profile</button>
-        <button type="button">Purchase History</button>
-        <button href="/activity/sellinghistory.php" type="button">Selling History</button>
-        <button type="button">Cart</button>
-    </head> 
+</head>
 
     <body>
-        <h1>Team 15 EBAY SITE</h1>
-        <p>
-            <a> href="https://ebaydatabasegithub.azurewebsites.net/">
-                    azure homepage
-            </a>
-            
-            <a href="buyer_item.php" title="placeholder mouseover text">
-                BUYER_ITEM ,
-            <a href="database.php" title="placeholder mouseover text">
-                database.php ,
-            </a>
-            <a href="/activity/editlisting.php" title="placeholder mouseover text">
-                EDIT_LISTING ,
-            </a>
-            <a href="/activity/sellershop.php" title="placeholder mouseover text">
-                SELLER_SHOP ,
-            </a>
-            <a href="/activity/sellinghistory.php" title="placeholder mouseover text">
-                SELLING_HISTORY ,
-            </a>
-            <a href="/test/showlistings.php" title="placeholder mouseover text">
-                SHOW_LISTINGS ,
-            </a>
+        <h1>Team 10 EBAY SITE</h1>
+        <h2>Home Page</h2>
+        <input type="text" placeholder="Search... Whatever you write here will redirect to a SELECT ALL SQL statement"
+            formmethod="post" formaction="search.php">
+        <p>to be removed
 
-            <?php
-            echo "hello world from php"
+            <button onclick="window.location.href = 'https://ebaydatabasegithub.azurewebsites.net/';">azure homepage</button>
+           
+            <a href="database.php" title="placeholder mouseover text">
+                database.php
+            </a> 
+            <br>
+            <a>print out all session variables: </a><br><br>
+            <?php 
+
+            // print_r($_SESSION);
+            
+            foreach ($_SESSION as $key => $value){
+                print_r("session variable name: ".$key."<br>");  
+                print_r("session variable value: <br>"); 
+
+                if (is_array($value)){
+                    foreach ($value as $v){
+                        print_r($v."<br>");
+                    }
+                } else{
+                    print_r($value."<br>");
+                }
+                print_r("<br>");
+                
+            }
+            
+
             ?>
+
+    
         </p>
     </body>
 
-    <footer>
+    <!-- <footer>
         <button type="button">About Us</button>
         <button type="button">Contact Us</button>
-    </footer>
+    </footer> -->
 </html>
+
+<?php
+include "footer.php";
+?>

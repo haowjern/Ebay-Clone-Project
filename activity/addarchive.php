@@ -20,6 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result->num_rows>0){
         $row=$result->fetch_assoc();
         $sellerID=$row["sellerID"];
+        $product_name=$row["product_name"];
         $product_description=$row["product_description"];
         $categoryID=$row["categoryID"];
         $conditionID=$row["conditionID"];
@@ -44,8 +45,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         //insert item in archive table
-        $sql="INSERT INTO Archive (productID, product_description,dealprice,quantity,categoryID,conditionID,buyerID,sellerID,auctionable,dealdate) 
-        VALUES('$productID','$product_description','$dealprice','$quantity','$categoryID','$conditionID','$sellerID','$auctionable','$dealdate')";
+        $sql="INSERT INTO Archive (productID, product_name,product_description,dealprice,quantity,categoryID,conditionID,buyerID,sellerID,auctionable,dealdate) 
+        VALUES('$productID','$product_name','$product_description','$dealprice','$quantity','$categoryID','$conditionID','$sellerID','$auctionable','$dealdate')";
         
         if ($connection->query($sql)==TRUE){
         echo "New archive record successfully created";
