@@ -96,7 +96,7 @@ if (isset($_SESSION["editlisting"])) {
             WHERE productID=$productID";
 
         if ($connection->query($sql) === TRUE) {
-            echo "Record updated successfully";
+            echo "Record updated successfully for Product table";
         } else {
             echo "Error updating record: " . $connection->error;
         }

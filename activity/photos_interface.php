@@ -53,16 +53,6 @@ function set_photo($photo_arr, $instr) {
             echo("Error: " . $sql . "<br>" . $connection->error);
         }
 
-    // delete photo 
-    } elseif ($instr = "delete") {
-        $sql="DELETE FROM Photos WHERE photoID = '$photoID'";
-        
-        if ($connection_->query($sql)==TRUE) {
-            echo("Deleted photo successfully.");
-        } else {
-            echo("Error: " . $sql . "<br>" . $connection->error);
-        }
-
     } else {
         echo("Error: Selected wrong instruction for set_photo.");
     }
@@ -80,12 +70,11 @@ function get_photo($productID) {
 
     // select and return photo array
     // there are two cases - select user ID, or u select photo ID - currently I just want to select for productID
-    $sql = "SELECT * FROM Photos WHERE productID = ($productID) ";
+    $sql = "SELECT * FROM Photos WHERE productID = $productID ";
+    $photos = [];
     $result = $connection->query($sql);
     if ($result->num_rows>0) {
         
-
-        $photos = [];
         while ($row = $result->fetch_assoc()){
             $photo_arr['photoID'] = $row['photoID'];
             $photo_arr['productID'] = $row['productID'];
@@ -103,4 +92,20 @@ function get_photo($productID) {
 
     $connection->close();
 }
+
+function delete_photo($file_path) {
+
+    include '../database.php';
+    
+    $sql="DELETE FROM Photos WHERE file_path = '$file_path'";
+    
+    if ($connection->query($sql)==TRUE) {
+        echo("Deleted photo successfully.");
+    } else {
+        echo("Error: " . $sql . "<br>" . $connection->error);
+    }
+
+    $connection->close();
+};
+
 ?>

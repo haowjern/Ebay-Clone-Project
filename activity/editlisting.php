@@ -1,26 +1,76 @@
 <?php
 session_start();
+include "photos_interface.php";
 ?>
 
 <html>
 <head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"> </script>
+<script>
+  $(document).ready(function(){
+    $('a.delete').on('click',function(e){
+      e.preventDefault();
+      imageID = $(this).closest('.image')[0].id;
+      alert('Now deleting "'+imageID+'"'); // call delete method from php
+      $(this).closest('.image')
+        .fadeTo(300,0,function(){
+          $(this)
+            .animate({width:0},200,function(){
+              $(this)
+                .remove();
+            });
+        });
+    });
+  });
+</script>
+
 <style>
-body{
-  margin:auto;
-  width: 90%;
-}
-span.error{
-  color: red;
-  font-style: italic;
-}
-label {
-  font-weight: bold; 
-  text-align: center;
-}
-/* #submitbutton,#confirmbutton{
-  font-size:16px;
-  padding: 20px 20px; */
-}
+  body{
+    margin:auto;
+    width: 90%;
+  }
+  span.error{
+    color: red;
+    font-style: italic;
+  }
+  label {
+    font-weight: bold; 
+    text-align: center;
+  }
+  /* #submitbutton,#confirmbutton{
+    font-size:16px;
+    padding: 20px 20px; */
+  }
+
+  #container { 
+    overflow:auto; 
+  }
+
+  .image { 
+    width:100px;
+    height:100px;
+    float:left;
+    position:relative; 
+    background-size:cover
+  }
+
+  a.delete { 
+    position:absolute;
+    top:-5;
+    right:-10;
+    width:30px;
+    height:30px;
+    color:red;
+    text-decoration: none;
+    font-size: 30px;
+
+  }
+
+  .image:hover a.delete { 
+    display:block; 
+  }
+
+  
 </style>
 
 <h1>Create/modify your Listing</h1>
@@ -323,9 +373,32 @@ function test_input($data) {
 
       <span class="error"> <?php echo $desErr;?></span><br><br>
 
+<?php
+if (isset($_POST['productID'])){ // if we are currently editing the listing
+  // get current photos, get number of photos
+  $photos = get_photo($_POST['productID']); // list of photos with attributes as keys 
+?>
+	<div id="container">
+		<?php 
+		foreach ($photos as $photo_index=>$photo_attr) {
+      $file_path = $photo_attr['file_path'];  
+      $photo_id = $photo_attr['photoID'];
+		?>
+			  <div class="image" id="'<?php echo $file_path;?>'" style="background-image:url('<?php echo $file_path;?>');">
+				<!--<a href="#" class="delete" onclick='>&times;</a>-->
+			  <button class="delete">&times;</button>
+        </div>
+		<?php } ?>
+	</div>
+<?php } ?>
+
 <label for="image">Upload Image(s):</label><br>
       <input type="file" name="fileToUpload[]" id="fileToUpload" multiple>
       <span class="error"> <?php echo $photoErr;?></span><br><br>
+
+<br>
+<br>
+<br>
 
 <label for="start_price">Start Price (£)*:</label><br>
         <input name="start_price" id="start_price" type="number" placeholders="1.0" step="0.01" min="0.01" max="10000"
