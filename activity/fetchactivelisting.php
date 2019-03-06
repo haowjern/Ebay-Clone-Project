@@ -9,12 +9,18 @@ if (!isset($_SESSION["category_all"])||!isset($_SESSION["condition_all"])){
 
     include '../database.php';
 
+    include "photos_interface.php"; // this is to get the get photo function 
+
+
+    //$_session[product search criteria]=["category",1  ]
+
     unset($_SESSION["all_active_listings"]);
 
     if (isset($_SESSION["product_search_criteria"])){
-
         $criteria=$_SESSION["product_search_criteria"][0];
         $value=mysqli_real_escape_string($connection,$_SESSION["product_search_criteria"][1]);
+
+        $criteria ="all"; // REMOVE THIS HAOW JERN BEFORE COMMITTING !! 
 
     // write the query according to search criteria
         if ($criteria=="sellerID"){
@@ -43,6 +49,7 @@ if (!isset($_SESSION["category_all"])||!isset($_SESSION["condition_all"])){
         $result=$connection->query($sql);
 
         if ($result->num_rows>0){
+            
             $_SESSION["all_active_listings"]=array();
         
             //output data of each row in table
@@ -51,7 +58,12 @@ if (!isset($_SESSION["category_all"])||!isset($_SESSION["condition_all"])){
 
 
                 foreach ($row as $key => $value){
-                    $v[$key]=$value;
+                    $v[$key]=$value; 
+                    
+                    // getting photos, and associating all photos with one key
+                    if ($key == "productID") {
+                        $v["photos"] = get_photo($value); // $v["photos"] is a LIST of associative arrays with keys "productID", "photoID", "file_path"
+                    }
                 }
 
                 //obtain the category and condition from sessionv variables
