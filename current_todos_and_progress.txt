@@ -179,7 +179,10 @@ Haow Jern
 
 
 Sergi
-    - sellinghistory.php, fetcharchive.php: should be very similar to your buyer purchase 	history!!   [<- from annie]
+    
+    - ensure user can't make watch on same item more than once !!!
+    - read up on sessions, etc 
+    ( ??- sellinghistory.php, fetcharchive.php: should be very similar to your buyer purchase 	history!!   [<- from annie] )
 
     - make watchlist function(s) - ready to plug onto relevant pages (figure out where they'd go - listing page defo, any others?)
 
@@ -190,6 +193,11 @@ Sergi
     - which functions?
         
         watchlist:
+        
+            ./  add_watching                ...needs so same user can't make >1 watch on same product
+            .   1   remove_watching         [put buttons into view-item and show_my_watchlist pages]
+            .   2   update_all_watchers     function as part of making a bid! if bid > any bid made by user watching !
+            ./  3   show_my_watchlist       ...needs specific product sql
 
             add_watching
             remove_watching
@@ -197,7 +205,7 @@ Sergi
         
         search for item kinds & categories:
 
-            search_items
+            search_items    [is this done by annie? do i have to do selling history? check...]
         
     
     - current code that's relevant:
@@ -205,8 +213,8 @@ Sergi
 
             make:
         buyer_item      (watch button!)
-        Buyer_listing   (search & filter by category/condition)
-        selling_history         (? search & filter by category/condition?)
+        Buyer_listing   (search & filter by category/condition) ?
+        selling_history         (? search & filter by category/condition?) ?
 
 
             using:
@@ -216,7 +224,14 @@ Sergi
 
     - creating:
         
-        watch_product.php       take a few hints from bid_product.php - and bid_product_interface.php
+        ./watch_product.php
+        ./activity/watch_product_interface.php
+
+        ./show_my_watchlist     shows all the items that user is watching
+
+         functions:
+        stop watching button (when user is watching the item being viewed in buyer listing)
+        email all watchers (when bid made)
 
 
 

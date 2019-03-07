@@ -23,7 +23,7 @@ body{
     
     <button type="button">Sign In</button>
     <button onclick="window.location.href = '/index.php';"type="button" formaction=index.php>Home</button>
-
+    <button onclick="window.location.href = '/show_my_watchlist.php';" type="button">My Watchlist</button>
     <button onclick="window.location.href = '/activity/sellershop.php';" type="button">My Shop</button>
     <button onclick="window.location.href = '/yourProfile.php';" type="button">My Profile</button>
     <button onclick="window.location.href = '/';"type="button">Purchase History</button>
