@@ -19,6 +19,7 @@
   }else{
 
 
+    /*   FAILED FIX - FROM https://docs.microsoft.com/en-us/azure/sql-database/sql-database-connect-query-php
 
     $serverName = "ebaydatabasegithub.azurewebsites.net"; // update me
     $connectionOptions = array(
@@ -46,7 +47,7 @@
 
 
 
-   /* 
+    
     $connectstr_dbhost = '';
     $connectstr_dbname = '';
     $connectstr_dbusername = '';
@@ -82,7 +83,7 @@
         echo "Successfully connected to the database.\n";
     }
       }
-  */
+  
 ?>
   
 </body>
