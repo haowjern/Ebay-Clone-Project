@@ -1,4 +1,5 @@
 <?php session_start(); 
+include "header.php";
 include 'database.php';
 
 $_SESSION["product"]["name"] = "Burger";
@@ -110,3 +111,8 @@ if (isset($_SESSION["product"]["auctionable"]) && $_SESSION["product"]["auctiona
         </form>
     </body>
 </html>
+
+<?php
+include "footer.php";
+?>
+

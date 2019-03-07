@@ -180,7 +180,7 @@ Haow Jern
 
 Sergi
     
-    - ensure user can't make watch on same item more than once !!!
+    ( - ensure user can't make watch on same item more than once !!! <- this is solved by watch->stopwatching button)
     - read up on sessions, etc 
     ( ??- sellinghistory.php, fetcharchive.php: should be very similar to your buyer purchase 	history!!   [<- from annie] )
 
@@ -190,10 +190,10 @@ Sergi
         
         watchlist:
         
-            ./  add_watching                ...needs so same user can't make >1 watch on same product
-            .   1   remove_watching         [put buttons into view-item and show_my_watchlist pages]
+            ./  add_watching                
+            ./  1   remove_watching         [put buttons into view-item and show_my_watchlist pages]
             .   2   update_all_watchers     function as part of making a bid! if bid > any bid made by user watching !
-            ./  3   show_my_watchlist       ...needs specific product sql
+            .   3   show_my_watchlist       ...needs specific product sql
 
             add_watching
             remove_watching
