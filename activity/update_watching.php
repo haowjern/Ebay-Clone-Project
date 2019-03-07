@@ -1,5 +1,5 @@
 <?php
-function send_email_updating_watchers($bidarr) {
+function send_email_updating_watchers($bid_arr) {
     include 'database.php';
 
     $bidID = $bid_arr['bidID'];
@@ -14,6 +14,11 @@ function send_email_updating_watchers($bidarr) {
     $bidderName=mysqli_fetch_array($result1)['username'];
 
 
+    // specify email subject, body, and altbody
+    $subject = "Test email subject";
+    $body = "Test email body...";
+    $altbody = "Test email altbody......";
+
     // get emails of all users watching this product
     $sql="SELECT * FROM Watchlist WHERE productID = $productID";
     $result = mysqli_query($connection, $sql);
@@ -25,7 +30,7 @@ function send_email_updating_watchers($bidarr) {
         $watchingUserEmail=mysqli_fetch_array($result1)['email'];
         echo $watchingUserEmail;
 
-        
+        send_to_email($watchingUserEmail, $subject, $body, $altbody);
        
 
     }
