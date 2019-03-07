@@ -30,7 +30,7 @@ function send_email_updating_watchers($bid_arr) {
         $watchingUserEmail=mysqli_fetch_array($result1)['email'];
         echo $watchingUserEmail;
 
-        send_to_email($watchingUserEmail, $subject, $body, $altbody);
+        //send_to_email($watchingUserEmail, $subject, $body, $altbody);
        
 
     }
