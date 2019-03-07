@@ -94,11 +94,13 @@ if (isset($_SESSION["product"]["auctionable"]) && $_SESSION["product"]["auctiona
             <input type="submit" value="Cart">     
 
             <?php
+                // code for watch/stop_watching button switch
                 $buyerID = $_SESSION['userID'];
                 $productID = $_SESSION['product']['id'];
                 $sql = "SELECT COUNT(*) FROM watchlist WHERE productID = $productID AND buyerID = $buyerID";
                 $result = $connection->query($sql); 
-                if ($result===0) {
+                $row = mysqli_fetch_row($result);
+                if (implode(null,$row)==0) {
                     echo('<input type="submit" value="Watch" onclick="return validateForm(this)" formaction="./watch_product.php" formmethod="post">');
                 } else {
                     echo('<input type="submit" value="Stop Watching" onclick="return validateForm(this)" formaction="./stop_watching_product.php" formmethod="post">');
