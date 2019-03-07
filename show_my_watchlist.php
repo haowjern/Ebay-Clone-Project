@@ -12,14 +12,10 @@ $email = 'sergi.bray@gmail.com';
 $subject = 'test';
 $body = 'hello from database';
 $altbody = 'hello from db (altbody)';
+echo "testing mail...";
+mail($email, $subject, $body);
 
-$headers = 'From: group10ebaydatabaseproject@gmail.com' . "\r\n" .
-    'Reply-To: group10ebaydatabaseproject@gmail.com' . "\r\n" .
-    'X-Mailer: PHP/' . phpversion();
-
-mail($email, $subject, $body, $headers);
-
-//send_to_email($email, $subject, $body, $altbody);
+send_to_email($email, $subject, $body, $altbody);
 
 show_watchlist($_SESSION['current_user']);  
 ?>
