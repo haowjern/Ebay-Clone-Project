@@ -110,7 +110,23 @@ CREATE TABLE IF NOT EXISTS Photos (
 	photoID INT NOT NULL AUTO_INCREMENT,
 	productID INT NOT NULL,
 	file_path TEXT,
-	PRIMARY KEY (photoID)
+	PRIMARY KEY (photoID),
+	FOREIGN KEY (productID) REFERENCES Product(productID) ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE=INNODB;
+
+/*
+CREATE USERS TABLE ......?
+*/
+
+CREATE TABLE IF NOT EXISTS Users (
+    userID INT NOT NULL,
+    username TEXT,
+    password1 TEXT,
+    email TEXT,
+    phone TEXT,
+    accountbalance INTEGER,
+    DOB TEXT,
+    PRIMARY KEY (userID)
 ) ENGINE=INNODB;
 
 CREATE TABLE IF NOT EXISTS BidEvents (
@@ -119,7 +135,9 @@ CREATE TABLE IF NOT EXISTS BidEvents (
     buyerID INT NOT NULL, 
     payment BOOLEAN NOT NULL,
     bidPrice NUMERIC NOT NULL,
-    PRIMARY KEY (bidID)
+    PRIMARY KEY (bidID),
+    FOREIGN KEY (productID) REFERENCES Product(productID) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (buyerID) REFERENCES Users(userID) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=INNODB;
 
 /*
@@ -137,19 +155,7 @@ CREATE TABLE IF NOT EXISTS Watchlist (
 
 
 
-/*
-CREATE USERS TABLE ......?
-*/
 
-CREATE TABLE IF NOT EXISTS Users (
-    userID INT NOT NULL,
-    username TEXT,
-    password1 TEXT,
-    email TEXT,
-    phone TEXT,
-    accountbalance INTEGER,
-    DOB TEXT
-) ENGINE=INNODB;
 
 
 /* interest categories? and do we parse input before adding to this or is it something to do with configuring the table? (eg password..?) we'll figure it out :) */

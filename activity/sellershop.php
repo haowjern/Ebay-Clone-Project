@@ -96,10 +96,14 @@ for (i=0;i<count;i++){
     var cell_enddate=row.insertCell(6);
     var cell_auctionable=row.insertCell(7);
     var cell_action=row.insertCell(8);
+
  
     //insert image iin the 1st column (image)
     cell_image.style.textAlign="center";
-    cell_image.innerHTML="(image)";
+    cell_image.innerHTML=`<img src=${each_listing[i]['photos'][0]['file_path']} alt='Image' style=max-height:100%; max-width:100%>`
+
+    cell_image.height=100; // scale size
+    cell_image.width=100; // scale size 
 
     //insert product name into the 2nd column (Product Name)
     cell_productname.style.textAlign="center";
