@@ -186,10 +186,6 @@ Sergi
 
     - make watchlist function(s) - ready to plug onto relevant pages (figure out where they'd go - listing page defo, any others?)
 
-    - work out what people have coded (that would be relevant to my functions)
-    - work out how to go about coding my functions
-    - work out how to code each function
-
     - which functions?
         
         watchlist:
@@ -236,4 +232,3 @@ Sergi
 
 
     - question... are users searching & filtering by KEYWORDS as well as category & condition? 
-- qu... what exactly is "home.jpg" in notes above? and why all .jpg/.png ???
