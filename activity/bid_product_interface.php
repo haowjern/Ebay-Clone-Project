@@ -20,7 +20,7 @@ function set_bidEvent($bid_arr, $instr) {
     $payment = $bid_arr['payment'];
     $bidPrice = $bid_arr['price'];
     // add new 
-    if ($instr = "insert") {
+    if ($instr === "insert") {
         $sql = "INSERT INTO bidEvents (productID, buyerID, payment, bidPrice) VALUES ('$productID', '$buyerID', '$payment', $bidPrice)";
         $result = $connection->query($sql); 
         if ($result==TRUE) {
@@ -33,7 +33,7 @@ function set_bidEvent($bid_arr, $instr) {
             echo("Error: " . $sql . "<br>" . $connection->error);
         }
     // update
-    } elseif ($instr = "update") {
+    } elseif ($instr === "update") {
         $sql = "INSERT INTO bidEvents (productID,  buyerID, payment, bidPrice) VALUES ($productID', '$buyerID', '$payment', '$bidPrice');
         WHERE bidID = '$bidID'";
         if ($connection->query($sql)==TRUE) {
@@ -42,7 +42,7 @@ function set_bidEvent($bid_arr, $instr) {
             echo("Error: " . $sql . "<br>" . $connection->error);
         }
     // delete 
-    } elseif ($instr = "delete") {
+    } elseif ($instr === "delete") {
         $sql="DELETE FROM bidEvents WHERE bidID = '$bidID'";
         
         if ($connection_->query($sql)==TRUE) {
