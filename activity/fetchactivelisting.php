@@ -20,8 +20,6 @@ if (!isset($_SESSION["category_all"])||!isset($_SESSION["condition_all"])){
         $criteria=$_SESSION["product_search_criteria"][0];
         $value=mysqli_real_escape_string($connection,$_SESSION["product_search_criteria"][1]);
 
-        $criteria ="all"; // REMOVE THIS HAOW JERN BEFORE COMMITTING !! 
-
     // write the query according to search criteria
         if ($criteria=="sellerID"){
 
