@@ -18,7 +18,7 @@ $categoryname = $_POST["categoryname"];
 $conditionname = $_POST["conditionname"]; 
 
 $is_bidding = FALSE; // this is for price
-if (strtolower($auctionable) === "yes") {
+if (strtolower($auctionable) == 1) {
     $is_bidding = TRUE;
 }
 
@@ -106,7 +106,7 @@ if (strtolower($auctionable) === "yes") {
             <h3>Item Name</h3>
             <p>Description of item</p>
             Quantity:
-            <input type="number" name="quantity" placeholders="1" min="1" max="10" required>
+            <input id='quantity' type="number" name="quantity" placeholders="1" min="1" max="10" required>
             <?php if ($is_bidding) {?>
                 Bid Price: <input name="price" id="price" type="number" step="0.01" min="0" max="10000" required> <span id="error_price"></span>
                 Current Bid:
@@ -119,8 +119,11 @@ if (strtolower($auctionable) === "yes") {
             <h3>Seller Details</h3>
             <p>Name: Seller Name</p>
 
-            <input type="submit" value="Bid" onclick="return validateForm(this)" formaction="./bid_product.php" formmethod="post">
-            <input type="submit" value="Cart">     
+            <input id='bid' type="submit" value="Bid" onclick="return validateForm(this)" formaction="./bid_product.php" formmethod="post" <?php if (!$is_bidding) {echo "disabled";} ?>>
+            <input id='buy' type="submit" value="Buy" onclick="return validateForm(this)" formaction="./bid_product.php" formmethod="post" <?php if ($is_bidding) {echo "disabled";} ?>>
+
+            
+            <input type="submit" value="Cart" <?php if ($is_bidding) {echo "disabled";} ?>>     
 
             <?php
                 // code for watch/stop_watching button switch
