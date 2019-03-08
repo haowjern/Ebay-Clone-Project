@@ -17,9 +17,14 @@ $endtime = $_POST["endtime"];
 $categoryname = $_POST["categoryname"];
 $conditionname = $_POST["conditionname"]; 
 
+unset($_SESSION['product']);
+$_SESSION['product'] = array_merge([], $_POST); // create session variable so bid_product can use this 
+
+
 $is_bidding = FALSE; // this is for price
 if (strtolower($auctionable) == 1) {
     $is_bidding = TRUE;
+    // get latest bid price from bid event; 
 }
 
 /*  if condition to check whether user is watching product
@@ -120,7 +125,7 @@ if (strtolower($auctionable) == 1) {
             <p>Name: Seller Name</p>
 
             <input id='bid' type="submit" value="Bid" onclick="return validateForm(this)" formaction="./bid_product.php" formmethod="post" <?php if (!$is_bidding) {echo "disabled";} ?>>
-            <input id='buy' type="submit" value="Buy" onclick="return validateForm(this)" formaction="./bid_product.php" formmethod="post" <?php if ($is_bidding) {echo "disabled";} ?>>
+            <input id='buy' type="submit" value="Buy" onclick="return validateForm(this)" formaction="" formmethod="post" <?php if ($is_bidding) {echo "disabled";} ?>>
 
             
             <input type="submit" value="Cart" <?php if ($is_bidding) {echo "disabled";} ?>>     

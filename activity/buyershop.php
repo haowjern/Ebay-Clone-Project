@@ -25,6 +25,7 @@ if ($count==0){
 
 ?>
 
+
 <html>
 <head>
 
@@ -57,9 +58,9 @@ th {
         <br><br>
         <input type="number" id="search_s_price" onkeyup="search_filter('search_s_price',3,'price')" placeholder="higher than..." title="Type something">
         </th>
-        <th>Reserve Price (£)
+        <th>Latest Bid (£)
         <br><br>
-        <input type="number" id="search_r_price" onkeyup="search_filter('search_r_price',4,'price')" placeholder="higher than..." title="Type something">
+        <input type="number" id="search_lb_price" onkeyup="search_filter('search_lb_price',4,'price')" placeholder="higher than..." title="Type something">
         </th>
         <th>Listing starts on
         <br><br>
@@ -93,7 +94,7 @@ for (i=0;i<count;i++){
     var cell_productname=row.insertCell(1);
     var cell_details=row.insertCell(2);
     var cell_startprice=row.insertCell(3);
-    var cell_reserveprice=row.insertCell(4);
+    var cell_latest_bid_price=row.insertCell(4);
     var cell_startdate=row.insertCell(5);
     var cell_enddate=row.insertCell(6);
     var cell_auctionable=row.insertCell(7);
@@ -124,13 +125,18 @@ for (i=0;i<count;i++){
     cell_startprice.style.textAlign="center";
     cell_startprice.innerHTML=each_listing[i]["start_price"];
 
-    //insert reserve price into the 5th column (reserve price)
-    cell_reserveprice.style.textAlign="center";
+    //insert latest bid price into the 5th column (latest bid price)
+    cell_latest_bid_price.style.textAlign="center";
+    let bid_price = each_listing[i]["latest_bid"]["0"]["bidPrice"];
     if (each_listing[i]["auctionable"]==="1"){
-        cell_reserveprice.innerHTML=each_listing[i]["reserve_price"];
-        }else{
-            cell_reserveprice.innerHTML="N/A";
-            }
+        if (bid_price) {
+            cell_latest_bid_price.innerHTML= bid_price;
+        } else {
+            cell_latest_bid_price.innerHTML= each_listing[i]["start_price"];
+        }
+    } else {
+        cell_latest_bid_price.innerHTML="N/A";
+    }
 
     //insert listing startdate into the 6th column (listing startdate)
     cell_startdate.style.textAlign="center";
