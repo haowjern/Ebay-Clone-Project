@@ -24,7 +24,7 @@ input {
         <h1>Team 10 EBAY SITE</h1>
         <h2>Home Page</h2>
         <div>
-            <form action="/activity/buyershop.php">
+            <form action="/activity/buyershop.php" method="post">
                 <input id="search_box" name="search_box" type="text" placeholder="Search... Whatever you write here will redirect to a SELECT ALL SQL statement">
                 <input type="submit" value="Search"> 
             </form>
