@@ -6,7 +6,7 @@ include "photos_interface.php";
 $productID = $_POST["productID"];
 $name = $_POST["product_name"];
 $photos = $_POST["photos"]; 
-$start_price = $_POST["start_price"];
+$start_price = max($_POST["bidPrice"], $_POST["start_price"]);
 $reserve_price = $_POST["reserve_price"];
 $quantity = $_POST["quantity"];
 $sellerID = $_POST["sellerID"];

@@ -168,12 +168,21 @@ for (i=0;i<count;i++){
 
 
     for (var index in each_listing[i]){
+        //console.log(each_listing[i]);
         var hiddenField=document.createElement("input");
         hiddenField.setAttribute("type","hidden");
         hiddenField.setAttribute("name",index);
         hiddenField.setAttribute("value",each_listing[i][index]);
-
         fm_go_details.appendChild(hiddenField);
+
+        
+        if (index == "latest_bid") { 
+            var hiddenField=document.createElement("input");
+            hiddenField.setAttribute("type","hidden");
+            hiddenField.setAttribute("name", "bidPrice");
+            hiddenField.setAttribute("value",each_listing[i][index][0]["bidPrice"]); // some error with each_listing[i]["latest_bid"] - talk to HJ if u have errors with any
+            fm_go_details.appendChild(hiddenField);
+        }
     }
 
     var go_details_button=document.createElement("input");

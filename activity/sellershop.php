@@ -184,8 +184,7 @@ for (i=0;i<count;i++){
         var hiddenField=document.createElement("input");
         hiddenField.setAttribute("type","hidden");
         hiddenField.setAttribute("name",index);
-        hiddenField.setAttribute("value",each_listing[i][index]);
-
+        hiddenField.setAttribute("value",each_listing[i][index]); // some error with each_listing[i]["latest_bid"] - talk to HJ if u have errors with any
         fm_edit.appendChild(hiddenField);
     }
 
