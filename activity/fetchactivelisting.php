@@ -1,6 +1,8 @@
 <?php 
 session_start();
 
+include "bid_product_interface.php";
+
 //obtain all the active listing items of the seller
 
 //call getc&c.php to store all category and condition indices and names in session variables
@@ -19,8 +21,6 @@ if (!isset($_SESSION["category_all"])||!isset($_SESSION["condition_all"])){
     if (isset($_SESSION["product_search_criteria"])){
         $criteria=$_SESSION["product_search_criteria"][0];
         $value=mysqli_real_escape_string($connection,$_SESSION["product_search_criteria"][1]);
-
-        $criteria ="all"; // REMOVE THIS HAOW JERN BEFORE COMMITTING !! 
 
     // write the query according to search criteria
         if ($criteria=="sellerID"){
@@ -56,13 +56,13 @@ if (!isset($_SESSION["category_all"])||!isset($_SESSION["condition_all"])){
             while($row=$result->fetch_assoc()){
                 $v=array();
 
-
                 foreach ($row as $key => $value){
                     $v[$key]=$value; 
                     
                     // getting photos, and associating all photos with one key
                     if ($key == "productID") {
                         $v["photos"] = get_photo($value); // $v["photos"] is a LIST of associative arrays with keys "productID", "photoID", "file_path"
+                        $v["latest_bid"] = get_bidEvent("latest", $value); 
                     }
                 }
 

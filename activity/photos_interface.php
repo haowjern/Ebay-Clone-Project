@@ -21,7 +21,7 @@ function set_photo($photo_arr, $instr) {
     $file_path = $photo_arr['file_path'];
 
     // add new photo 
-    if ($instr = "insert") {
+    if ($instr === "insert") {
         $sql = "INSERT INTO Photos (productID, file_path) VALUES ('$pID', '$file_path')";
         $result = $connection->query($sql); 
         if ($result==TRUE) {
@@ -43,7 +43,7 @@ function set_photo($photo_arr, $instr) {
         }
 
     // update photo
-    } elseif ($instr = "update") {
+    } elseif ($instr === "update") {
         $sql = "INSERT INTO Photos (productID, file_path) VALUES ('$pID', '$file_path')
         WHERE photoID = '$photoID'";
 

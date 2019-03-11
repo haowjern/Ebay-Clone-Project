@@ -17,13 +17,18 @@ input {
     width: 50%;
 }
 </style>
+
 </head>
 
     <body>
         <h1>Team 10 EBAY SITE</h1>
         <h2>Home Page</h2>
-        <input type="text" placeholder="Search... Whatever you write here will redirect to a SELECT ALL SQL statement"
-            formmethod="post" formaction="search.php">
+        <div>
+            <form action="/activity/buyershop.php" method="post">
+                <input id="search_box" name="search_box" type="text" placeholder="Search... Whatever you write here will redirect to a SELECT ALL SQL statement">
+                <input type="submit" value="Search"> 
+            </form>
+        </div>
         <p>to be removed
 
             <button onclick="window.location.href = 'https://ebaydatabasegithub.azurewebsites.net/';">azure homepage</button>

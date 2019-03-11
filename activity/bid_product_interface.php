@@ -5,8 +5,8 @@ function set_bidEvent($bid_arr, $instr) {
     - <$product_arr>: Object with attributes - 
     - <$instr>: 
     */ 
-    include 'database.php';
-    include 'activity/update_watching.php';
+    include '../database.php';
+    include './update_watching.php';
     // check object has the correct properties
     $properties = ["bidID", "productID", "buyerID", "payment", "price"];
     foreach ($properties as $value) {
@@ -20,7 +20,7 @@ function set_bidEvent($bid_arr, $instr) {
     $payment = $bid_arr['payment'];
     $bidPrice = $bid_arr['price'];
     // add new 
-    if ($instr = "insert") {
+    if ($instr === "insert") {
         $sql = "INSERT INTO bidEvents (productID, buyerID, payment, bidPrice) VALUES ('$productID', '$buyerID', '$payment', $bidPrice)";
         $result = $connection->query($sql); 
         if ($result==TRUE) {
@@ -33,7 +33,7 @@ function set_bidEvent($bid_arr, $instr) {
             echo("Error: " . $sql . "<br>" . $connection->error);
         }
     // update
-    } elseif ($instr = "update") {
+    } elseif ($instr === "update") {
         $sql = "INSERT INTO bidEvents (productID,  buyerID, payment, bidPrice) VALUES ($productID', '$buyerID', '$payment', '$bidPrice');
         WHERE bidID = '$bidID'";
         if ($connection->query($sql)==TRUE) {
@@ -42,10 +42,10 @@ function set_bidEvent($bid_arr, $instr) {
             echo("Error: " . $sql . "<br>" . $connection->error);
         }
     // delete 
-    } elseif ($instr = "delete") {
+    } elseif ($instr === "delete") {
         $sql="DELETE FROM bidEvents WHERE bidID = '$bidID'";
         
-        if ($connection_->query($sql)==TRUE) {
+        if ($connection->query($sql)==TRUE) {
             echo("Deleted bid event successfully.");
         } else {
             echo("Error: " . $sql . "<br>" . $connection->error);
@@ -55,5 +55,39 @@ function set_bidEvent($bid_arr, $instr) {
     }
     return $bid_arr;
     $connection->close();
+}
+
+function get_bidEvent($condition, $productID) {
+    include '../database.php';
+    
+    $bids = []; 
+    if ($condition == "latest") {
+        $sql = "SELECT * FROM bidEvents WHERE bidPrice=(
+            SELECT MAX(bidPrice) FROM bidEvents WHERE productID = $productID
+            );";
+        $result = $connection->query($sql);
+        if ($result->num_rows>0) { 
+            while ($row=$result->fetch_assoc()) {
+                $bid_arr['bidID'] = $row['bidID'];
+                $bid_arr['productID'] = $row['productID'];
+                $bid_arr['buyerID'] = $row['buyerID'];
+                $bid_arr['payment'] = $row['payment'];
+                $bid_arr['bidPrice'] = $row['bidPrice'];
+    
+                array_push($bids, $bid_arr);
+            }
+
+            echo("Received bid event successfully.");
+        } else {
+            $bid_arr['bidID'] = 0; 
+            $bid_arr['productID'] = 0;
+            $bid_arr['buyerID'] = 0;
+            $bid_arr['payment'] = 0;
+            $bid_arr['bidPrice'] = 0;
+            array_push($bids, $bid_arr);
+        }
+    }
+    
+    return $bids;
 }
 ?>

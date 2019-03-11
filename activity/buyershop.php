@@ -4,10 +4,17 @@ session_start();
 include '../header.php';
 
 //fetch all the active listing related to this seller
-$_SESSION["userID"]=1;
+//$_SESSION["userID"]=1;
 
+/*
+if ($_POST["search_box"] === "") {
+    // change criteria 
+    // pass in as an argument
+}
+
+*/ 
 unset($_SESSION["product_search_criteria"]);
-$_SESSION["product_search_criteria"]=["sellerID",""];
+$_SESSION["product_search_criteria"]=["all",""]; // change this criteria when query is more personalised
 
 include 'fetchactivelisting.php';
 
@@ -16,12 +23,8 @@ if ($count==0){
     echo "no result found";
 }
 
-$host  = $_SERVER['HTTP_HOST'];
-$uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
-$extra = 'editlisting.php';
-$link_newlisting="http://".$host.$uri."/".$extra;
-
 ?>
+
 
 <html>
 <head>
@@ -38,7 +41,7 @@ th {
 
 <body>
 
-<button type="button" onclick="window.location.href = '<?php echo $link_newlisting; ?>'">Create new listing</button>
+
 <p id="t"></p>
 <button onclick="reset_filter()">Reset all filters</button>
 
@@ -55,9 +58,9 @@ th {
         <br><br>
         <input type="number" id="search_s_price" onkeyup="search_filter('search_s_price',3,'price')" placeholder="higher than..." title="Type something">
         </th>
-        <th>Reserve Price (£)
+        <th>Latest Bid (£)
         <br><br>
-        <input type="number" id="search_r_price" onkeyup="search_filter('search_r_price',4,'price')" placeholder="higher than..." title="Type something">
+        <input type="number" id="search_lb_price" onkeyup="search_filter('search_lb_price',4,'price')" placeholder="higher than..." title="Type something">
         </th>
         <th>Listing starts on
         <br><br>
@@ -91,7 +94,7 @@ for (i=0;i<count;i++){
     var cell_productname=row.insertCell(1);
     var cell_details=row.insertCell(2);
     var cell_startprice=row.insertCell(3);
-    var cell_reserveprice=row.insertCell(4);
+    var cell_latest_bid_price=row.insertCell(4);
     var cell_startdate=row.insertCell(5);
     var cell_enddate=row.insertCell(6);
     var cell_auctionable=row.insertCell(7);
@@ -122,13 +125,18 @@ for (i=0;i<count;i++){
     cell_startprice.style.textAlign="center";
     cell_startprice.innerHTML=each_listing[i]["start_price"];
 
-    //insert reserve price into the 5th column (reserve price)
-    cell_reserveprice.style.textAlign="center";
+    //insert latest bid price into the 5th column (latest bid price)
+    cell_latest_bid_price.style.textAlign="center";
+    let bid_price = each_listing[i]["latest_bid"]["0"]["bidPrice"];
     if (each_listing[i]["auctionable"]==="1"){
-        cell_reserveprice.innerHTML=each_listing[i]["reserve_price"];
-        }else{
-            cell_reserveprice.innerHTML="N/A";
-            }
+        if (bid_price) {
+            cell_latest_bid_price.innerHTML= bid_price;
+        } else {
+            cell_latest_bid_price.innerHTML= each_listing[i]["start_price"];
+        }
+    } else {
+        cell_latest_bid_price.innerHTML="N/A";
+    }
 
     //insert listing startdate into the 6th column (listing startdate)
     cell_startdate.style.textAlign="center";
@@ -144,80 +152,45 @@ for (i=0;i<count;i++){
     if (each_listing[i]["auctionable"]==="0"){
         each_listing[i]["auctionable"]="No";
         cell_auctionable.innerHTML="No";
-        }else{
-            each_listing[i]["auctionable"]="Yes";
-
-            //create the form to go to bid event if it is auctionable
-            var fm_bid=document.createElement('form');
-            //name the form with productID
-            fm_bid.setAttribute("name","form_bid"+each_listing[i]["productID"]);
-            fm_bid.setAttribute("method","post");
-            fm_bid.setAttribute("action","");
-
-            var hiddenField_bid=document.createElement("input");
-                hiddenField_bid.setAttribute("type","hidden");
-                hiddenField_bid.setAttribute("name","productID");
-                hiddenField_bid.setAttribute("value",each_listing[i]["productID"]);
-
-                fm_bid.appendChild(hiddenField_bid);
-
-            var bid_button=document.createElement("input");
-            bid_button.setAttribute("type","submit");
-            bid_button.setAttribute("value","go to bid event");
-        
-            fm_bid.appendChild(bid_button);
-            cell_auctionable.appendChild(fm_bid);
-        }
+    } else {
+        cell_auctionable.innerHTML="Yes";
+    }
 
     //insert forms with buttons in 9th column (action)
     cell_action.style.textAlign="center";
 
-    //create the form to edit item
-    var fm_edit=document.createElement('form');
+    //create the form to see more details of item
+    var fm_go_details=document.createElement('form');
     //name the form with productID
-    fm_edit.setAttribute("name","form_edit"+each_listing[i]["productID"]);
-    fm_edit.setAttribute("method","post");
-    fm_edit.setAttribute("action","editlisting.php");
+    fm_go_details.setAttribute("name","form_go_details"+each_listing[i]["productID"]);
+    fm_go_details.setAttribute("method","post");
+    fm_go_details.setAttribute("action","buyer_item.php");
 
 
     for (var index in each_listing[i]){
+        //console.log(each_listing[i]);
         var hiddenField=document.createElement("input");
         hiddenField.setAttribute("type","hidden");
         hiddenField.setAttribute("name",index);
-        hiddenField.setAttribute("value",each_listing[i][index]); // some error with each_listing[i]["latest_bid"] - talk to HJ if u have errors with any
-        fm_edit.appendChild(hiddenField);
+        hiddenField.setAttribute("value",each_listing[i][index]);
+        fm_go_details.appendChild(hiddenField);
+
+        
+        if (index == "latest_bid") { 
+            var hiddenField=document.createElement("input");
+            hiddenField.setAttribute("type","hidden");
+            hiddenField.setAttribute("name", "bidPrice");
+            hiddenField.setAttribute("value",each_listing[i][index][0]["bidPrice"]); // some error with each_listing[i]["latest_bid"] - talk to HJ if u have errors with any
+            fm_go_details.appendChild(hiddenField);
+        }
     }
 
-    var edit_button=document.createElement("input");
-    edit_button.setAttribute("type","submit");
-    edit_button.setAttribute("value","edit");
-    fm_edit.appendChild(edit_button);
+    var go_details_button=document.createElement("input");
+    go_details_button.setAttribute("type","submit");
+    go_details_button.setAttribute("value","Details");
+    fm_go_details.appendChild(go_details_button);
 
-    cell_action.appendChild(fm_edit);
-
-    //create the form to remove item
-    var fm_remove=document.createElement('form');
-    //name the form with productID
-    fm_remove.setAttribute("name","form_remove"+each_listing[i]["productID"]);
-    fm_remove.setAttribute("method","post");
-    fm_remove.setAttribute("action","removelisting.php");
-
-
-    var hiddenField_remove=document.createElement("input");
-        hiddenField_remove.setAttribute("type","hidden");
-        hiddenField_remove.setAttribute("name","productID");
-        hiddenField_remove.setAttribute("value",each_listing[i]["productID"]);
-
-        fm_remove.appendChild(hiddenField_remove);
-
-    var remove_button=document.createElement("input");
-    remove_button.setAttribute("type","submit");
-    remove_button.setAttribute("value","remove");
-    //alert pop up prior to deletion
-    remove_button.setAttribute("onclick","return warning_msg();");
-    fm_remove.appendChild(remove_button);
-    cell_action.appendChild(fm_remove);
-
+    cell_action.appendChild(fm_go_details);
     
 }
 
