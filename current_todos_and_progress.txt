@@ -16,14 +16,14 @@ SERVER-SIDE FUNCTIONALITIES:
 4. Notify 
     - Outcomes of bidding to buyer and seller
     - If something is not sold within end date, notify seller, and item automatically extends by 30 days - (discussion with HJ and Annie)
-5. System itself refreshes every one hour.
+5. System itself refreshes every one hour. - HJ will work on this
 
 PAGES:
 1. Buyer_item.png ############ HAOW JERN ############
     I want to be able to:
     - See product details ---- DONE
-    - Buy item -- will work on this now - HJ 11/3/2019
-    - Add to cart 
+    - Buy item -- EXTRA 
+    - Add to cart - EXTRA 
     - Watch 
     - Bid for an auctionable item ---- DONE
     - Seller cannot bid/buy an item they have listed – DONE 
@@ -54,10 +54,7 @@ PAGES:
     - Go to see my cart page. 
     - Go to see my purchase history page. 
     - Go to see my selling history page. 
-    - Go to see my current selling page. (Missing page - to be discussed) 
-    ####### 
-    annie: current selling page is done - sellershop.php (connects to fetchactivelisting.php) 
-     #######
+    - Go to see my current selling page. (Missing page - to be discussed) DONE
     - Go to see my profile (update_profile page). 
     - Filter collaborative
 
