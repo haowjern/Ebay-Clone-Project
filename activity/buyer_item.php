@@ -2,6 +2,7 @@
 include "../header.php";
 include '../database.php';
 include "photos_interface.php";
+include "bid_product_interface.php";
 
 $productID = $_POST["productID"];
 $name = $_POST["product_name"];
@@ -58,7 +59,7 @@ if (strtolower($auctionable) == 1) {
 <html>
     <head>
         <h1>Buy an Item</h1>
-
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script>
             function validateForm(submit_button) {
                 if (submit_button.value == "Bid") {
@@ -79,6 +80,7 @@ if (strtolower($auctionable) == 1) {
                 } 
             }
         </script>
+
         <style>
         #container { 
             overflow:auto; 
@@ -91,6 +93,37 @@ if (strtolower($auctionable) == 1) {
             position:relative; 
             background-size:cover
         }
+
+        #table-wrapper {
+            position:relative;
+        }
+
+        #table-scroll {
+            height:150px;
+            overflow:auto;  
+            margin-top:20px;
+        }
+
+        #table-wrapper table {
+            width:25%;
+        }
+
+        #table-wrapper table * {
+            color:black;
+        }
+
+        #table-wrapper table thead th .text {
+            position:absolute;   
+            top:-20px;
+            z-index:2;
+            height:20px;
+            width:35%;
+        }
+        
+        #table-wrapper table tbody td {
+            
+        }
+        
         </style>
     </head>
 
@@ -143,8 +176,46 @@ if (strtolower($auctionable) == 1) {
                     echo('<input type="submit" value="Stop Watching" onclick="return validateForm(this)" formaction="./stop_watching_product.php" formmethod="post">');
                 }       
             ?>
-
         </form>
+        <div id="table-wrapper">
+            <div id="table-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th><span class="text">Buyer</span></th>
+                            <th><span class="text">Bid</span></th>
+                        </tr>
+                    </thead>
+                    <tbody id="refresh-table">
+                        <?php
+                            include_once("refreshable_bidtable.php"); // include first table, later use script to update
+                        ?> 
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- refresh table every 2 seconds-->
+        <script type="text/javascript">
+            $(document).ready (function() {
+                setInterval(function() {
+                    let transfer_data = {"productID": <?php echo $productID ?>};
+                    $('#refresh-table').load("refreshable_bidtable.php", transfer_data);
+                    
+                }, 2000);
+            });
+        </script>
+
+        <!-- refresh table periodically -->
+        <!-- <script>
+            var table = $('#refresh-table');
+            var refresher = setInterval(function(){
+                table.load("refreshable_bidtable.php");
+            }, 2000);
+            setTimeout(function() {
+                clearInterval(refresher);
+            }, 1800000);
+        </script> -->
     </body>
 </html>
 

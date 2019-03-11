@@ -1,4 +1,6 @@
 <?php 
+
+
 function set_bidEvent($bid_arr, $instr) {
     /* Add bid event to database 
     Parameters: 
@@ -86,8 +88,30 @@ function get_bidEvent($condition, $productID) {
             $bid_arr['bidPrice'] = 0;
             array_push($bids, $bid_arr);
         }
+
+    } elseif ($condition == "all") {
+        $sql = "SELECT * FROM bidEvents WHERE productID = $productID
+                ORDER BY bidID DESC";
+        $result = $connection->query($sql);
+        if ($result->num_rows>0) { 
+            while ($row=$result->fetch_assoc()) {
+                $bid_arr['bidID'] = $row['bidID'];
+                $bid_arr['productID'] = $row['productID'];
+                $bid_arr['buyerID'] = $row['buyerID'];
+                $bid_arr['payment'] = $row['payment'];
+                $bid_arr['bidPrice'] = $row['bidPrice'];
+                array_push($bids, $bid_arr);
+            }
+            echo("Received bid event successfully.");
+        } else {
+            $bid_arr['bidID'] = 0; 
+            $bid_arr['productID'] = 0;
+            $bid_arr['buyerID'] = 0;
+            $bid_arr['payment'] = 0;
+            $bid_arr['bidPrice'] = 0;
+            array_push($bids, $bid_arr);
+        }
     }
-    
     return $bids;
 }
 ?>

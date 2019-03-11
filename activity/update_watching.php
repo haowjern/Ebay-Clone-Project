@@ -11,7 +11,7 @@ function send_email_updating_watchers($bid_arr) {
     // get username of user who placed the bid
     $sql="SELECT * FROM Users WHERE userID = $bidderID";
     $result = mysqli_query($connection, $sql);
-    $bidderName=mysqli_fetch_array($result1)['username'];
+    $bidderName=mysqli_fetch_array($result)['username'];
 
 
     // specify email subject, body, and altbody
@@ -22,12 +22,12 @@ function send_email_updating_watchers($bid_arr) {
     // get emails of all users watching this product
     $sql="SELECT * FROM Watchlist WHERE productID = $productID";
     $result = mysqli_query($connection, $sql);
-    while ($row=mysqli_fetch_array($result1)) {
+    while ($row=mysqli_fetch_array($result)) {
         $watchingUserID = $row['buyerID'];
 
         $sql="SELECT * FROM Users WHERE userID = $watchingUserID";
         $result = mysqli_query($connection, $sql);
-        $watchingUserEmail=mysqli_fetch_array($result1)['email'];
+        $watchingUserEmail=mysqli_fetch_array($result)['email'];
         echo $watchingUserEmail;
 
         //send_to_email($watchingUserEmail, $subject, $body, $altbody);

@@ -21,13 +21,12 @@ SERVER-SIDE FUNCTIONALITIES:
 PAGES:
 1. Buyer_item.png ############ HAOW JERN ############
     I want to be able to:
-    - See product details
+    - See product details DONE
     - Buy item, add to cart, and watch an item.                             #### Sergi - watch
-    - See seller details.
-    - Bid for an auctionable item ############# HAOW JERN ############
+    - Bid for an auctionable item DONE
     - Seller cannot bid/buy an item they have listed – in the seller shop
-    - I don't want to see the reserve price. 
-    - See bids other users make
+    - I don't want to see the reserve price. DONE
+    - See bids other users make 
 
 2. Buyer_listing.jpg -
     I want to be able to:
