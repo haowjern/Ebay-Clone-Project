@@ -22,7 +22,7 @@ PAGES:
 1. Buyer_item.png ############ HAOW JERN ############
     I want to be able to:
     - See product details ---- DONE
-    - Buy item
+    - Buy item -- will work on this now - HJ 11/3/2019
     - Add to cart 
     - Watch 
     - Bid for an auctionable item ---- DONE
@@ -35,12 +35,12 @@ PAGES:
     - See list of product details depending on what I searched for. DONE
     - Filter what I see. DONE
 
-3. Buying_confirmation_pop_up.jpg
+3. Buying_confirmation_pop_up.jpg -- EXTRA - at the moment it goes back to index.php
     I want to be able to:
     - See a pop up telling me that my payment has gone through. 
     - See this pop up on my home page.  
 
-4. Cart.jpg
+4. Cart.jpg -- EXTRA 
     I want to be able to:
     - See a list of product details on what is in my cart.
     - Remove items from the cart.
