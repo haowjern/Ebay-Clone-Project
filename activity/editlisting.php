@@ -448,7 +448,7 @@ if (isset($_POST['productID'])){ // if we are currently editing the listing
         <?php if (isset($_POST['categoryname']) && htmlentities($_POST['categoryname']) == 'Electronics'){echo "checked";}else{echo "unchecked";}?> />
         <label for="categoryname1">Electronics</label><br>
         
-        <input type="radio" name="categoryname"id="categoryname2"value="Food"
+        <input type="radio" name="categoryname"id="categoryname2"value="Food" onclick="select_food();"
         <?php if (isset($_POST['categoryname']) && htmlentities($_POST['categoryname']) == 'Food'){echo "checked";}else{echo "unchecked";}?> />
         <label for="categoryname2">Food</label><br>
         
@@ -501,7 +501,7 @@ if (isset($_POST['productID'])){ // if we are currently editing the listing
         <span class="error"> <?php echo $conErr;?></span><br><br>
 
 
-<label>Is your product auctionable?*</label><br>
+<label>Put your product on auction?*</label><br>
   
         <input type="radio" name="auctionable"id="auctionable1" value="Yes" 
         <?php if (isset($_POST['auctionable']) && $_POST['auctionable'] == 'Yes'){echo "checked";}else{echo "unchecked";}?> />
@@ -632,15 +632,20 @@ if (filled=="filled"){
   document.getElementById("submission").style.display="none";
   document.getElementById("confirmbutton").disabled=true;
 }
-  // //if category is food, disable the radio button for "used/worn" or "refurbished" and make "new" default
-  // if (document.getElementById("categoryname2").checked){
-    
-  //   document.getElementById("conditionname2").disabled=true;
-  //   document.getElementById("conditionname3").disabled=true;
-  // }else{
-  //   document.getElementById("conditionname2").disabled=false;
-  //   document.getElementById("conditionname3").disabled=false;
-  // }
+
+select_food(){
+  alert("clicked");
+  //if category is food, disable the radio button for "used/worn" or "refurbished" and make "new" default
+  if (document.getElementById("categoryname2").checked){
+
+    document.getElementById("conditionname2").disabled=true;
+    document.getElementById("conditionname3").disabled=true;
+  }else{
+    document.getElementById("conditionname2").disabled=false;
+    document.getElementById("conditionname3").disabled=false;
+  }
+}
+
 </script>
 
 </body>
