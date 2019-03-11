@@ -17,6 +17,16 @@ $enddate = $_POST["enddate"];
 $endtime = $_POST["endtime"];
 $categoryname = $_POST["categoryname"];
 $conditionname = $_POST["conditionname"]; 
+$userID = $_SESSION['current_user']; 
+$userID = $sellerID;
+
+// do not allow the seller to buy/bid their own items. 
+$cannot_buy = false;
+if (!empty($userID)) {
+    if ($userID == $sellerID) {
+        $cannot_buy = true; 
+    } 
+}
 
 unset($_SESSION['product']);
 $_SESSION['product'] = array_merge([], $_POST); // create session variable so bid_product can use this 
@@ -156,9 +166,9 @@ if (strtolower($auctionable) == 1) {
 
             <h3>Seller Details</h3>
             <p>Name: Seller Name</p>
-
-            <input id='bid' type="submit" value="Bid" onclick="return validateForm(this)" formaction="./bid_product.php" formmethod="post" <?php if (!$is_bidding) {echo "disabled";} ?>>
-            <input id='buy' type="submit" value="Buy" onclick="return validateForm(this)" formaction="" formmethod="post" <?php if ($is_bidding) {echo "disabled";} ?>>
+            <?php // have to wait to see how we get userID, is it form sessions? ?>
+            <input id='bid' type="submit" value="Bid" onclick="return validateForm(this)" formaction="./bid_product.php" formmethod="post" <?php if (!$is_bidding || $cannot_buy) {echo "disabled";} ?>>
+            <input id='buy' type="submit" value="Buy" onclick="return validateForm(this)" formaction="" formmethod="post" <?php if ($is_bidding || $cannot_buy) {echo "disabled";} ?>>
 
             
             <input type="submit" value="Cart" <?php if ($is_bidding) {echo "disabled";} ?>>     

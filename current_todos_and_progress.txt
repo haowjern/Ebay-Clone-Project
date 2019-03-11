@@ -21,27 +21,19 @@ SERVER-SIDE FUNCTIONALITIES:
 PAGES:
 1. Buyer_item.png ############ HAOW JERN ############
     I want to be able to:
-    - See product details DONE
-    - Buy item, add to cart, and watch an item.                             #### Sergi - watch
-    - Bid for an auctionable item DONE
-    - Seller cannot bid/buy an item they have listed – in the seller shop
-    - I don't want to see the reserve price. DONE
-    - See bids other users make 
+    - See product details ---- DONE
+    - Buy item
+    - Add to cart 
+    - Watch 
+    - Bid for an auctionable item ---- DONE
+    - Seller cannot bid/buy an item they have listed – DONE 
+    - I don't want to see the reserve price. ---- DONE
+    - See bids other users make --- DONE
 
 2. Buyer_listing.jpg -
     I want to be able to:
-    - See list of product details depending on what I searched for.                 #### Sergi - search by catgry/condtn
-   ############# 
-   annie: changed code logic so can now use fetchactivelisting.php based on search criteria:
-            - category
-            - auctionable
-            - all
-    can add more criteria but need to consider the search efficiency (maybe it's easier to do further filtering on client side)
-    #############
-    - Filter what I see.                                                            #### Sergi - as above and see Annie's note below
-     ############# 
-     annie: do filtering on the client side using javascript
-     #############
+    - See list of product details depending on what I searched for. DONE
+    - Filter what I see. DONE
 
 3. Buying_confirmation_pop_up.jpg
     I want to be able to:
