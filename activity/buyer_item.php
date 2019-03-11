@@ -18,9 +18,8 @@ $endtime = $_POST["endtime"];
 $categoryname = $_POST["categoryname"];
 $conditionname = $_POST["conditionname"]; 
 $userID = $_SESSION['current_user']; 
-$userID = $sellerID;
 
-// do not allow the seller to buy/bid their own items. 
+// do not allow the seller to buy/bid their own items.
 $cannot_buy = false;
 if (!empty($userID)) {
     if ($userID == $sellerID) {
