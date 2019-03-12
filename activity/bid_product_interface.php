@@ -1,6 +1,5 @@
 <?php 
 
-
 function set_bidEvent($bid_arr, $instr) {
     /* Add bid event to database 
     Parameters: 
@@ -23,12 +22,13 @@ function set_bidEvent($bid_arr, $instr) {
     $bidPrice = $bid_arr['price'];
     // add new 
     if ($instr === "insert") {
-        $sql = "INSERT INTO bidEvents (productID, buyerID, payment, bidPrice) VALUES ('$productID', '$buyerID', '$payment', $bidPrice)";
+        $sql = "INSERT INTO bidEvents (productID, buyerID, payment, bidPrice) VALUES ('$productID', '$buyerID', '$payment', '$bidPrice')";
         $result = $connection->query($sql); 
         if ($result==TRUE) {
             
             // send email to all watchers and all who have already bid on this product
-            send_email_updating_watchers($bid_arr);
+            include 'update_watching.php';
+            //send_email_updating_watchers($bid_arr);
 
             echo("Inserted new bid events.\n");
         } else {
@@ -36,7 +36,7 @@ function set_bidEvent($bid_arr, $instr) {
         }
     // update
     } elseif ($instr === "update") {
-        $sql = "INSERT INTO bidEvents (productID,  buyerID, payment, bidPrice) VALUES ($productID', '$buyerID', '$payment', '$bidPrice');
+        $sql = "INSERT INTO bidEvents (productID,  buyerID, payment, bidPrice) VALUES ('$productID', '$buyerID', '$payment', '$bidPrice');
         WHERE bidID = '$bidID'";
         if ($connection->query($sql)==TRUE) {
             echo("Updated bid events.");
@@ -65,7 +65,7 @@ function get_bidEvent($condition, $productID) {
     $bids = []; 
     if ($condition == "latest") {
         $sql = "SELECT * FROM bidEvents WHERE bidPrice=(
-            SELECT MAX(bidPrice) FROM bidEvents WHERE productID = $productID
+            SELECT MAX(bidPrice) FROM bidEvents WHERE productID = '$productID'
             );";
         $result = $connection->query($sql);
         if ($result->num_rows>0) { 
@@ -90,7 +90,7 @@ function get_bidEvent($condition, $productID) {
         }
 
     } elseif ($condition == "all") {
-        $sql = "SELECT * FROM bidEvents WHERE productID = $productID
+        $sql = "SELECT * FROM bidEvents WHERE productID = '$productID'
                 ORDER BY bidID DESC";
         $result = $connection->query($sql);
         if ($result->num_rows>0) { 
