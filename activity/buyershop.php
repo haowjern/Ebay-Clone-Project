@@ -14,9 +14,62 @@ if ($_POST["search_box"] === "") {
 
 */ 
 unset($_SESSION["product_search_criteria"]);
-$_SESSION["product_search_criteria"]=["all",""]; // change this criteria when query is more personalised
 
-include 'fetchactivelisting.php';
+$search_words = explode(" ", $_POST["search_box"]);
+
+$set_words = [];
+foreach ($search_words as $word) {
+    if (!empty($word)) {
+        $set_words[$word]=1; // get unique set of words - no duplication
+    }
+}
+
+$search_unique_words = array_keys($set_words);
+
+
+if (!empty($search_unique_words)) {
+    // FIND ALL RELEVANT LISTINGS 
+    $s_all_active_listings = []; // array has pID as its keys to identify unique items that has been searched
+
+    foreach ($search_unique_words as $word) {
+        echo "<br>word: ".$word;
+        $_SESSION["product_search_criteria"]=["keyword",$word]; // change this criteria when query is more personalised
+        include 'fetchactivelisting.php';
+        
+        foreach ($_SESSION["all_active_listings"] as $listing) {
+            $pID = $listing["productID"];
+
+            if (array_key_exists($pID, $s_all_active_listings)) { 
+                $s_all_active_listings[$pID]["search_count"] += 1;
+            } else {
+                $listing["search_count"] = 1; // initialise number of times searched (the higher the better for our search)
+                $s_all_active_listings[$pID] = $listing; // force unique products only
+            } 
+        }
+    }
+
+    // SORT LISTING BY SEARCH_COUNT DESCENDING (to show the most relevant results first)
+    $s_all_active_listings = array_values($s_all_active_listings);
+    $_SESSION['all_active_listings'] = []; 
+
+    foreach ($s_all_active_listings as $key=>$val) { 
+        $key_count[$key] = $val["search_count"];
+    }
+    arsort($key_count); // sort by highest count 
+    
+    // RENAME KEYS TO 0, 1, 2, 3 ... 
+    foreach ($key_count as $key=>$val) {
+        array_push($_SESSION['all_active_listings'], $s_all_active_listings[$key]); 
+    }
+    
+}
+
+else {
+    $_SESSION["product_search_criteria"]=["all",""];
+    include 'fetchactivelisting.php';
+}
+
+
 
 $count=count($_SESSION["all_active_listings"]);
 if ($count==0){

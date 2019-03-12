@@ -48,8 +48,8 @@ PAGES:
 
 5. Home.jpg
     I want to be able to:
-    - Search for something based on keywords.           ### ...Sergi's criteria(?)
-    - Search a category of items.                       ### Sergi's criteria
+    - Search for something based on keywords.  DONE
+    - Search a category of items.  DONE
     - See items on promotion. 
     - Go to see my cart page. 
     - Go to see my purchase history page. 
