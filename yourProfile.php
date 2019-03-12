@@ -1,6 +1,7 @@
 <!DOCTYPE html PUBLIC>
 <?php
 session_start();
+include "header.php";
 ?>
 
 <!-- Troubleshooting / To dos:
@@ -51,17 +52,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $successMsg="";
 
     // Need to include connection as a SEPARATE php file - 
-    $connection = mysqli_connect('localhost', 'root', '','dummy') or die(mysqli_error()); 
-    if (mysqli_connect_errno()){
-        echo 'Failed to connect to the MySQL server: '. mysqli_connect_error();
-    }
-    else {
-        echo "Successfully connected to server"."<br>";
-    }
+    // $connection = mysqli_connect('localhost', 'root', '','dummy') or die(mysqli_error()); 
+    // if (mysqli_connect_errno()){
+    //     echo 'Failed to connect to the MySQL server: '. mysqli_connect_error();
+    // }
+    // else {
+    //     echo "Successfully connected to server"."<br>";
+    // }
+
+    include '../database.php';
 
     // Instantiate from SESSION variables
     $_SESSION["userID"] = 7; // this is fixed for example only - DELETE
-    $_SESSION["username"] = 'abc2'; // this is fixed for example only - DELETE
+    $_SESSION["username"] = 'user1'; // this is fixed for example only - DELETE
     $userID = $_SESSION["userID"];
     $username = $_SESSION["username"];
     echo $userID ."<br>";
@@ -102,13 +105,14 @@ else {
         $updated = "";
         
         // Need to include connection as a SEPARATE php file - 
-        $connection = mysqli_connect('localhost', 'root', '','dummy') or die(mysqli_error()); 
-        if (mysqli_connect_errno()){
-            echo 'Failed to connect to the MySQL server: '. mysqli_connect_error();
-        }
-        else {
-            echo "Successfully connected to server"."<br>";
-        }
+        // $connection = mysqli_connect('localhost', 'root', '','dummy') or die(mysqli_error()); 
+        // if (mysqli_connect_errno()){
+        //     echo 'Failed to connect to the MySQL server: '. mysqli_connect_error();
+        // }
+        // else {
+        //     echo "Successfully connected to server"."<br>";
+        // }
+        include '../database.php';
 
         // newEmail and newConfEmail
         if ((!isset($_POST['newEmail']) or trim($_POST['newEmail']) == '') and (!isset($_POST['newConfEmail']) or trim($_POST['newConfEmail']) == '')) {
@@ -367,3 +371,6 @@ else {
 
     </body>
 </html>
+<?php
+include "footer.php";
+?> 
