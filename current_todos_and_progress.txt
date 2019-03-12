@@ -168,10 +168,13 @@ Haow Jern
 
 Sergi
     
-    - when bid make, update users watching
-    - when bid end, update users watching AND users that have made bids 
+    ./ - when bid make, update users watching AND users that have made bids
+    .  - when bid end, update users watching AND users that have made bids 
 
-    - search bar sql search 
+    ? - search bar sql search 
+
+    - show watchlist table make good
+
 
 
     ( - ensure user can't make watch on same item more than once !!! <- this is solved by watch->stopwatching button)
@@ -189,9 +192,6 @@ Sergi
             .   2   update_all_watchers     function as part of making a bid! if bid > any bid made by user watching !
             .   3   show_my_watchlist       ...needs specific product sql
 
-            add_watching
-            remove_watching
-            update_all_watchers
         
         search for item kinds & categories:
 

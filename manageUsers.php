@@ -1,6 +1,7 @@
 <!DOCTYPE html PUBLIC>
 <?php
 session_start();
+include "header.php";
 
 // Confirm adminID from SESSION variables
 $_SESSION["adminID"] = 1; // this is fixed for example only - DELETE
@@ -12,13 +13,15 @@ echo $username ."<br>";
 echo "Successfully retrieved userID from SESSION variables";
 
 // Connect to database
-$connection = mysqli_connect('localhost', 'root', '','dummy') or die(mysqli_error()); 
-if (mysqli_connect_errno()){
-    echo 'Failed to connect to the MySQL server: '. mysqli_connect_error();
-}
-else {
-    echo "Successfully connected to server"."<br>";
-}
+// $connection = mysqli_connect('localhost', 'root', '','dummy') or die(mysqli_error()); 
+// if (mysqli_connect_errno()){
+//     echo 'Failed to connect to the MySQL server: '. mysqli_connect_error();
+// }
+// else {
+//     echo "Successfully connected to server"."<br>";
+// }
+include '../database.php';
+
 
 // Query to fetch all users rows from users table
 $sql_all_users = "SELECT * FROM users";
@@ -173,3 +176,6 @@ if ($count==0){
 
     </body>
 </html>
+<?php
+include "footer.php";
+?>
