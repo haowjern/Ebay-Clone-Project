@@ -633,18 +633,18 @@ if (filled=="filled"){
   document.getElementById("confirmbutton").disabled=true;
 }
 
-select_food(){
-  alert("clicked");
-  //if category is food, disable the radio button for "used/worn" or "refurbished" and make "new" default
-  if (document.getElementById("categoryname2").checked){
+// select_food(){
+//   alert("clicked");
+//   //if category is food, disable the radio button for "used/worn" or "refurbished" and make "new" default
+//   if (document.getElementById("categoryname2").checked){
 
-    document.getElementById("conditionname2").disabled=true;
-    document.getElementById("conditionname3").disabled=true;
-  }else{
-    document.getElementById("conditionname2").disabled=false;
-    document.getElementById("conditionname3").disabled=false;
-  }
-}
+//     document.getElementById("conditionname2").disabled=true;
+//     document.getElementById("conditionname3").disabled=true;
+//   }else{
+//     document.getElementById("conditionname2").disabled=false;
+//     document.getElementById("conditionname3").disabled=false;
+//   }
+// }
 
 </script>
 
