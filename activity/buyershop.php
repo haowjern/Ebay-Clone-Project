@@ -33,7 +33,7 @@ if (!empty($search_unique_words)) {
 
     foreach ($search_unique_words as $word) {
         echo "<br>word: ".$word;
-        $_SESSION["product_search_criteria"]=["keyword",$word]; // change this criteria when query is more personalised
+        $_SESSION["product_search_criteria"]=["keyword",$word]; 
         include 'fetchactivelisting.php';
         
         foreach ($_SESSION["all_active_listings"] as $listing) {
