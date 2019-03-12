@@ -404,7 +404,7 @@ function test_input($data) {
       <span class="error"> <?php echo $desErr;?></span><br><br>
 
 <?php
-if (isset($_POST['productID'])){ // if we are currently editing the listing
+if (isset($_POST['productID']) && is_int($_POST['productID'] && $_POST['productID']>0)){ // if we are currently editing the listing
   // get current photos, get number of photos
   $photos = get_photo($_POST['productID']); // list of photos with attributes as keys 
 ?>
