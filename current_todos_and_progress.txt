@@ -168,6 +168,12 @@ Haow Jern
 
 Sergi
     
+    - when bid make, update users watching
+    - when bid end, update users watching AND users that have made bids 
+
+    - search bar sql search 
+
+
     ( - ensure user can't make watch on same item more than once !!! <- this is solved by watch->stopwatching button)
     - read up on sessions, etc 
     ( ??- sellinghistory.php, fetcharchive.php: should be very similar to your buyer purchase 	history!!   [<- from annie] )

@@ -13,7 +13,6 @@ $subject = 'test';
 $body = 'hello from database';
 $altbody = 'hello from db (altbody)';
 echo "testing mail...";
-//mail($email, $subject, $body);
 
 send_to_email($email, $subject, $body, $altbody);
 
