@@ -22,15 +22,37 @@ function send_email_updating_watchers($bid_arr) {
     // get emails of all users watching this product
     $sql="SELECT * FROM Watchlist WHERE productID = $productID";
     $result = mysqli_query($connection, $sql);
+
+    // for each user who is watching this product:
     while ($row=mysqli_fetch_array($result)) {
         $watchingUserID = $row['buyerID'];
 
         $sql="SELECT * FROM Users WHERE userID = $watchingUserID";
         $result = mysqli_query($connection, $sql);
         $watchingUserEmail=mysqli_fetch_array($result)['email'];
+        
+        echo $watchingUserEmail;
+        
+        // send email to this user
+        send_to_email($watchingUserEmail, $subject, $body, $altbody);
+       
+
+    // get emails of all users who have made a bid on this product              .........
+    $sql="SELECT * FROM BidEvents WHERE productID = $productID";
+    $result = mysqli_query($connection, $sql);
+    
+    // for each user who has made a bid on this product:
+    while ($row=mysqli_fetch_array($result)) {
+        $watchingUserID = $row['buyerID'];
+
+        $sql="SELECT * FROM Users WHERE userID = $watchingUserID";
+        $result = mysqli_query($connection, $sql);
+        $watchingUserEmail=mysqli_fetch_array($result)['email'];
+        
         echo $watchingUserEmail;
 
-        //send_to_email($watchingUserEmail, $subject, $body, $altbody);
+        // send email to this user
+        send_to_email($watchingUserEmail, $subject, $body, $altbody);
        
 
     }
