@@ -1,6 +1,7 @@
 <!DOCTYPE html PUBLIC>
 <?php
 session_start();
+include "header.php";
 ?>
 
 <?php
@@ -13,13 +14,15 @@ if(!isset($_POST["regNewUser"])) {
 }
 else {
  // Need to include connection as a SEPARATE php file - 
- $connection = mysqli_connect('localhost', 'root', '','dummy') or die(mysqli_error()); 
- if (mysqli_connect_errno()){
-     echo 'Failed to connect to the MySQL server: '. mysqli_connect_error();
- }
- else {
-     echo "Successfully connected to server\n";
- }
+//  $connection = mysqli_connect('localhost', 'root', '','dummy') or die(mysqli_error()); 
+//  if (mysqli_connect_errno()){
+//      echo 'Failed to connect to the MySQL server: '. mysqli_connect_error();
+//  }
+//  else {
+//      echo "Successfully connected to server\n";
+//  }
+
+ include '../database.php';
 
  // Instantiate user account details from POST variables
  $username = trim($_POST["userName"]);
@@ -210,3 +213,7 @@ if ($result==TRUE) {
 
     </body>
 </html>
+
+<?php
+include "footer.php";
+?>
