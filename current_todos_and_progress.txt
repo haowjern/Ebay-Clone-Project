@@ -16,7 +16,7 @@ SERVER-SIDE FUNCTIONALITIES:
 4. Notify 
     - Outcomes of bidding to buyer and seller
     - If something is not sold within end date, notify seller, and item automatically extends by 30 days - (discussion with HJ and Annie)
-5. System itself refreshes every one hour. - HJ will work on this
+5. System itself refreshes every one hour
 
 PAGES:
 1. Buyer_item.png ############ HAOW JERN ############
@@ -48,8 +48,8 @@ PAGES:
 
 5. Home.jpg
     I want to be able to:
-    - Search for something based on keywords.           ### ...Sergi's criteria(?)
-    - Search a category of items.                       ### Sergi's criteria
+    - Search for something based on keywords.  DONE
+    - Search a category of items.  DONE
     - See items on promotion. 
     - Go to see my cart page. 
     - Go to see my purchase history page. 

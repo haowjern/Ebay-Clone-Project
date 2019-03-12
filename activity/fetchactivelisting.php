@@ -1,7 +1,7 @@
 <?php 
 session_start();
 
-include "bid_product_interface.php";
+include_once "bid_product_interface.php";
 
 //obtain all the active listing items of the seller
 
@@ -11,7 +11,7 @@ if (!isset($_SESSION["category_all"])||!isset($_SESSION["condition_all"])){
 
     include '../database.php';
 
-    include "photos_interface.php"; // this is to get the get photo function 
+    include_once "photos_interface.php"; // this is to get the get photo function 
 
 
     //$_session[product search criteria]=["category",1  ]
@@ -42,8 +42,17 @@ if (!isset($_SESSION["category_all"])||!isset($_SESSION["condition_all"])){
             $sql="SELECT * FROM Product";
         
         } elseif ($criteria=="keyword"){
-            $value='%'.$value.'%';
-            $sql="SELECT * FROM Product WHERE product_description LIKE '$value'";
+            $sql = "SELECT * FROM Product as p
+                    WHERE p.product_name LIKE '%$value%'
+                    OR p.product_description LIKE '%$value%'
+                    OR p.categoryID = (
+                        SELECT c.categoryID FROM Category as c
+                        WHERE c.categoryname LIKE '%$value%' 
+                    )
+                    OR p.conditionID = (
+                        SELECT con.conditionID FROM Conditionindex as con
+                        WHERE con.conditionID LIKE '%$value$'
+                    )";
         }
 
         $result=$connection->query($sql);
@@ -77,9 +86,6 @@ if (!isset($_SESSION["category_all"])||!isset($_SESSION["condition_all"])){
             }
 
         // print_r($_SESSION["all_active_listings"]);
-
-        
-
         } else {
             echo "no result found";
         }
