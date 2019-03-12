@@ -35,16 +35,6 @@ PAGES:
     - See list of product details depending on what I searched for. DONE
     - Filter what I see. DONE
 
-3. Buying_confirmation_pop_up.jpg -- EXTRA - at the moment it goes back to index.php
-    I want to be able to:
-    - See a pop up telling me that my payment has gone through. 
-    - See this pop up on my home page.  
-
-4. Cart.jpg -- EXTRA 
-    I want to be able to:
-    - See a list of product details on what is in my cart.
-    - Remove items from the cart.
-    - Confirm my cart and go to the payment page. 
 
 5. Home.jpg
     I want to be able to:
@@ -110,6 +100,20 @@ PAGES:
     I want to be able to:
     - See a similar page to update_profile.jpg
 
+
+EXTRA stuff : 
+
+3. Buying_confirmation_pop_up.jpg -- EXTRA - at the moment it goes back to index.php
+    I want to be able to:
+    - See a pop up telling me that my payment has gone through. 
+    - See this pop up on my home page.  
+
+    
+4. Cart.jpg -- EXTRA 
+    I want to be able to:
+    - See a list of product details on what is in my cart.
+    - Remove items from the cart.
+    - Confirm my cart and go to the payment page. 
 
 
 
