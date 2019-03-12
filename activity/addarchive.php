@@ -42,6 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $sql="UPDATE Product 
                     SET quantity='$inventory_new'
                     WHERE productID=$productID";
+            $connection->query($sql);
         }
 
         //insert item in archive table
