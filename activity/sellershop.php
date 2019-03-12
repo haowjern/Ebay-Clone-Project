@@ -152,7 +152,7 @@ for (i=0;i<count;i++){
             //name the form with productID
             fm_bid.setAttribute("name","form_bid"+each_listing[i]["productID"]);
             fm_bid.setAttribute("method","post");
-            fm_bid.setAttribute("action","");
+            fm_bid.setAttribute("action","./bid_events.php");
 
             var hiddenField_bid=document.createElement("input");
                 hiddenField_bid.setAttribute("type","hidden");
