@@ -12,14 +12,10 @@ $t=ltrim(date("H",time()),"0").":00:00";
 $today=date("Y-m-d"); 
 
 //select all the produc that expires at current hour today
-$sql="SELECT * 
-        FROM Product 
-        WHERE enddate='$today' AND endtime='$t'
-        ORDER BY sellerID";
 
-// $sql="SELECT p.product_name,p.product_description,p.startdate,p.enddate,p.endtime,u.username,u.password1
-//         FROM Product p,Users u
-//         WHERE p.sellerID=u.userID AND p.enddate='$today' AND endtime='$t'";
+$sql="SELECT p.product_name,p.product_description,p.startdate,p.enddate,p.endtime,u.username,u.email
+        FROM Product p,Users u
+        WHERE p.sellerID=u.userID AND p.enddate='$today' AND endtime='$t'";
 
 $result=$connection->query($sql);
 
@@ -62,5 +58,7 @@ if ($result->num_rows>0){
 
 
 $connection->close();
+
+unset($_SESSION["expired_listings"]);
 
 ?>

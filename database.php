@@ -2,8 +2,8 @@
 <html>
 <body>
 
-<p>Connect to database</p>
-<p>Database.php</p>
+<!-- <p>Connect to database</p>
+<p>Database.php</p> -->
  
 <?php
 
