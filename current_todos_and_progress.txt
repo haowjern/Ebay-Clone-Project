@@ -16,40 +16,31 @@ SERVER-SIDE FUNCTIONALITIES:
 4. Notify 
     - Outcomes of bidding to buyer and seller
     - If something is not sold within end date, notify seller, and item automatically extends by 30 days - (discussion with HJ and Annie)
-5. System itself refreshes every one hour.
+5. System itself refreshes every one hour. - HJ will work on this
 
 PAGES:
 1. Buyer_item.png ############ HAOW JERN ############
     I want to be able to:
-    - See product details
-    - Buy item, add to cart, and watch an item.                             #### Sergi - watch
-    - See seller details.
-    - Bid for an auctionable item ############# HAOW JERN ############
-    - Seller cannot bid/buy an item they have listed – in the seller shop
-    - I don't want to see the reserve price. 
-    - See bids other users make
+    - See product details ---- DONE
+    - Buy item -- EXTRA 
+    - Add to cart - EXTRA 
+    - Watch 
+    - Bid for an auctionable item ---- DONE
+    - Seller cannot bid/buy an item they have listed – DONE 
+    - I don't want to see the reserve price. ---- DONE
+    - See bids other users make --- DONE
 
 2. Buyer_listing.jpg -
     I want to be able to:
-    - See list of product details depending on what I searched for.                 #### Sergi - search by catgry/condtn
-   ############# 
-   annie: changed code logic so can now use fetchactivelisting.php based on search criteria:
-            - category
-            - auctionable
-            - all
-    can add more criteria but need to consider the search efficiency (maybe it's easier to do further filtering on client side)
-    #############
-    - Filter what I see.                                                            #### Sergi - as above and see Annie's note below
-     ############# 
-     annie: do filtering on the client side using javascript
-     #############
+    - See list of product details depending on what I searched for. DONE
+    - Filter what I see. DONE
 
-3. Buying_confirmation_pop_up.jpg
+3. Buying_confirmation_pop_up.jpg -- EXTRA - at the moment it goes back to index.php
     I want to be able to:
     - See a pop up telling me that my payment has gone through. 
     - See this pop up on my home page.  
 
-4. Cart.jpg
+4. Cart.jpg -- EXTRA 
     I want to be able to:
     - See a list of product details on what is in my cart.
     - Remove items from the cart.
@@ -63,10 +54,7 @@ PAGES:
     - Go to see my cart page. 
     - Go to see my purchase history page. 
     - Go to see my selling history page. 
-    - Go to see my current selling page. (Missing page - to be discussed) 
-    ####### 
-    annie: current selling page is done - sellershop.php (connects to fetchactivelisting.php) 
-     #######
+    - Go to see my current selling page. (Missing page - to be discussed) DONE
     - Go to see my profile (update_profile page). 
     - Filter collaborative
 
@@ -180,6 +168,15 @@ Haow Jern
 
 Sergi
     
+    ./ - when bid make, update users watching AND users that have made bids
+    .  - when bid end, update users watching AND users that have made bids 
+
+    ? - search bar sql search 
+
+    - show watchlist table make good
+
+
+
     ( - ensure user can't make watch on same item more than once !!! <- this is solved by watch->stopwatching button)
     - read up on sessions, etc 
     ( ??- sellinghistory.php, fetcharchive.php: should be very similar to your buyer purchase 	history!!   [<- from annie] )
@@ -195,9 +192,6 @@ Sergi
             .   2   update_all_watchers     function as part of making a bid! if bid > any bid made by user watching !
             .   3   show_my_watchlist       ...needs specific product sql
 
-            add_watching
-            remove_watching
-            update_all_watchers
         
         search for item kinds & categories:
 
