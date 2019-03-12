@@ -27,7 +27,7 @@ function set_bidEvent($bid_arr, $instr) {
         $result = $connection->query($sql); 
         if ($result==TRUE) {
             
-            // send email to all watchers !
+            // send email to all watchers and all who have already bid on this product
             send_email_updating_watchers($bid_arr);
 
             echo("Inserted new bid events.\n");

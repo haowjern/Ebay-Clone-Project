@@ -168,12 +168,12 @@ Haow Jern
 
 Sergi
     
-    - when bid make, update users watching AND users that have made bids
-    - when bid end, update users watching AND users that have made bids 
+    ./ - when bid make, update users watching AND users that have made bids
+    .  - when bid end, update users watching AND users that have made bids 
 
     ? - search bar sql search 
 
-
+    - show watchlist table make good
 
 
 

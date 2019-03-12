@@ -12,9 +12,9 @@ $email = 'sergi.bray@gmail.com';
 $subject = 'test';
 $body = 'hello from database';
 $altbody = 'hello from db (altbody)';
-echo "testing mail...";
+//echo "testing mail...";
 
-send_to_email($email, $subject, $body, $altbody);
+//send_to_email($email, $subject, $body, $altbody);
 
 show_watchlist($_SESSION['current_user']);  
 ?>
