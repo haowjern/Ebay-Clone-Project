@@ -61,8 +61,10 @@ include '../database.php';
                     <thead>
                         <tr>
                             <!-- <th><span class="text">ProductName</span></th> -->
-                            <th><span class="text">BuyerID</span></th>
-                            <th><span class="text">ProductID</span></th>
+                            <th>Product</th>
+                            <th>Seller</th>
+                            <th>End Date</th>
+                            <th>End Time</th>
                         </tr>
                     </thead>
                     <tbody id="watchlist-table">
