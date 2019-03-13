@@ -1,0 +1,20 @@
+archiveID,productID,product_name,product_description,deal_price,quantity,categoryID,conditionID,buyerID,sellerID,auctionable,dealdate,ratings,buyer_comment,seller_comment
+1,3,samsung phone,samsung black galaxy note 8,650,1,2,1,1,3,0,2019-02-05,10,,
+2,6,Arabica coffee bean,imported directly from Kenya,10.99,1,2,1,1,3,1,2019-02-05,1,The coffee bean is fake!!!,our coffee beans are authentic and quality is assured. Happy to follow up with you regarding any issue.
+3,3,samsung phone,samsung black galaxy note 8,650,1,2,1,2,3,0,2019-02-06,8,,
+4,1,macbook pro,macbook pro 15 inches brand new,1300,1,2,1,4,1,0,2019-02-11,10,Great price,
+5,1,macbook pro,macbook pro 15 inches brand new,1300,1,2,1,4,1,0,2019-02-15,10,awesome price,
+6,3,samsung phone,samsung black galaxy note 8,2600,4,2,1,4,3,0,2019-02-15,9,,
+7,26,gravity blanket,gives you the warm you deserve!!,199.99,1,3,1,3,4,0,2019-02-20,7,looks awesome but does not keep me warm,glad that you like it!
+8,2,mackbook pro,macbook pro industry restored,975,1,3,1,3,2,1,2019-02-25,9,product is used but still functions well,Thank you for purchasing!!
+9,17,Pure gym,Pure gym membership (three months),21.98,2,2,1,1,2,1,2019-02-26,9,Great price,
+10,7,Japanese seaweed,"8 packs of japanese seaweed, directly imported from Asia",4.5,3,50,2,2,1,1,2019-02-27,8,,
+11,7,Japanese seaweed,"8 packs of japanese seaweed, directly imported from Asia",7.5,5,50,2,3,1,1,2019-02-28,7,,
+12,17,Pure gym,Pure gym membership (three months),32.97,3,2,1,2,2,1,2019-02-28,9,membership is authentic,
+13,7,Japanese seaweed,"8 packs of japanese seaweed, directly imported from Asia",3,2,50,2,4,1,1,2019-03-01,8,,
+14,17,Pure gym,Pure gym membership (three months),10.99,1,2,1,3,2,1,2019-03-03,10,,
+15,5,zara flower dress,zara flower dress (size: S),20,1,3,3,1,3,1,2019-03-04,6,pretty dress but the size doesn't fit,
+16,9,Jay Chow concert tix,2 tickets (VIP) to Jay Chow concert in London,4900,2,8,1,4,2,1,2019-03-04,10,awesome price,Hope you enjoy!!
+17,20,Amazon $50 giftcard,"Amazon giftcard for everything (food, home, books etc.)",40.55,1,9,1,3,4,1,2019-03-05,9,,
+18,19,Amazon $50 giftcard,"Amazon giftcard for everything (food, home, books etc.)",37.5,1,9,1,2,4,1,2019-03-07,9,,
+19,26,gravity blanket,gives you the warm you deserve!!,199.99,1,3,1,2,4,0,2019-03-08,8,great for winter!,glad that you like it!
