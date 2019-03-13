@@ -100,27 +100,35 @@ $insert_user = mysqli_prepare($connection, $sql_insert);
 $zero = 0;
 mysqli_stmt_bind_param($insert_user, 'ssssis', $username, $hash, $email, $phoneNo, $zero, $DOB_str);
 $result = mysqli_stmt_execute($insert_user);
-echo("Successfully inserted new user."."<br>");
-}
-
-if ($result==TRUE and $usernameErr == "") {
-    // INSTANTIATE SESSION variables
-    $sql_users = "SELECT userID FROM users WHERE username = ?";
-    $result_users = mysqli_prepare($connection, $sql_users);
-    mysqli_stmt_bind_param($result_users, 's', $username);
-    mysqli_stmt_execute($result_users);
-    $result = mysqli_stmt_get_result($result_users);
-    $rows_users = ($result->num_rows);
-
+ 
+// INSTANTIATE SESSION variables
+echo("Trying to instantiate session variables."."<br>");
+$sql_users = "SELECT userID FROM users WHERE username = ?";
+$result_users = mysqli_prepare($connection, $sql_users);
+mysqli_stmt_bind_param($result_users, 's', $username);
+mysqli_stmt_execute($result_users);
+$result = mysqli_stmt_get_result($result_users);
+$rows_users = ($result->num_rows);
+echo "$rows_users";
     if ($rows_users == 1) {
+        echo("Successfully inserted new user."."<br>");
+
         while($row = $result->fetch_assoc()) {
             $userID = $row['userID'];
             $_SESSION["userID"] = $userID;
             $_SESSION["userName"] = $username;
             echo("Successfully created SESSION variables."."<br>");
+
+            // $host  = $_SERVER['HTTP_HOST'];
+            // $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+            // $extra = 'index.php';
+            // $link="http://".$host.$uri."/".$extra;
+        
+            // header("Location: http://$host$uri/$extra");
         }
     }
-} else {
+}
+else {
     // echo("Error: " . $sql_insert . "<br>" . $connection->error);
     echo("Please provide valid inputs to register as a new user");
     }
