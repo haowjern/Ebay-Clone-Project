@@ -37,8 +37,6 @@ function set_watch($watch_arr, $instr) {
         $sql="DELETE FROM watchlist WHERE buyerID = '$buyerID' AND productID = '$productID'";  
         
         if ($connection->query($sql)==TRUE) {
-
-            echo $buyerID;
             echo("Deleted watch event successfully.");
         } else {
             echo("Error: " . $sql . "<br>" . $connection->error);
