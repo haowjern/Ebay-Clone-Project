@@ -44,7 +44,7 @@ float: left;
     <button type="button">Cart</button>
     </div>
     <br>
-    <p>You are signed in as: <?php echo $_SESSION["username"] ;?></p>
+    <p>You are signed in as: <?php echo $_SESSION["userName"] ;?></p>
 
 <script>
 if (<?php echo isset($_SESSION["userID"]);?>){

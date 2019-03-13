@@ -119,12 +119,12 @@ CREATE USERS TABLE ......?
 */
 
 CREATE TABLE IF NOT EXISTS Users (
-    userID INTEGER NOT NULL,
+    userID INT NOT NULL AUTO_INCREMENT,
     username TEXT,
     password1 TEXT,
     email TEXT,
     phone TEXT,
-    accountbalance INTEGER,
+    accountbalance INT,
     DOB TEXT,
     PRIMARY KEY (userID)
 ) ENGINE=INNODB;
