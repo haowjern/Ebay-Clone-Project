@@ -27,7 +27,7 @@ float: left;
 
 </style>
     <div id="general">
-    <button type="button" id="sign_in"></button>
+    <button onclick="window.location.href = '/signout.php';" type="button" id="sign_in"></button>
     <button onclick="window.location.href = '/index.php';"type="button" formaction=index.php>Home</button>
     <button onclick="window.location.href = '/yourProfile.php';" type="button">My Profile</button>
     </div>
