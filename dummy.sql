@@ -46,14 +46,17 @@ CREATE TABLE IF NOT EXISTS Archive
     productID INTEGER NOT NULL,
     product_name VARCHAR(20) NOT NULL,
     product_description VARCHAR(150) NOT NULL,
-    dealprice NUMERIC NOT NULL,
+    dealprice DECIMAL(8,2) NOT NULL,
     quantity INTEGER NOT NULL,
     categoryID INTEGER NOT NULL,
     conditionID INTEGER NOT NULL,
     buyerID INTEGER NOT NULL,
     sellerID INTEGER NOT NULL,
     auctionable BOOLEAN NOT NULL,
-    dealdate VARCHAR(40) NOT NULL
+    dealdate VARCHAR(40) NOT NULL,
+    ratings INTEGER,
+    buyer_comment VARCHAR(150),
+    seller_comment VARCHAR(150)
 ) 
 ENGINE = InnoDB;
 
@@ -92,16 +95,6 @@ VALUES ('Refurbished');
 
 INSERT INTO ConditionIndex (conditionname)
 VALUES ('Used / Worn');
-
-INSERT INTO Archive (productID,product_name,product_description,dealprice,quantity,categoryID,conditionID,buyerID,sellerID,auctionable,dealdate)
-VALUES (1,'macbook pro','macbook pro brand new',1300,4,1,1,2,1,0,'2019-01-15');
-
-INSERT INTO Archive (productID,product_name,product_description,dealprice,quantity,categoryID,conditionID,buyerID,sellerID,auctionable,dealdate)
-VALUES (2,'macbook pro','macbook pro industry restored',1300,1,1,2,4,1,0,'2019-01-10');
-
-INSERT INTO Archive (productID,product_name,product_description,dealprice,quantity,categoryID,conditionID,buyerID,sellerID,auctionable,dealdate)
-VALUES (3,'macbook pro','macbook pro',815,1,1,3,16,2,1,'2019-01-20');
-
 /*
 CREATE PHOTOS TABLE 
 */ 
@@ -119,7 +112,7 @@ CREATE USERS TABLE ......?
 */
 
 CREATE TABLE IF NOT EXISTS Users (
-    userID INT NOT NULL,
+    userID INTEGER NOT NULL,
     username TEXT,
     password1 TEXT,
     email TEXT,

@@ -38,15 +38,8 @@ else {
         
     // Validation process
     if (hasDataInput($usernameErr,$passwordErr) == TRUE) {
-        // Need to include connection as a SEPARATE php file - 
-        $connection = mysqli_connect('localhost', 'root', '','dummy') or die(mysqli_error()); 
-        if (mysqli_connect_errno()){
-            echo 'Failed to connect to the MySQL server: '. mysqli_connect_error();
-        }
-        else {
-            echo "Successfully connected to server"."<br>";
-        }
-                                                                                                                                                                                                            
+        
+        include './database.php';                                                                                                                                                  
 
         // Step 1 - Sanitise username and password and Instantiate from $_POST array
         $username = trim($_POST["userName"]);
@@ -55,17 +48,7 @@ else {
         echo $username."<br>";
         echo $user_pass."<br>";
 
-        // Step 2 - Search for username and password in admins database and users database
-
-        // Search for username in admins table
-        $sql_admins = "SELECT username FROM admins WHERE username = ?"; 
-        $result_admins = mysqli_prepare($connection, $sql_admins);
-        mysqli_stmt_bind_param($result_admins, 's', $username);
-        mysqli_stmt_execute($result_admins);
-        $result = mysqli_stmt_get_result($result_admins);
-        $rows_admins = ($result->num_rows);
-        echo $rows_admins;
-        echo "connected to admins" . "<br>";
+        // Step 2 - Search for username and password in users database
 
         // Search for username in users table
         $sql_users = "SELECT username FROM users WHERE username = ?";
@@ -74,37 +57,13 @@ else {
         mysqli_stmt_execute($result_users);
         $result = mysqli_stmt_get_result($result_users);
         $rows_users = ($result->num_rows);
-        echo $rows_users;
+        if ($rows_users > 0) {
+            echo $rows_users;
+        }
         echo "connected to users" . "<br>";
 
-        // Username found in admins table
-        if ($rows_admins == 1) {
-            mysqli_stmt_execute($result_admins);
-            echo ($username . " has been found in admins table" . "<br>"); // Delete this ########
-            
-            // Check if password matches in admins table
-            $sql_admins_pw = "SELECT * FROM admins WHERE username = ?";
-            $result_admins_pw = mysqli_prepare($connection, $sql_admins_pw);
-            mysqli_stmt_bind_param($result_admins_pw, 's', $username);
-            mysqli_stmt_execute($result_admins_pw);
-            $result = mysqli_stmt_get_result($result_admins_pw);
-            
-            while($row = $result->fetch_assoc()) {
-                if (password_verify($user_pass, $row["password1"])) {  
-                    echo "Successfully logged in"."<br>";
-                    $adminID = $row["adminID"];   
-                    createSession($adminID, $username);
-                    echo "Successfully created Session variable"."<br>";
-                }
-                else {
-                    $loginErr = "Invalid username and password entered.";
-                    echo "Invalid password entered"."<br>";
-                }
-            }   
-        }
-
         // Username found in users table
-        elseif ($rows_users == 1) {
+        if ($rows_users == 1) {
             echo ($username . " has been found in users table" . "<br>"); // Delete this ########
             
             // Check if password matches in users table
@@ -120,6 +79,13 @@ else {
                     $userID = $row["userID"]; 
                     createSession($userID, $username);
                     echo "Successfully created Session variable"."<br>";
+
+                    $host  = $_SERVER['HTTP_HOST'];
+                    $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+                    $extra = 'index.php';
+                    $link="http://".$host.$uri."/".$extra;
+                
+                    header("Location: http://$host$uri/$extra");
                 }
                 else {
                     $loginErr = "Invalid username and password entered.";
@@ -148,8 +114,9 @@ else {
     </head>
     <body>
 
+        <div align="center">
         <h3> Please log in </h3>
-        <form name="login_form" action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>"> method="post">
+        <form name="login_form" method="post" action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>">
         <label for="userName">Username:</label><br>
         <input type="text" name="userName" placeholder="Username" pattern=".{3,}" required title="Minimum 3 characters or more"><span id="error_userName"></span>
         <span class="error"> <?php echo $usernameErr;?></span>
@@ -161,10 +128,11 @@ else {
         <br>
         <br>
         <p><input type="submit" onclick="return validateForm(this)" name="signIn" value="Sign in"> 
-        <a href="./regNewUser.php"><input type="button" name="regNewUser" value="Register"></a> </p>
+        <button onclick="window.location.href = './regNewUser.php';" type="button" name="regNewUser">Sign Up</button> </p>
         <br>
         <span class="error"> <?php echo $loginErr;?></span>
         </form>
+        </div>
             
     </body>
 </html>
