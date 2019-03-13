@@ -162,7 +162,6 @@ if (strtolower($auctionable) == 1) {
                 } else {
                     echo('<input type="submit" value="Stop Watching" onclick="return validateForm(this)" formaction="../stop_watching_product.php" formmethod="post">');
                 }       
-                echo $_SESSION['product']['id'];
             ?>
         </form>
         <div id="table-wrapper">

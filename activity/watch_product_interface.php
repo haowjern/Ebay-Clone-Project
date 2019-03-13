@@ -7,6 +7,7 @@ function set_watch($watch_arr, $instr) {
     */ 
 
     include 'database.php';
+    include "header.php";
 
     // check object has the correct properties
     $properties = ["productID", "buyerID"]; 
@@ -50,5 +51,8 @@ function set_watch($watch_arr, $instr) {
     return $watch_arr;
 
     $connection->close();
+
 }
 ?>
+
+

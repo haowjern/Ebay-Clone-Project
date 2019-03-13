@@ -47,6 +47,10 @@ function get_watchtable($buyerID) {
             }
             //echo("Received watchlist item successfully.");
         } else {
+
+
+
+            // .............................................................................
             $watch_arr['watchID'] = 0; 
             $watch_arr['productID'] = 0;
             $watch_arr['buyerID'] = 0;

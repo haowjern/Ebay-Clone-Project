@@ -13,7 +13,7 @@
 
 
         //print($watch['productName']);
-        echo ("<tr> <td> ".$watch["productName"]."</td> <td> ".$watch["endDate"]."</td> <td> ".$watch["endTime"]."</td> <td> ".$watch["sellerName"]."</td> </tr>");
+        echo ("<tr> <td> ".$watch["productName"]."</td> <td> ".$watch["sellerName"]."</td> <td> ".$watch["endDate"]."</td> <td> ".$watch["endTime"]."</td> </tr>");
 
         //echo ("<tr> <td> ".$watch[""]."</td> <td> ".$watch[""]."</td> <td> ".$watch[""]."</td> <td>".$watch["productID"]."</td> </tr>");
 
