@@ -44,8 +44,7 @@ th {
         <th>Deal Price (£)</th>
         <th>Deal Date</th>
         <th>Seller</th>
-        <th>My Ratings (1-10)</th>
-        <th>My comment</th>
+        <th>My Ratings and comment</th>
         <th>Seller's comment</th>
         
 
@@ -69,10 +68,9 @@ for (i=0;i<count;i++){
     var cell_details=row.insertCell(1);
     var cell_dealprice=row.insertCell(2);
     var cell_dealdate=row.insertCell(3);
-    var cell_buyer=row.insertCell(4);
-    var cell_ratings=row.insertCell(5);
-    var cell_buyer_comment=row.insertCell(6);
-    var cell_seller_comment=row.insertCell(7);
+    var cell_seller=row.insertCell(4);
+    var cell_buyer_ratings_comment=row.insertCell(5);
+    var cell_seller_comment=row.insertCell(6);
 
 
     //insert product name into the 1st column (product name)
@@ -97,17 +95,12 @@ for (i=0;i<count;i++){
     cell_dealdate.style.textAlign="center";
     cell_dealdate.innerHTML=each_listing[i]["dealdate"];
 
-    //insert buyer into the 5th column (buyer)
-    cell_buyer.style.textAlign="center";
-    cell_buyer.innerHTML=each_listing[i]["username"];
+    //insert seller into the 5th column (seller)
+    cell_seller.style.textAlign="center";
+    cell_seller.innerHTML=each_listing[i]["username"];
 
-    //insert ratings into the 6th column (ratings)
-    cell_ratings.style.textAlign="center";
-    cell_ratings.innerHTML=each_listing[i]["ratings"];
-
-    //insert buyer comment into the 7th column (buyer comment)
-    cell_buyer_comment.style.textAlign="center";
-    cell_buyer_comment.innerHTML=each_listing[i]["buyer_comment"];
+    //insert buyer comment and ratings into the 6th column (buyer comment and ratings)
+    cell_buyer_ratings_comment.style.textAlign="left";
 
     //create the form to edit item
     var fm_edit=document.createElement('form');
@@ -129,6 +122,8 @@ for (i=0;i<count;i++){
         ratings_field.setAttribute("step","1");
 
         fm_edit.appendChild(ratings_field);
+        fm_edit.appendChild(document.createElement("br"));
+        fm_edit.appendChild(document.createElement("br"));
 
         fm_edit.appendChild(document.createTextNode("my comment (max 150 words): "));
         fm_edit.appendChild(document.createElement("br"));
@@ -143,6 +138,7 @@ for (i=0;i<count;i++){
         buyer_comment_field.setAttribute("size","50");
 
         fm_edit.appendChild(buyer_comment_field);
+        fm_edit.appendChild(document.createElement("br"));
 
 
     //add the hidden field: archiveID
@@ -158,16 +154,17 @@ for (i=0;i<count;i++){
     edit_button.setAttribute("value","submit changes");
     //alert pop up prior to deletion
     edit_button.setAttribute("onclick","return warning_msg();");
+    fm_edit.appendChild(document.createElement("br"));
     fm_edit.appendChild(edit_button);
-    cell_seller_comment.appendChild(fm_edit);
+    cell_buyer_ratings_comment.appendChild(fm_edit);
 
-    
-}
+
 
     //insert seller comment into the 8th column (seller comment)
     cell_seller_comment.style.textAlign="center";
+    cell_seller_comment.innerHTML=each_listing[i]["seller_comment"];
 
-    
+} 
 
 function warning_msg(){
     return confirm("confirm submitting the changes?");
