@@ -1,5 +1,6 @@
 <?php
     include '../database.php';
+    include 'send_email.php';
 
     $bidID = $bid_arr['bidID'];
     $productID = $bid_arr['productID'];
