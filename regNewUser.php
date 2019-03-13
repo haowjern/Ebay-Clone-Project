@@ -1,28 +1,20 @@
 <!DOCTYPE html PUBLIC>
 <?php
 session_start();
-include "header.php";
 ?>
 
 <?php
 // Troubleshooting - PHP:
 // 1) ***** Error checking with javascript messages? - DON'T WANT IT TO WIPE MY ENTIRE SHEET each time
 
+$emailErr=$DOBErr=$phoneErr=$usernameErr='';
 
-if(!isset($_POST["regNewUser"])) {
+if (!isset($_POST["regNewUser"])) {
     // Do nothing since no $_POST variables created i.e. no signIn form submission
 }
 else {
- // Need to include connection as a SEPARATE php file - 
-//  $connection = mysqli_connect('localhost', 'root', '','dummy') or die(mysqli_error()); 
-//  if (mysqli_connect_errno()){
-//      echo 'Failed to connect to the MySQL server: '. mysqli_connect_error();
-//  }
-//  else {
-//      echo "Successfully connected to server\n";
-//  }
 
- include '../database.php';
+ include './database.php';
 
  // Instantiate user account details from POST variables
  $username = trim($_POST["userName"]);
@@ -36,7 +28,7 @@ else {
 // Sanitise username
 $username = mysqli_real_escape_string($connection, $username);
 
-// Check for duplicate username in users table and admins table
+// Check for duplicate username in users table
 $sql_users = "SELECT username FROM users WHERE username = ?";
 $result_users = mysqli_prepare($connection, $sql_users);
 mysqli_stmt_bind_param($result_users, 's', $username);
@@ -45,17 +37,8 @@ $result = mysqli_stmt_get_result($result_users);
 $rows_users = ($result->num_rows);
 echo "connected to users" . "<br>";
 
-$sql_admins = "SELECT username FROM admins WHERE username = ?";
-$result_admins = mysqli_prepare($connection, $sql_admins);
-mysqli_stmt_bind_param($result_admins, 's', $username);
-mysqli_stmt_execute($result_admins);
-$result = mysqli_stmt_get_result($result_admins);
-$rows_admins = ($result->num_rows);
-echo $rows_admins;
-echo "connected to admins" . "<br>";
-
-if (($rows_users == 0) and ($rows_admins == 0)) {
-    echo ($username . " is available (users and admins - OK)" . "<br>"); // Delete this ########
+if ($rows_users == 0) {
+    echo ($username . " is available" . "<br>"); // Delete this ########
 }
 else {
     $usernameErr = $username . " - duplicate found. Please choose another username" . "<br>";
@@ -75,7 +58,7 @@ if (!isset($_POST['email']) or !isset($_POST['confEmail'])) {
     $clean_email = filter_var(trim($_POST['confEmail']), FILTER_SANITIZE_EMAIL);
     
     if ($orig_email == $clean_email and filter_var($orig_email, FILTER_VALIDATE_EMAIL)) {
-        echo "User-entered email address is safe for storage!";
+        // User-entered email address is safe for storage
     }
     else {
         $emailErr = "Please enter valid email addresses";
@@ -110,16 +93,17 @@ else {
     echo "User-entered Phone Number is NOT SAFE!";
 }
 
+if ($emailErr == "" and $DOBErr == "" and $phoneErr == "" and $usernameErr == "") {
 // INSERT new row to database
 $sql_insert = "INSERT INTO users (username, password1, email, phone, accountbalance, DOB) VALUES (?, ?, ?, ?, ?, ?)";
 $insert_user = mysqli_prepare($connection, $sql_insert);
 $zero = 0;
 mysqli_stmt_bind_param($insert_user, 'ssssis', $username, $hash, $email, $phoneNo, $zero, $DOB_str);
 $result = mysqli_stmt_execute($insert_user);
+echo("Successfully inserted new user."."<br>");
+}
 
-if ($result==TRUE) {
-    echo("Successfully inserted new user."."<br>");
-
+if ($result==TRUE and $usernameErr == "") {
     // INSTANTIATE SESSION variables
     $sql_users = "SELECT userID FROM users WHERE username = ?";
     $result_users = mysqli_prepare($connection, $sql_users);
@@ -137,7 +121,8 @@ if ($result==TRUE) {
         }
     }
 } else {
-    echo("Error: " . $sql_insert . "<br>" . $connection->error);
+    // echo("Error: " . $sql_insert . "<br>" . $connection->error);
+    echo("Please provide valid inputs to register as a new user");
     }
 }
 ?>
@@ -176,7 +161,10 @@ if ($result==TRUE) {
 
     </head>
     <body>
-
+        <br>
+        <br>
+        <br>
+        <div align="center">
         <h3> New User Registration </h3>
         <form name="register_form" action="" onsubmit="return validateForm()" method="post">
         <label for="userName">Username:</label><br>
@@ -207,9 +195,11 @@ if ($result==TRUE) {
         + <input type="text" name="phoneNo" pattern="(.*\d)" placeholder="Phone Number" maxlength=15 required title="Numeric characters only, up to 15 characters">
         <br>
         <br>
-        <p><input type="submit" name="regNewUser" value="send"></p>
+        <p><input type="submit" name="regNewUser" value="Register"></p>
+        <br>
         <br>
         </form>
+        </div>
 
     </body>
 </html>

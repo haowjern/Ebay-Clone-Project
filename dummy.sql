@@ -119,7 +119,7 @@ CREATE USERS TABLE ......?
 */
 
 CREATE TABLE IF NOT EXISTS Users (
-    userID INT NOT NULL,
+    userID INTEGER NOT NULL,
     username TEXT,
     password1 TEXT,
     email TEXT,

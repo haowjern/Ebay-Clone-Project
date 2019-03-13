@@ -8,16 +8,11 @@ include "header.php";
 // ********* Database will continue to update, even if NOT all fields to be modified are correct 
 1) How do I include multiple error messages for each input box? WITHOUT CLEARING ENTIRE FORM
 
-
-1) include header and footer - all pages
 2) include database.php and check SQL ../ or ./   - all pages
-3) Add dummy variables to database   
 4) onclick / href button all links into index.php
 5) <form id="form1" method="post" action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>"><br> calls upon own PHP
 3) editlisting php - copy Annie's warning message replication to all pages with user input
 7) MAKE SURE Back end validation works - front-end validation is for user only
-
-
 
 
 3) SEPARATE PAGES for the individual fields the User can modify 
@@ -51,20 +46,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $emailErr=$passwordErr=$DOBErr=$upAccBalanceErr=$phoneErr="";
     $successMsg="";
 
-    // Need to include connection as a SEPARATE php file - 
-    // $connection = mysqli_connect('localhost', 'root', '','dummy') or die(mysqli_error()); 
-    // if (mysqli_connect_errno()){
-    //     echo 'Failed to connect to the MySQL server: '. mysqli_connect_error();
-    // }
-    // else {
-    //     echo "Successfully connected to server"."<br>";
-    // }
-
-    include '../database.php';
+    include './database.php';
 
     // Instantiate from SESSION variables
-    $_SESSION["userID"] = 7; // this is fixed for example only - DELETE
-    $_SESSION["username"] = 'user1'; // this is fixed for example only - DELETE
+    // $_SESSION["userID"] = 1; // this is fixed for example only - DELETE
+    // $_SESSION["username"] = 'user1'; // this is fixed for example only - DELETE
     $userID = $_SESSION["userID"];
     $username = $_SESSION["username"];
     echo $userID ."<br>";
@@ -104,15 +90,9 @@ else {
     function hasDataChanged($userID,$emailErr,$passwordErr,$DOBErr,$upAccBalanceErr,$phoneErr) {            
         $updated = "";
         
-        // Need to include connection as a SEPARATE php file - 
-        // $connection = mysqli_connect('localhost', 'root', '','dummy') or die(mysqli_error()); 
-        // if (mysqli_connect_errno()){
-        //     echo 'Failed to connect to the MySQL server: '. mysqli_connect_error();
-        // }
-        // else {
-        //     echo "Successfully connected to server"."<br>";
-        // }
-        include '../database.php';
+        include './database.php';
+        
+        $emailErr=$passwordErr=$DOBErr=$phoneErr=$usernameErr='';
 
         // newEmail and newConfEmail
         if ((!isset($_POST['newEmail']) or trim($_POST['newEmail']) == '') and (!isset($_POST['newConfEmail']) or trim($_POST['newConfEmail']) == '')) {
