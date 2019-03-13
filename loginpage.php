@@ -79,6 +79,13 @@ else {
                     $userID = $row["userID"]; 
                     createSession($userID, $username);
                     echo "Successfully created Session variable"."<br>";
+
+                    $host  = $_SERVER['HTTP_HOST'];
+                    $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+                    $extra = 'index.php';
+                    $link="http://".$host.$uri."/".$extra;
+                
+                    header("Location: http://$host$uri/$extra");
                 }
                 else {
                     $loginErr = "Invalid username and password entered.";
@@ -121,7 +128,7 @@ else {
         <br>
         <br>
         <p><input type="submit" onclick="return validateForm(this)" name="signIn" value="Sign in"> 
-        <a href="./regNewUser.php"><input type="button" name="regNewUser" value="Register"></a> </p>
+        <button onclick="window.location.href = './regNewUser.php';" type="button" name="regNewUser">Sign Up</button> </p>
         <br>
         <span class="error"> <?php echo $loginErr;?></span>
         </form>
