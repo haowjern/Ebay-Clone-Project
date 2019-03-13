@@ -16,7 +16,7 @@ SERVER-SIDE FUNCTIONALITIES:
 4. Notify 
     - Outcomes of bidding to buyer and seller
     - If something is not sold within end date, notify seller, and item automatically extends by 30 days - (discussion with HJ and Annie)
-5. System itself refreshes every one hour. - HJ will work on this
+5. System itself refreshes every one hour
 
 PAGES:
 1. Buyer_item.png ############ HAOW JERN ############
@@ -35,21 +35,11 @@ PAGES:
     - See list of product details depending on what I searched for. DONE
     - Filter what I see. DONE
 
-3. Buying_confirmation_pop_up.jpg -- EXTRA - at the moment it goes back to index.php
-    I want to be able to:
-    - See a pop up telling me that my payment has gone through. 
-    - See this pop up on my home page.  
-
-4. Cart.jpg -- EXTRA 
-    I want to be able to:
-    - See a list of product details on what is in my cart.
-    - Remove items from the cart.
-    - Confirm my cart and go to the payment page. 
 
 5. Home.jpg
     I want to be able to:
-    - Search for something based on keywords.           ### ...Sergi's criteria(?)
-    - Search a category of items.                       ### Sergi's criteria
+    - Search for something based on keywords.  DONE
+    - Search a category of items.  DONE
     - See items on promotion. 
     - Go to see my cart page. 
     - Go to see my purchase history page. 
@@ -110,6 +100,20 @@ PAGES:
     I want to be able to:
     - See a similar page to update_profile.jpg
 
+
+EXTRA stuff : 
+
+3. Buying_confirmation_pop_up.jpg -- EXTRA - at the moment it goes back to index.php
+    I want to be able to:
+    - See a pop up telling me that my payment has gone through. 
+    - See this pop up on my home page.  
+
+    
+4. Cart.jpg -- EXTRA 
+    I want to be able to:
+    - See a list of product details on what is in my cart.
+    - Remove items from the cart.
+    - Confirm my cart and go to the payment page. 
 
 
 
