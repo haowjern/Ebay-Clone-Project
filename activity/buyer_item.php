@@ -180,9 +180,9 @@ if (strtolower($auctionable) == 1) {
                 $result = $connection->query($sql); 
                 $row = mysqli_fetch_row($result);
                 if (implode(null,$row)==0) {
-                    echo('<input type="submit" value="Watch" onclick="return validateForm(this)" formaction="./watch_product.php" formmethod="post">');
+                    echo('<input type="submit" value="Watch" onclick="return validateForm(this)" formaction="../watch_product.php" formmethod="post">');
                 } else {
-                    echo('<input type="submit" value="Stop Watching" onclick="return validateForm(this)" formaction="./stop_watching_product.php" formmethod="post">');
+                    echo('<input type="submit" value="Stop Watching" onclick="return validateForm(this)" formaction="../stop_watching_product.php" formmethod="post">');
                 }       
             ?>
         </form>

@@ -7,7 +7,7 @@ function set_bidEvent($bid_arr, $instr) {
     - <$instr>: 
     */ 
     include '../database.php';
-    include './update_watching.php';
+    //include './update_watching.php';
     // check object has the correct properties
     $properties = ["bidID", "productID", "buyerID", "payment", "price"];
     foreach ($properties as $value) {

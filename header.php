@@ -38,7 +38,7 @@ float: left;
     </div>
     <div id="buyer_menu">
     I'm buying:
-    <button onclick="window.location.href = '/show_my_watchlist.php';" type="button">My Watchlist</button>
+    <button onclick="window.location.href = '/activity/watchlist_table_display.php';" type="button">My Watchlist</button>
     <button onclick="window.location.href = '/';"type="button">Purchase History</button>
     <button onclick="window.location.href = '/activity/buyer_item.php';" type="button">Buyer Item </button>
     <button type="button">Cart</button>
