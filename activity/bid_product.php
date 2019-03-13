@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $_SESSION['rating']['ratingValue'] = $_POST['rating'];
     set_rating($_SESSION['rating'], "insert");
 
-    //header('Location: ../index.php'); 
+    header('Location: ../index.php'); 
 
 } else {
     echo "Not posting to bidding.";

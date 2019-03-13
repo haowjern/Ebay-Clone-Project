@@ -20,7 +20,7 @@ function set_rating($rating_arr, $instr) {
         }
 
     } else {
-        echo("Error: Selected wrong instruction for set_bidEvent.");
+        echo("Error: Selected wrong instruction for set_rating.");
     }
     $connection->close();
 }

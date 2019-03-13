@@ -121,8 +121,7 @@ if (strtolower($auctionable) == 1) {
             color:black;
         }
 
-        #table-wrapper table thead th .text {
-            position:absolute;   
+        #table-wrapper table thead th .text { 
             top:-20px;
             z-index:2;
             height:20px;
@@ -195,6 +194,8 @@ if (strtolower($auctionable) == 1) {
                         <tr>
                             <th><span class="text">Buyer</span></th>
                             <th><span class="text">Bid</span></th>
+                            <th><span class="text">Bid Date</span></th>
+                            <th><span class="text">Bid Time</span></th>
                         </tr>
                     </thead>
                     <tbody id="refresh-table">
