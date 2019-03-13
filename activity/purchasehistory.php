@@ -3,11 +3,11 @@ session_start();
 
 include "../header.php";
 
-//fetch all the archive listing related to this seller
+//fetch all the archive listing related to this buyer
 $_SESSION["userID"]=1;
 
 unset($_SESSION["archive_search_criteria"]);
-$_SESSION["archive_search_criteria"]="sellerID";
+$_SESSION["archive_search_criteria"]="buyerID";
 
 include 'fetcharchive.php';
 
@@ -20,7 +20,7 @@ if ($count==0){
 
 <html>
 <head>
-<h1>My Selling History</h1>
+<h1>My Purchase History</h1>
 
 <style>
 th {
@@ -43,10 +43,10 @@ th {
         <th>Product Details</th>
         <th>Deal Price (£)</th>
         <th>Deal Date</th>
-        <th>Buyer</th>
-        <th>Buyer's Ratings (1-10)</th>
-        <th>Buyer's comment</th>
+        <th>Seller</th>
+        <th>My Ratings (1-10)</th>
         <th>My comment</th>
+        <th>Seller's comment</th>
         
 
     </tr>
@@ -109,9 +109,6 @@ for (i=0;i<count;i++){
     cell_buyer_comment.style.textAlign="center";
     cell_buyer_comment.innerHTML=each_listing[i]["buyer_comment"];
 
-    //insert seller comment into the 8th column (seller comment)
-    cell_seller_comment.style.textAlign="center";
-
     //create the form to edit item
     var fm_edit=document.createElement('form');
     //name the form with productID
@@ -119,15 +116,33 @@ for (i=0;i<count;i++){
     fm_edit.setAttribute("method","post");
     fm_edit.setAttribute("action","aftersale.php");
 
-    //add the text field to edit comment
-    var seller_comment_field=document.createElement("input");
-        seller_comment_field.setAttribute("type","text");
-        seller_comment_field.setAttribute("name","seller_comment");
-        seller_comment_field.setAttribute("value",each_listing[i]["seller_comment"]);
-        seller_comment_field.setAttribute("maxlength","150");
-        seller_comment_field.setAttribute("size","50");
+    fm_edit.appendChild(document.createTextNode("ratings (1 to 10): "));
+    fm_edit.appendChild(document.createElement("br"));
 
-        fm_edit.appendChild(seller_comment_field);
+    //add the number field to edit ratings
+    var ratings_field=document.createElement("input");
+        ratings_field.setAttribute("type","number");
+        ratings_field.setAttribute("name","ratings");
+        ratings_field.setAttribute("value",each_listing[i]["ratings"]);
+        ratings_field.setAttribute("min","1");
+        ratings_field.setAttribute("max","10");
+        ratings_field.setAttribute("step","1");
+
+        fm_edit.appendChild(ratings_field);
+
+        fm_edit.appendChild(document.createTextNode("my comment (max 150 words): "));
+        fm_edit.appendChild(document.createElement("br"));
+
+
+    //add the text field to edit comment
+    var buyer_comment_field=document.createElement("input");
+        buyer_comment_field.setAttribute("type","text");
+        buyer_comment_field.setAttribute("name","buyer_comment");
+        buyer_comment_field.setAttribute("value",each_listing[i]["buyer_comment"]);
+        buyer_comment_field.setAttribute("maxlength","150");
+        buyer_comment_field.setAttribute("size","50");
+
+        fm_edit.appendChild(buyer_comment_field);
 
 
     //add the hidden field: archiveID
@@ -148,6 +163,11 @@ for (i=0;i<count;i++){
 
     
 }
+
+    //insert seller comment into the 8th column (seller comment)
+    cell_seller_comment.style.textAlign="center";
+
+    
 
 function warning_msg(){
     return confirm("confirm submitting the changes?");

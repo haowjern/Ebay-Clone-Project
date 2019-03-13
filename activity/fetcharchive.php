@@ -20,13 +20,41 @@ if (isset($_SESSION["archive_search_criteria"])){
 
         $sellerID=mysqli_real_escape_string($connection,$_SESSION['userID']);
 
-        $sql="SELECT * FROM Archive WHERE sellerID='$sellerID'";
+
+        $sql="SELECT a.archiveID, 
+                    a.product_name,
+                    a.product_description,
+                    a.dealprice,
+                    a.quantity,
+                    a.categoryID,
+                    a.conditionID,
+                    a.auctionable,
+                    a.dealdate,
+                    a.ratings,
+                    a.buyer_comment,
+                    a.seller_comment,
+                    u.username
+        FROM Archive a,Users u
+        WHERE a.buyerID=u.userID AND a.sellerID='$sellerID'";
 
         } elseif($criteria=="buyerID") {
 
         $buyerID=mysqli_real_escape_string($connection,$_SESSION['userID']);
 
-        $sql="SELECT * FROM Archive WHERE buyerID='$buyerID'";
+        $sql="SELECT a.product_name,
+                    a.product_description,
+                    a.dealprice,
+                    a.quantity,
+                    a.categoryID,
+                    a.conditionID,
+                    a.auctionable,
+                    a.dealdate,
+                    a.ratings,
+                    a.buyer_comment,
+                    a.seller_comment,
+                    u.username
+        FROM Archive a,Users u
+        WHERE a.sellerID=u.userID AND a.sellerID='$buyerID'";
 
     }
 
