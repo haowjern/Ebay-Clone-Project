@@ -37,28 +37,6 @@ if (strtolower($auctionable) == 1) {
     // get latest bid price from bid event; 
 }
 
-/*  if condition to check whether user is watching product
-
-    get sql view: this user, watchlist
-    and check if: this product in that view
-
-    SELECT watchID IN watchlist WHERE userID = $_SESSION['userID'] AND productID = $_SESSION['product']['id'] 
-        
-        $sql = "SELECT watchID IN watchlist WHERE userID = $_SESSION['userID'] AND productID = $_SESSION['product']['id']"
-        $result = $connection->query($sql); 
-        if ($result==TRUE) {
-            echo("Inserted new watchlist item.\n");
-        } else {
-            echo("Error: " . $sql . "<br>" . $connection->error);
-        }
-
-    if so, userwatching = 1
-    else, userwatching = 0
-    and down below,
-     watch button is "watch" if userwatching == 1
-     and is "stop watching" if userwatching == 0
-*/
-
 
 
 ?>
@@ -184,6 +162,7 @@ if (strtolower($auctionable) == 1) {
                 } else {
                     echo('<input type="submit" value="Stop Watching" onclick="return validateForm(this)" formaction="../stop_watching_product.php" formmethod="post">');
                 }       
+                echo $_SESSION['product']['id'];
             ?>
         </form>
         <div id="table-wrapper">
