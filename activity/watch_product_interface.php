@@ -7,6 +7,7 @@ function set_watch($watch_arr, $instr) {
     */ 
 
     include 'database.php';
+    include "header.php";
 
     // check object has the correct properties
     $properties = ["productID", "buyerID"]; 
@@ -17,7 +18,8 @@ function set_watch($watch_arr, $instr) {
     }
 
     $productID = $watch_arr['productID'];
-    $buyerID = $watch_arr['buyerID'];
+    //$buyerID = $watch_arr['buyerID'];
+    $buyerID = $_SESSION['userID'];
     $instr = $instr;
 
     // add new 
@@ -32,7 +34,7 @@ function set_watch($watch_arr, $instr) {
 
     // delete 
     } elseif ($instr == "delete") {
-        $sql="DELETE FROM watchlist WHERE buyerID = $buyerID AND productID = $productID";  
+        $sql="DELETE FROM watchlist WHERE buyerID = '$buyerID' AND productID = '$productID'";  
         
         if ($connection->query($sql)==TRUE) {
             echo("Deleted watch event successfully.");
@@ -47,5 +49,8 @@ function set_watch($watch_arr, $instr) {
     return $watch_arr;
 
     $connection->close();
+
 }
 ?>
+
+

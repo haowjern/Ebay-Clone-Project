@@ -172,6 +172,11 @@ Haow Jern
 
 Sergi
     
+    check emails send (when bidmake & bidend)
+    add subject body etc to emails
+
+    finish watchlist table
+
     ./ - when bid make, update users watching AND users that have made bids
     .  - when bid end, update users watching AND users that have made bids 
 
