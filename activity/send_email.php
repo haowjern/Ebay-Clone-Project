@@ -6,7 +6,7 @@
     require 'mail/src/PHPMailer.php';
     require 'mail/src/SMTP.php';
 
-function send_to_email($email_address, $subject, $body, $altbody) {
+function send_to_email($email_address, $subject, $body, $altbody, $emailee_name) {
 
     $mail = new PHPMailer(true);
     try {
@@ -23,7 +23,7 @@ function send_to_email($email_address, $subject, $body, $altbody) {
  
         //Recipients
         $mail->setFrom('group10ebaydatabaseproject@gmail.com', 'Group10EbayProject');
-        $mail->addAddress($email_address, 'Joe User');     // Add a recipient
+        $mail->addAddress($email_address, $emailee_name);     // Add a recipient
         //$mail->addAddress('ellen@example.com');               // Name is optional
         //$mail->addReplyTo('info@example.com', 'Information');
         //$mail->addCC('cc@example.com');
