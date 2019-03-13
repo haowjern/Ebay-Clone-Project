@@ -1,7 +1,8 @@
 <?php 
 session_start(); 
 
-include './bid_product_interface.php';
+include_once './bid_product_interface.php';
+include_once './rating_interface.php';
 
 $_SESSION['userID'] = 1; // TODO: FOR TESTING ONLY - TO BE REMOVED
 
@@ -15,7 +16,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $_SESSION['bid']['bidID'] = ""; 
     set_bidEvent($_SESSION['bid'], "insert");
 
-    header('Location: ../index.php'); 
+    $_SESSION['rating']['productID'] = $_SESSION['product']['productID'];
+    $_SESSION['rating']['userID'] = $_SESSION['userID'];
+    $_SESSION['rating']['ratingValue'] = $_POST['rating'];
+    set_rating($_SESSION['rating'], "insert");
+
+    //header('Location: ../index.php'); 
 
 } else {
     echo "Not posting to bidding.";

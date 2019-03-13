@@ -2,7 +2,7 @@
 include "../header.php";
 include '../database.php';
 include "photos_interface.php";
-include "bid_product_interface.php";
+include_once "bid_product_interface.php";
 
 $productID = $_POST["productID"];
 $name = $_POST["product_name"];
@@ -162,6 +162,8 @@ if (strtolower($auctionable) == 1) {
                 Price:
             <?php echo $start_price?>
             <?php } ?>
+            <br>
+            Item Rating(0-10): <input name="rating" id="rating" type="number" step="1" min="1" max="10" value="5" required>
 
             <h3>Seller Details</h3>
             <p>Name: Seller Name</p>

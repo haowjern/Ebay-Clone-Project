@@ -153,6 +153,26 @@ CREATE TABLE IF NOT EXISTS Watchlist (
     PRIMARY KEY (watchID)
 ) ENGINE=INNODB;
 
+CREATE TABLE IF NOT EXISTS rating (
+	buyerID INT NOT NULL, 
+    productID INT NOT NULL,
+    ratingValue INT NOT NULL,
+    datetimestamp TIMESTAMP NOT NULL,
+    PRIMARY KEY (buyerID, productID),
+    FOREIGN KEY (buyerID) REFERENCES Users(userID) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (productID) REFERENCES Product(productID) ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE=INNODB;
+
+CREATE TABLE IF NOT EXISTS popularity_diff (
+	productID1 INT NOT NULL,
+    productID2 INT NOT NULL, 
+    count int(11) NOT NULL default '0',
+    sum int(11) NOT NULL default '0',
+    PRIMARY KEY (productID1, productID2),
+    FOREIGN KEY (productID1) REFERENCES Product(productID) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (productID2) REFERENCES Product(productID) ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE=INNODB;
+
 
 
 
