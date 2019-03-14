@@ -1,20 +1,21 @@
 <?php
 session_start();
-//move an item from product table to archive table when it is bought / enddate has passed
+
+include_once "../header.php";
+include_once "../database.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    include "../database.php";
-
     //select item in product table
 
-    $productID=mysqli_real_escape_string($connection,$_POST['productID']);
-    $buyerID=mysqli_real_escape_string($connection,$_POST['buyerID']);
+    $productID=$_SESSION['product']['productID'];
+
+    $buyerID=mysqli_real_escape_string($connection,$_SESSION["userID"]);
     $dealdate=mysqli_real_escape_string($connection,date('Y-m-d'));
-    $dealprice=mysqli_real_escape_string($connection,$_POST['dealprice']);
+    $dealprice=mysqli_real_escape_string($connection,$_POST['price']);
     $quantity=(integer)mysqli_real_escape_string($connection,$_POST['quantity']);
 
-    $sql="SELECT * FROM Product WHERE productID='$productID'";
+    $sql="SELECT * FROM Product WHERE productID=$productID";
     $result=$connection->query($sql);
 
     if ($result->num_rows>0){
@@ -27,42 +28,90 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $auctionable=(string)$row["auctionable"];
         $inventory=(integer)$row["quantity"];
 
-        //reduce inventory in product table
-        $inventory_new=$inventory-$quantity;
+        //check account balance
+        $sql="SELECT accountbalance,username FROM users WHERE userID=$buyerID";
+        $result1=$connection->query($sql);
 
-        //if inventory goes down to zero, remove the item; else update the inventory(quantity) in product table
-        if ($inventory_new==0){
-            //remove the item from product table
-            $_SESSION["remove_productID"]=$productID;
+        $row1=$result1->fetch_assoc();
+        $accountbalance=$row1["accountbalance"];
 
-            include "removelisting.php";
-
-        }else{
-            //update the quantity in product table
-            $sql="UPDATE Product 
-                    SET quantity='$inventory_new'
-                    WHERE productID=$productID";
-            $connection->query($sql);
+        if ($accountbalance<$dealprice){
+            $message="You don't have enough money in your balance to complete this transaction. Top up your account balance in your profile.";
+            $checked="invalid";
+        } else{
+            $message="You have enough balance.";
+            $checked="valid";
         }
 
-        //insert item in archive table
-        $sql="INSERT INTO Archive (productID, product_name,product_description,dealprice,quantity,categoryID,conditionID,buyerID,sellerID,auctionable,dealdate) 
-        VALUES('$productID','$product_name','$product_description','$dealprice','$quantity','$categoryID','$conditionID','$sellerID','$auctionable','$dealdate')";
-        
-        if ($connection->query($sql)==TRUE){
-        echo "New archive record successfully created";
+        if ($checked=="valid"){
 
-        } else {
-        echo "Error: ". $sql . "<br>" . $connection->error;
-        }
+            //reduce inventory in product table
+            $inventory_new=$inventory-$quantity;
+
+            //if inventory goes down to zero, remove the item; else update the inventory(quantity) in product table
+            if ($inventory_new==0){
+                //remove the item from product table
+                $_SESSION["remove_productID"]=$productID;
+
+                include "removelisting.php";
+
+            }else{
+                //update the quantity in product table
+                $sql="UPDATE Product 
+                        SET quantity='$inventory_new'
+                        WHERE productID=$productID";
+                $connection->query($sql);
+            }
+
+            //insert item in archive table
+            $sql="INSERT INTO Archive (productID, product_name,product_description,dealprice,quantity,categoryID,conditionID,buyerID,sellerID,auctionable,dealdate) 
+            VALUES($productID,'$product_name','$product_description',$dealprice,$quantity,$categoryID,$conditionID,$buyerID,$sellerID,$auctionable,'$dealdate')";
+            
+            if ($connection->query($sql)==TRUE){
+            $message1="New archive record successfully created";
+
+            } else {
+            echo "Error: ". $sql . "<br>" . $connection->error;
+            }
+        }   
 
 
-    }else{
+
+    } else{
         echo "Error: ". $sql . "<br>" . $connection->error;}
-
-  
-
-    $connection->close();
-
 }
+
 ?>
+
+<html>
+<head>
+</head>
+<body>
+    <h1>Your are completing the transaction...</h1>
+
+    <p>Product Name: <?php echo $product_name?></p>
+    <p>Product Description: <?php echo $product_description?></p>
+    <p>Deal Price: <?php echo $dealprice?></p>
+    <p>Quantity: <?php echo $quantity?></p>
+    <p>Deal Date: <?php echo $dealdate?></p>
+    <br>
+    <p>My Account balance: <?php echo $accountbalance?></p>
+
+    <p><?php echo $message?></p>
+
+    <p><?php echo $message1?></p>
+
+</body>
+</html>
+
+<?php
+//move an item from product table to archive table when it is bought / enddate has passed
+
+
+ $connection->close();
+
+ include "../footer.php";
+
+
+?>
+

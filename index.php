@@ -30,6 +30,12 @@ if ($count==0){
     echo "no result found";
 }
 
+if (!isset($_SESSION["popularity_diff"])) {
+    include "./activity/test_add_piff.php";
+    $_SESSION["popularity_diff"] = 1;
+}
+
+unset($_SESSION["product_search_criteria"]);
 
 ?>
 
@@ -77,23 +83,15 @@ th {
                 <th>Image</th>
                 <th>Product Name</th>
                 <th>Product Details
-                <br><br>
                 </th>
                 <th>Start Price (£)
-                <br><br>
                 </th>
                 <th>Latest Bid (£)
-                <br><br>
                 </th>
                 <th>Listing starts on
-                <br><br>
-                <br><span style="font-size:12px">(on/after)</span>
                 </th>
                 <th>Listing ends on
-                <br><br>
-                <br><span style="font-size:12px">(on/before)</span>
                 </th>
-                <th>Auctionable?</th>
                 <th>Action</th>
             </tr>   
         </table>
@@ -124,9 +122,15 @@ th {
         
             //insert image iin the 1st column (image)
             cell_image.style.textAlign="center";
-            cell_image.innerHTML=`<img src=${each_listing[i]['photos'][0]['file_path']} alt='Image' style=max-height:100%; max-width:100%>`
-            cell_image.height=100; // scale size
-            cell_image.width=100; // scale size 
+            if(each_listing[i]['photos'][0]!=null){
+                cell_image.innerHTML=`<img src=${each_listing[i]['photos'][0]['file_path']} alt='Image' style=max-height:100%; max-width:100%>`
+                cell_image.height=100; // scale size
+                cell_image.width=100; // scale size
+            
+            } else{
+                cell_image.innerHTML="No image";
+            }
+             
 
             //insert product name into the 2nd column (Product Name)
             cell_productname.style.textAlign="center";
@@ -166,17 +170,8 @@ th {
             cell_enddate.style.textAlign="center";
             cell_enddate.innerHTML=each_listing[i]["enddate"]+" "+each_listing[i]["endtime"];
 
-            //insert listing auction status into the 8th column (auction)
-            cell_auctionable.style.textAlign="center";
 
-            if (each_listing[i]["auctionable"]==="0"){
-                each_listing[i]["auctionable"]="No";
-                cell_auctionable.innerHTML="No";
-            } else {
-                cell_auctionable.innerHTML="Yes";
-            }
-
-            //insert forms with buttons in 9th column (action)
+            //insert forms with buttons in 8th column (action)
             cell_action.style.textAlign="center";
 
             //create the form to see more details of item
@@ -207,7 +202,12 @@ th {
 
             var go_details_button=document.createElement("input");
             go_details_button.setAttribute("type","submit");
-            go_details_button.setAttribute("value","Details");
+            if (each_listing[i]["auctionable"]==="0"){
+                        go_details_button.setAttribute("value","Details");
+                    } else {
+                        go_details_button.setAttribute("value","Go to auction");
+                    }
+            go_details_button.style.width = '100px';
             fm_go_details.appendChild(go_details_button);
 
             cell_action.appendChild(fm_go_details);
@@ -240,21 +240,18 @@ th {
                 <th>Image</th>
                 <th>Product Name</th>
                 <th>Product Details
-                <br><br>
+                
                 </th>
                 <th>Start Price (£)
-                <br><br>
+                
                 </th>
                 <th>Latest Bid (£)
-                <br><br>
+               
                 </th>
                 <th>Listing starts on
-                <br><br>
-                <br><span style="font-size:12px">(on/after)</span>
+               
                 </th>
                 <th>Listing ends on
-                <br><br>
-                <br><span style="font-size:12px">(on/before)</span>
                 </th>
                 <th>Auctionable?</th>
                 <th>Action</th>

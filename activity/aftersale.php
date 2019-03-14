@@ -6,6 +6,7 @@ session_start();
 if (isset($_SESSION["aftersale_seller"])||(isset($_SESSION["aftersale_buyer"]))) {
 
     include "../database.php";
+    include "./probability_diff_interface.php";
 
     if(isset($_SESSION["aftersale_seller"])){
 
@@ -25,6 +26,8 @@ if (isset($_SESSION["aftersale_seller"])||(isset($_SESSION["aftersale_buyer"])))
         $archiveID=mysqli_real_escape_string($connection,$_SESSION["aftersale_buyer"][0]);
         $buyercomment=mysqli_real_escape_string($connection,$_SESSION["aftersale_buyer"][1]);
         $ratings=mysqli_real_escape_string($connection,$_SESSION["aftersale_buyer"][2]);
+        $productID=mysqli_real_escape_string($connection,$_SESSION["aftersale_buyer"][3]);
+        $buyerID=mysqli_real_escape_string($connection,$_SESSION["aftersale_buyer"][4]);
         
         $sql="UPDATE Archive
                 SET buyer_comment='$buyercomment',
@@ -44,6 +47,13 @@ if (isset($_SESSION["aftersale_seller"])||(isset($_SESSION["aftersale_buyer"])))
     }
   
     $connection->close();
+
+    if(isset($_SESSION["aftersale_buyer"])){
+        $some_arr=[$productID,$buyerID];
+        set_popularity_diff($some_arr, "insert");
+
+    }
+
 
     unset($_SESSION["aftersale_buyer"]);
     unset($_SESSION["aftersale_seller"]);

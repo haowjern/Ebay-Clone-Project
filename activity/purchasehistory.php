@@ -3,7 +3,9 @@ session_start();
 
 include "../header.php";
 
+
 //fetch all the archive listing related to this buyer
+// $_SESSION["userID"]=1;
 
 unset($_SESSION["archive_search_criteria"]);
 $_SESSION["archive_search_criteria"]="buyerID";
@@ -21,11 +23,21 @@ $buyer_comment_err=$buyer_comment=$ratings_err=$ratings=$checked="";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-//validate buyer comment before database query
+//validate archiveID and productID
 
     $archiveID=$_POST["archiveID"];
+    $productID=$_POST["productID"];
+
+    if (!is_numeric($archiveID)||!is_numeric($productID)){
+        $checked="invalidated";
+    }else{
+        $checked="validated";
+    }
 
     $ratings=$_POST["ratings"];
+
+//validate buyer comment before database query
+
     $buyer_comment=$_POST["buyer_comment"];
 
     if (strlen($_POST["buyer_comment"])>150){
@@ -57,10 +69,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $ratings_err="";
             $checked="validated";
           }
-    
-   
+
     if ($checked=="validated"){
-        $_SESSION["aftersale_buyer"]=[$archiveID,$buyer_comment,$ratings];
+        $_SESSION["aftersale_buyer"]=[$archiveID,$buyer_comment,$ratings,$productID,$_SESSION["userID"]];
         include "aftersale.php";
     }
 }
@@ -175,16 +186,47 @@ for (i=0;i<count;i++){
             }
         }
 
-        
+        ratings_field.setAttribute("min","1");	
+        ratings_field.setAttribute("max","10");	
+        ratings_field.setAttribute("step","1");	
+         fm_edit.appendChild(ratings_field);	
+        fm_edit.appendChild(document.createElement("br"));	
+        fm_edit.appendChild(document.createElement("br"));	
+         fm_edit.appendChild(document.createTextNode("my comment (max 150 words): "));	
+        fm_edit.appendChild(document.createElement("br"));	
+     
+     //add the text field to edit comment	
+    var buyer_comment_field=document.createElement("input");	
+        buyer_comment_field.setAttribute("type","text");	
+        buyer_comment_field.setAttribute("name","buyer_comment");	
+        buyer_comment_field.setAttribute("value",each_listing[i]["buyer_comment"]);	
+         if (each_listing[i]["archiveID"]=="<?php echo $_POST["archiveID"]?>"){	
+            var buyer_comment_updated="<?php echo $_POST['buyer_comment']?>";	
+            if (buyer_comment_updated!=""){	
+            buyer_comment_field.setAttribute("value","<?php echo htmlentities($_POST["buyer_comment"])?>");	
+            }	
+        }	
+        	        
+        buyer_comment_field.setAttribute("maxlength","150");	
+        buyer_comment_field.setAttribute("size","50");	
+         fm_edit.appendChild(buyer_comment_field);	
+        fm_edit.appendChild(document.createElement("br"));	
 
 
-    //add the hidden field: archiveID
+    //add the hidden field: archiveID and productID
     var hiddenField_archiveID=document.createElement("input");
         hiddenField_archiveID.setAttribute("type","hidden");
         hiddenField_archiveID.setAttribute("name","archiveID");
         hiddenField_archiveID.setAttribute("value",each_listing[i]["archiveID"]);
 
         fm_edit.appendChild(hiddenField_archiveID);
+
+    var hiddenField_productID=document.createElement("input");
+        hiddenField_productID.setAttribute("type","hidden");
+        hiddenField_productID.setAttribute("name","productID");
+        hiddenField_productID.setAttribute("value",each_listing[i]["productID"]);
+
+        fm_edit.appendChild(hiddenField_productID);
 
     var edit_button=document.createElement("input");
     edit_button.setAttribute("type","submit");

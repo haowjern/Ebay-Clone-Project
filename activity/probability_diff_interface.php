@@ -7,7 +7,7 @@ function set_popularity_diff($some_arr, $instr) {
         include './database.php';
     }
     $productID = $some_arr["productID"]; // item that was just rated 
-    $userID = $some_arr["userID"]; // user that rated the item
+    $userID = $some_arr["buyerID"]; // user that rated the item
 
     if ($instr === "insert") {
         // get all of the users' rating pairs

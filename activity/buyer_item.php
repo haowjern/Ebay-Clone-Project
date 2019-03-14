@@ -33,14 +33,28 @@ unset($_SESSION['product']);
 $_SESSION['product'] = array_merge([], $_POST); // create session variable so bid_product can use this 
 
 
-$is_bidding = FALSE; // this is for price
+$is_bidding = "no"; // this is for price
 if (strtolower($auctionable) == 1) {
-    $is_bidding = TRUE;
+    $is_bidding = "yes";
     // get latest bid price from bid event; 
 }
 
+//get the bidding end date and time
+$sql = "SELECT enddate,endtime FROM Product WHERE productID = $productID";
+        $result = $connection->query($sql); 
 
+        $row=$result->fetch_assoc();
+        $bidding_enddate=$row["enddate"];
+        $bidding_endtime=$row["endtime"];
 
+//get the seller name
+
+$sql = "SELECT username FROM users WHERE userID = $sellerID";
+        $result = $connection->query($sql); 
+
+        $row=$result->fetch_assoc();
+        $sellername=$row["username"];
+        
 ?>
 
 
@@ -130,35 +144,46 @@ if (strtolower($auctionable) == 1) {
                 </div>
                 <?php } ?>
             </div>
+            <p>ProductID: <?php echo $_SESSION['product']['productID']?></p>
             <h3>Product Name: <?php echo $name?></h3>
             <p>Description: <?php echo $description ?></p>
+            <p>Seller: <?php echo $sellername?></p>
+            <p>Listing Until: <?php echo $bidding_enddate." ".$bidding_endtime ?></p>
+
+                    
             Quantity:
             <input id='quantity' type="number" name="quantity" placeholders="1" min="1" max="10" required>
-            <?php if ($is_bidding) {?>
+            <br>
+            <?php if ($is_bidding=="yes") {?>
                 Bid Price: <input name="price" id="price" type="number" step="0.01" min="0" max="10000" required> <span id="error_price"></span>
                 Current Bid:
                 <?php echo $start_price?>
+                <br><br>
+                <input id='bid' type="submit" value="Bid" onclick="return validateForm(this)" formaction="bid_product.php" formmethod="post">
+           
             <?php } else {?>
                 Price:
             <?php echo $start_price?>
-            <?php } ?>
-            <br>
-            Item Rating(0-10): <input name="rating" id="rating" type="number" step="1" min="1" max="10" value="5" required>
+            <input name="price" type="hidden" value=<?php echo $start_price?>>
+            <br><br>
+            <input id='buy' type="submit" value="Buy" onclick="return validateForm(this)" formaction="addarchive.php" formmethod="post">
 
-            <h3>Seller Details</h3>
-            <p>Name: Seller Name</p>
-            <?php // have to wait to see how we get userID, is it form sessions? ?>
-            <input id='bid' type="submit" value="Bid" onclick="return validateForm(this)" formaction="bid_product.php" formmethod="post" <?php if (!$is_bidding || $cannot_buy) {echo "disabled";} ?>>
-            <!-- <input id='buy' type="submit" value="Buy" onclick="return validateForm(this)" formaction="" formmethod="post" <?php if ($is_bidding || $cannot_buy) {echo "disabled";} ?>> -->
+            <?php } ?>
+
+
+
+
+            <!-- <input id='bid' type="submit" value="Bid" onclick="return validateForm(this)" formaction="bid_product.php" formmethod="post" <?php if (!($is_bidding=="yes") || $cannot_buy) {echo "disabled";} ?>>
+            <input id='buy' type="submit" value="Buy" onclick="return validateForm(this)" formaction="addarchive.php" formmethod="post" <?php if (($is_bidding=="yes") || $cannot_buy) {echo "disabled";} ?>> -->
 
             
-            <input type="submit" value="Cart" <?php if ($is_bidding) {echo "disabled";} ?>>     
+            <input type="submit" value="Cart" <?php if ($is_bidding=="yes") {echo "disabled";} ?>>     
 
             <?php
                 // code for watch/stop_watching button switch
                 $buyerID = $_SESSION['userID'];
 
-                $sql = "SELECT COUNT(*) FROM watchlist WHERE productID = $productID AND buyerID = $buyerID";
+                $sql = "SELECT COUNT(*) FROM Watchlist WHERE productID = $productID AND buyerID = $buyerID";
                 $result = $connection->query($sql); 
                 $row = mysqli_fetch_row($result);
                 if (implode(null,$row)==0) {
@@ -173,15 +198,16 @@ if (strtolower($auctionable) == 1) {
                 <table>
                     <thead>
                         <tr>
-                            <th><span class="text">Buyer</span></th>
-                            <th><span class="text">Bid</span></th>
-                            <th><span class="text">Bid Date</span></th>
-                            <th><span class="text">Bid Time</span></th>
+                            <th><span class="text"><?php if($is_bidding=="yes"){echo "Buyer";}?></span></th>
+                            <th><span class="text"><?php if($is_bidding=="yes"){echo "Bid";}?></span></th>
+                            <th><span class="text"><?php if($is_bidding=="yes"){echo "Bid Date";}?></span></th>
+                            <th><span class="text"><?php if($is_bidding=="yes"){echo "Bid Time";}?></span></th>
                         </tr>
                     </thead>
                     <tbody id="refresh-table">
                         <?php
-                            include_once("refreshable_bidtable.php"); // include first table, later use script to update
+                            if($is_bidding=="yes"){
+                            include_once("refreshable_bidtable.php");} // include first table, later use script to update
                         ?> 
                     </tbody>
                 </table>
@@ -190,6 +216,7 @@ if (strtolower($auctionable) == 1) {
 
         <!-- refresh table every 2 seconds-->
         <script type="text/javascript">
+        if($is_bidding=="yes"){
             $(document).ready (function() {
                 setInterval(function() {
                     let transfer_data = {"productID": <?php echo $productID ?>};
@@ -197,6 +224,7 @@ if (strtolower($auctionable) == 1) {
                     
                 }, 2000);
             });
+        }
         </script>
 
         <?php 

@@ -27,10 +27,16 @@ body{
 float: left;
 }
 
+#username{
+    float:left;
+    width:100%;
+}
+
+
 
 </style>
     <div id="general">
-    <button onclick="window.location.href = '/signout.php';" type="button" id="sign_in"></button>
+    <button onclick="window.location.href = '/signout.php';" type="button" id="sign_in">Sign In</button>
     <button onclick="window.location.href = '/index.php';"type="button" formaction=index.php>Home</button>
     <button onclick="window.location.href = '/yourProfile.php';" type="button">My Profile</button>
     </div>
@@ -47,14 +53,16 @@ float: left;
     <button type="button">Cart</button>
     </div>
     <br>
-    <p>You are signed in as: <?php echo $_SESSION["username"] ;?></p>
+    <div id="username">
+    <p>You are signed in as: <?php echo $_SESSION["username"] ;?><br></p>
+    </div>
+
 
 <script>
+document.getElementById("sign_in").innerHTML="Sign In";
 if (<?php echo isset($_SESSION["userID"]);?>){
     document.getElementById("sign_in").innerHTML="Sign Out";
-} else{
-    document.getElementById("sign_in").innerHTML="Sign In";
-}
+} 
 
 </script>
 
