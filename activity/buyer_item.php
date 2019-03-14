@@ -159,7 +159,7 @@ $sql = "SELECT username FROM users WHERE userID = $sellerID";
                 Current Bid:
                 <?php echo $start_price?>
                 <br>
-                Rating:   <input name="rating" id="rating" type="number" value="5" step="1" min="1" max="10"><span id="error_price"></span>
+                Rating:   <input name="rating" id="rating" type="number" value="5" step="1" min="1" max="10"><span id="error_rating"></span>
                 <br><br>
                 <input id='bid' type="submit" value="Bid" onclick="return validateForm(this)" formaction="bid_product.php" formmethod="post">
            
@@ -168,7 +168,7 @@ $sql = "SELECT username FROM users WHERE userID = $sellerID";
             <?php echo $start_price?>
             <input name="price" type="hidden" value=<?php echo $start_price?>>
             <br>
-            Rating:   <input name="rating" id="rating" type="number" value="5" step="1" min="1" max="10"><span id="error_price"></span>
+            Rating:   <input name="rating" id="rating" type="number" value="5" step="1" min="1" max="10"><span id="error_rating"></span>
             <br><br>
             <input id='buy' type="submit" value="Buy" onclick="return validateForm(this)" formaction="addarchive.php" formmethod="post">
             <?php } ?>

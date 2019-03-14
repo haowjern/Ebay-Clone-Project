@@ -6,7 +6,7 @@ if (file_exists('../database.php')){
     include './database.php';
 }
 include_once "probability_diff_interface.php"; 
-$sql="SELECT * FROM archive";
+$sql="SELECT * FROM Ratings";
 $result = $connection->query($sql);
 
 if ($result->num_rows>0) {

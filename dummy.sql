@@ -154,5 +154,7 @@ CREATE TABLE IF NOT EXISTS Ratings (
 	userID INT NOT NULL,
     productID INT NOT NULL, 
     rating_value INT default '5', 
-    PRIMARY KEY (userID, productID)
+    PRIMARY KEY (userID, productID),
+    FOREIGN KEY (productID) REFERENCES Product(productID),
+    FOREIGN KEY (userID) REFERENCES Users(userID)
 )
