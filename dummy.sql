@@ -8,7 +8,7 @@ TO 'at'@'localhost'
 IDENTIFIED BY '123';
 USE ebayDB;
 
-CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE IF NOT EXISTS Users (
     userID INTEGER NOT NULL AUTO_INCREMENT,
     username TEXT,
     password1 TEXT,
