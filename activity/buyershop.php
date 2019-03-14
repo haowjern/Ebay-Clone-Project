@@ -63,13 +63,57 @@ if (!empty($search_unique_words)) {
     }
     
 }
+//search by category/condition
+
+elseif (isset($_POST["conditionlist"])||isset($_POST["categorylist"])){
+
+// elseif (isset($_POST["conditionlist"])||isset($_POST["categorylist"])){
+
+    $checked=in_array($_POST["categorylist"],array("Category","Electronics","Food","Fashion","Home","Health & Beauty","Sports","Toys & Games","Art & Music","Miscellaneous"));
+    $checked=in_array($_POST["conditionlist"],array("Condition","New","Refurbished","Used / Worn"));
+
+    if ($checked){
+
+            if (($_POST["categorylist"]!="Category") && ($_POST["conditionlist"]!="Condition")){
+
+                //search based on category and condition
+
+                $category=array_search($_POST["categorylist"],$_SESSION["category_all"]);
+                $condition=array_search($_POST["conditionlist"],$_SESSION["condition_all"]);
+                echo $condition;
+                $_SESSION["product_search_criteria"]=["c&c",$category,$condition];
+
+                include 'fetchactivelisting.php';
+
+            }elseif (($_POST["categorylist"]!="Category") && ($_POST["conditionlist"]=="Condition")){
+
+                //search based on category
+
+                $category=array_search($_POST["categorylist"],$_SESSION["category_all"]);
+                $_SESSION["product_search_criteria"]=["category",$category];
+
+                include 'fetchactivelisting.php';
+
+            }elseif (($_POST["categorylist"]=="Category") && ($_POST["conditionlist"]!="Condition")){
+
+                //search based on condition
+
+                $condition=array_search($_POST["conditionlist"],$_SESSION["condition_all"]);
+                $_SESSION["product_search_criteria"]=["condition",$condition];
+   
+                include 'fetchactivelisting.php';
+            }
+
+        $_SESSION["product_search_criteria"]=["all",""];
+        include 'fetchactivelisting.php';
+            
+    }
+}
 
 else {
     $_SESSION["product_search_criteria"]=["all",""];
     include 'fetchactivelisting.php';
 }
-
-
 
 $count=count($_SESSION["all_active_listings"]);
 if ($count==0){
@@ -83,22 +127,65 @@ if ($count==0){
 <head>
 
 <style>
+
+table{
+    /* overflow: auto;
+    white-space: nowrap; */
+}
 th {
     vertical-align: top;
     padding: 20px 20px;
+
 }
+
+
+
+input,form {
+    margin:auto;
+    display:block;
+    text-align: center;
+    width: 50%;
+}
+
+}
+
 </style>
 
-<h1>Seller's Shop</h1>
+<h1>Go Shopping!!</h1>
 </head>
 
 <body>
 
+<!-- search based on keywords -->
+<div>
+            <form action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>" method="post">
+                <input id="search_box" name="search_box" type="text" placeholder="Type anything!! to start searching for products">
+                <input type="submit" value="Search"> 
+            </form>
+</div>
+<br>
+
+<!-- search based on category -->
+
+<div>
+            <form action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>" method="post">
+            <span>Or search by category/condition<br></span>
+            <select id="categorylist" name="categorylist">
+            <option><?php if(isset($_POST["categorylist"])){echo $_POST["categorylist"];}else{echo "Category";}?></option>
+            </select>
+
+            <select id="conditionlist" name="conditionlist">
+            <option><?php if(isset($_POST["conditionlist"])){echo $_POST["conditionlist"];}else{echo "Condition";}?></option>
+            </select>
+
+
+            <input type="submit" value="Search"> 
+</div>
 
 <p id="t"></p>
 <button onclick="reset_filter()">Reset all filters</button>
 
-<!-- create table header -->
+<!-- create table header --> 
 <table id=active_listing_table width="device-width,initial-scale=1">
     <tr>
         <th>Image</th>
@@ -128,11 +215,35 @@ th {
         <th>Auctionable?</th>
         <th>Action</th>
     </tr>   
+
 </table>
 
 <script>
+
+//create the drop-down list for category
+
+var category_all=<?php echo json_encode($_SESSION['category_all'],JSON_PRETTY_PRINT)?>;
+category_all["0"]="Category";
+var categorylist = document.getElementById("categorylist");
+for (var i = 0 ; i < Object.keys(category_all).length; i++) {
+    var eld = document.createElement("option");
+    eld.textContent = category_all[i];
+    eld.value = category_all[i];
+    categorylist.appendChild(eld);
+}
+
+var condition_all=<?php echo json_encode($_SESSION['condition_all'],JSON_PRETTY_PRINT)?>;
+condition_all["0"]="Condition";
+var conditionlist = document.getElementById("conditionlist");
+for (var i = 0 ; i < Object.keys(condition_all).length; i++) {
+    var eld = document.createElement("option");
+    eld.textContent = condition_all[i];
+    eld.value = condition_all[i];
+    conditionlist.appendChild(eld);
+}
+
 var count="<?php echo $count?>";
-document.getElementById("t").innerHTML = "No. of active listings: "+count;
+document.getElementById("t").innerHTML = "No. of items that fit your search: "+count;
 
 //copy the php array into javascript array
 var each_listing=<?php echo json_encode($_SESSION['all_active_listings'],JSON_PRETTY_PRINT)?>;
@@ -196,7 +307,7 @@ for (i=0;i<count;i++){
 
     //insert listing enddate into the 7th column (listing enddate)
     cell_enddate.style.textAlign="center";
-    cell_enddate.innerHTML=each_listing[i]["enddate"]+" "+each_listing[i]["endtime"];
+    cell_enddate.innerHTML=each_listing[i]["enddate"]+"<br>"+each_listing[i]["endtime"];
 
     //insert listing auction status into the 8th column (auction)
     cell_auctionable.style.textAlign="center";
@@ -324,6 +435,8 @@ function search_filter(inputid,col,type) {
             } 
     }
 }
+
+
 
 
 </script>
