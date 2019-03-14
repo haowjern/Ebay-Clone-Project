@@ -42,7 +42,7 @@ if ($rows_users == 0) {
 }
 else {
     $usernameErr = $username . " - duplicate found. Please choose another username" . "<br>";
-    // echo ($username . " - duplicate found. Please choose another username" . "<br>"); // Delete this ######## 
+    //echo ($username . " - duplicate found. Please choose another username" . "<br>"); // Delete this ######## 
 }
 
 
@@ -90,10 +90,15 @@ $hash = password_hash($password, PASSWORD_BCRYPT);
 elseif (!empty($_POST["DOB"]) && date_create_from_format("Y-m-d",trim($_POST["DOB"]))){
     
     $maxdate=Date("Y-m-d",strtotime('-18 year'));
-    
-    $newDOB_checked = Date("Y-m-d",date_create_from_format("Y-m-d", $_POST["DOB"]));
 
-    
+    echo "trying";
+
+    $newDOB_checked="";
+    echo gettype($newDOB_checked);
+    echo gettype($maxdate);
+    $newDOB_checked = date_format(date_create_from_format("Y-m-d", $_POST["DOB"]),"Y-m-d");
+    // $newDOB_checked = Date("Y-m-d",date_create_from_format("Y-m-d", $_POST["DOB"]));
+
     if ($newDOB_checked>$maxdate){
         $DOBErr= "You must be over 18 years old to use this website.";
     }else{

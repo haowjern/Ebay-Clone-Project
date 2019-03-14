@@ -31,8 +31,14 @@ if (isset($_SESSION["aftersale_seller"])||(isset($_SESSION["aftersale_buyer"])))
         
         $sql="UPDATE Archive
                 SET buyer_comment='$buyercomment',
-                    ratings=$ratings
                 WHERE archiveID=$archiveID";
+
+        $result = $connection->query($sql);
+
+        $sql = "INSERT INTO Ratings (userID, productID, rating_value) VALUES ($buyerID, $productID, $ratings)";
+        
+        $result = $connection->query($sql);
+        
 
     }
 
