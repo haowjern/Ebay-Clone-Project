@@ -22,7 +22,11 @@ include "header.php";
         
 <?php
 
-include '../database.php';
+if (file_exists('../database.php')){
+    include '../database.php';
+} else {
+    include './database.php';
+}
 
 // Instantiate from SESSION variables
 $userID = $_SESSION["userID"];
@@ -183,12 +187,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 } else {
                     // echo "Data HAS NOT changed. Server-side validation passed"."<br>"; // Delete this ########
                     // return FALSE;
-
                 }
-
-                
-
-    }
+}
 
 
 // Search for username in users table

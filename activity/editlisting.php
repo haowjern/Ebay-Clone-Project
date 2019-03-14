@@ -323,7 +323,9 @@ if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
                   $photo_arr["photoID"][$file_index] = 0; // default value
                   $photos = $photo_arr; 
               } else {
-                  $photoErr = "Sorry, there was an error uploading your photo.";
+                  if (!isset($_POST["productID"])) {
+                    $photoErr = "Sorry, there was an error uploading your photo.";
+                  }
               }
           }
         } else {
@@ -331,8 +333,11 @@ if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
         }
       } 
     }
-    echo("TESTING: ");
-    var_dump($uploadOk);
+
+    echo "testing";
+    echo $photoErr;
+
+
 
     
     
@@ -381,9 +386,16 @@ function test_input($data) {
     $data = htmlspecialchars($data);
     return $data;
   }
+  
+
+
 ?>
 
 <!-- User input form -->
+
+<?php 
+    /*"<?php if(isset($_POST["start_price"])){echo htmlentities($_POST["start_price"]);}?>">*/
+?>
 
 <form id="form1" method="post" action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>" enctype="multipart/form-data"><br>
 
@@ -411,7 +423,7 @@ function test_input($data) {
       <span class="error"> <?php echo $desErr;?></span><br><br>
 
 <?php
-if (isset($_POST['productID']) && is_int($_POST['productID'] && $_POST['productID']>0)){ // if we are currently editing the listing
+if (isset($_POST['productID']) && $_POST['productID']>0){ // if we are currently editing the listing
   // get current photos, get number of photos
   $photos = get_photo($_POST['productID']); // list of photos with attributes as keys 
 ?>
@@ -423,7 +435,6 @@ if (isset($_POST['productID']) && is_int($_POST['productID'] && $_POST['productI
 		?>
 			  <div class="image" id="'<?php echo $file_path;?>'" style="background-image:url('<?php echo $file_path;?>');">
 				<!--<a href="#" class="delete" onclick='>&times;</a>-->
-			  <button class="delete">&times;</button>
         </div>
 		<?php } ?>
 	</div>
