@@ -77,7 +77,6 @@ function send_email_updating_watchers($bid_arr){
     foreach ($email_to_arr as $email_to=>$val) {
         // want to tell users that User has made BidPrice on Product
         $subject = "New bid on ".$productName;
-        print_r($email_to);
         $body = "Hey ".$email_to_arr['watcherName']."!\nUser ".$latestBidderName." has made a new bid of ".$bidPrice." on ".$productName."!\nYou are receiving this because you have an active bid on this product.\nHave a nice day!\nFake ebay";
         $altbody = "Someone has made a bid on a product that you currently have a bid on!";
         $bidderEmail = $email_to_arr['bidderEmail'];
