@@ -8,7 +8,6 @@ button {
 </style>
 
 <footer>
-        <button type="button">About Us</button>
-        <button type="button">Contact Us</button>
+        <button type="button" onlick="#"><a href="aboutus.php">About Us</button>
 </footer>
 </html>

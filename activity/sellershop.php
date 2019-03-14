@@ -101,8 +101,15 @@ for (i=0;i<count;i++){
 
  
     //insert image iin the 1st column (image)
-    cell_image.style.textAlign="center";
-    cell_image.innerHTML=`<img src=${each_listing[i]['photos'][0]['file_path']} alt='Image' style=max-height:100%; max-width:100%>`
+    if(each_listing[i]['photos'][0]!=null){
+                cell_image.innerHTML=`<img src=${each_listing[i]['photos'][0]['file_path']} alt='Image' style=max-height:100%; max-width:100%>`
+                cell_image.height=100; // scale size
+                cell_image.width=100; // scale size
+            
+            } else{
+                cell_image.innerHTML="No image";
+            }
+   
 
     cell_image.height=100; // scale size
     cell_image.width=100; // scale size 
@@ -147,29 +154,8 @@ for (i=0;i<count;i++){
         each_listing[i]["auctionable"]="No";
         cell_auctionable.innerHTML="No";
         }else{
-            each_listing[i]["auctionable"]="Yes";
+            cell_auctionable.innerHTML="Yes";}
 
-            //create the form to go to bid event if it is auctionable
-            var fm_bid=document.createElement('form');
-            //name the form with productID
-            fm_bid.setAttribute("name","form_bid"+each_listing[i]["productID"]);
-            fm_bid.setAttribute("method","post");
-            fm_bid.setAttribute("action","./bid_events.php");
-
-            var hiddenField_bid=document.createElement("input");
-                hiddenField_bid.setAttribute("type","hidden");
-                hiddenField_bid.setAttribute("name","productID");
-                hiddenField_bid.setAttribute("value",each_listing[i]["productID"]);
-
-                fm_bid.appendChild(hiddenField_bid);
-
-            var bid_button=document.createElement("input");
-            bid_button.setAttribute("type","submit");
-            bid_button.setAttribute("value","go to bid event");
-        
-            fm_bid.appendChild(bid_button);
-            cell_auctionable.appendChild(fm_bid);
-        }
 
     //insert forms with buttons in 9th column (action)
     cell_action.style.textAlign="center";

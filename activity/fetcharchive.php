@@ -42,6 +42,7 @@ if (isset($_SESSION["archive_search_criteria"])){
         $buyerID=mysqli_real_escape_string($connection,$_SESSION['userID']);
 
         $sql="SELECT a.archiveID, 
+                    a.productID,
                     a.product_name,
                     a.product_description,
                     a.dealprice,

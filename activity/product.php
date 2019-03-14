@@ -118,7 +118,7 @@ $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
 $extra = 'sellershop.php';
 $link="http://".$host.$uri."/".$extra;
 
-header("Location: http://$host$uri/$extra");
+header("Location: ../index.php");
 
 //empty the session element
 unset($_SESSION["editlisting"]);
