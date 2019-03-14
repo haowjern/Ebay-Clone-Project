@@ -50,6 +50,11 @@ input {
     text-align: center;
     width: 50%;
 }
+#aligncentre{
+    text-align: center;
+    font-size:14px;
+    color:blue;
+}
 th {
     vertical-align: top;
     padding: 20px 20px;
@@ -69,6 +74,7 @@ th {
         </div>
 
         <h2> Personalised Recommendations NEW </h2>
+        <p id="aligncentre">Here are some products you might be interested based on what you've bought with us and your ratings:)</p>
         <p id="t"></p>
         <!-- create table header -->
         <table id=active_listing_table width="device-width,initial-scale=1">
@@ -217,7 +223,7 @@ th {
         
 
         <h2> Personalised Recommendations BUY AGAIN </h2>
-
+        <p id="aligncentre">Here are some products you might be interested to buy again:)</p>
         <?php
         // get products to be displayed
 

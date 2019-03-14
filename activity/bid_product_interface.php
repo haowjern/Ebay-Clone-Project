@@ -98,7 +98,7 @@ function get_bidEvent($condition, $productID) {
                 array_push($bids, $bid_arr);
             }
 
-            echo("Received bid event successfully.");
+            // echo("Received bid event successfully.");
         } else {
             $bid_arr['bidID'] = 0; 
             $bid_arr['productID'] = 0;
