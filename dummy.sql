@@ -153,6 +153,6 @@ CREATE TABLE IF NOT EXISTS Popularity_diff (
 CREATE TABLE IF NOT EXISTS Ratings (
 	userID INT NOT NULL,
     productID INT NOT NULL, 
-    rating_value INT, 
+    rating_value INT default '5', 
     PRIMARY KEY (userID, productID)
 )
