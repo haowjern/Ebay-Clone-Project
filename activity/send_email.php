@@ -13,7 +13,7 @@ function send_to_email($email_address, $subject, $body, $altbody, $emailee_name)
 
         //Server settings
         $mail->isSMTP();                                      // Set mailer to use SMTP
-        $mail->SMTPDebug = 3;                                 // Enable verbose debug output
+        //$mail->SMTPDebug = 3;                                 // Enable verbose debug output
         $mail->SMTPAuth = true;                               // Enable SMTP authentication
         $mail->SMTPSecure = 'ssl';       //'tls' or 'ssl'     // Enable TLS encryption, `ssl` also accepted
         $mail->Host = 'smtp.gmail.com';                      // Specify main and backup SMTP servers
