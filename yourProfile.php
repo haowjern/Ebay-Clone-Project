@@ -22,7 +22,7 @@ include "header.php";
         
 <?php
 
-include '../database.php';
+include 'database.php';
 
 // Instantiate from SESSION variables
 $userID = $_SESSION["userID"];
