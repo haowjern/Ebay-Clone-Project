@@ -30,7 +30,6 @@ if (isset($_SESSION["archive_search_criteria"])){
                     a.conditionID,
                     a.auctionable,
                     a.dealdate,
-                    a.ratings,
                     a.buyer_comment,
                     a.seller_comment,
                     u.username
@@ -51,7 +50,6 @@ if (isset($_SESSION["archive_search_criteria"])){
                     a.conditionID,
                     a.auctionable,
                     a.dealdate,
-                    a.ratings,
                     a.buyer_comment,
                     a.seller_comment,
                     u.username

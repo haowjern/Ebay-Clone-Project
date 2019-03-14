@@ -54,21 +54,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $checked="validated";
     }
 
-//validate ratings before database query
+// //validate ratings before database query
 
-        if (!(is_numeric($_POST["ratings"]))) {
-            $ratings_err = "ratings must be between 1 and 10.";
-            $ratings="";
-            $checked="invalidated";
-          } elseif ((integer)$_POST["ratings"]<1||(integer)$_POST["ratings"]>10){
-            $ratings_err="ratings must be between 1 and 10.";
-            $ratings="";
-            $checked="invalidated";
-          }else {
-            $ratings = (integer)$_POST["ratings"];
-            $ratings_err="";
-            $checked="validated";
-          }
+//         if (!(is_numeric($_POST["ratings"]))) {
+//             $ratings_err = "ratings must be between 1 and 10.";
+//             $ratings="";
+//             $checked="invalidated";
+//           } elseif ((integer)$_POST["ratings"]<1||(integer)$_POST["ratings"]>10){
+//             $ratings_err="ratings must be between 1 and 10.";
+//             $ratings="";
+//             $checked="invalidated";
+//           }else {
+//             $ratings = (integer)$_POST["ratings"];
+//             $ratings_err="";
+//             $checked="validated";
+//           }
+    $ratings="";
 
     if ($checked=="validated"){
         $_SESSION["aftersale_buyer"]=[$archiveID,$buyer_comment,$ratings,$productID,$_SESSION["userID"]];
@@ -177,14 +178,14 @@ for (i=0;i<count;i++){
     var ratings_field=document.createElement("input");
         ratings_field.setAttribute("type","number");
         ratings_field.setAttribute("name","ratings");
-        ratings_field.setAttribute("value",each_listing[i]["ratings"]);
+        // ratings_field.setAttribute("value",each_listing[i]["ratings"]);
 
-        if (each_listing[i]["archiveID"]=="<?php echo $_POST["archiveID"]?>"){
-            var ratings_updated="<?php echo $_POST["ratings"]?>";
-            if (ratings_updated!=""){
-            ratings_field.setAttribute("value","<?php echo htmlentities($_POST["ratings"])?>");
-            }
-        }
+        // if (each_listing[i]["archiveID"]=="<?php echo $_POST["archiveID"]?>"){
+        //     var ratings_updated="<?php echo $_POST["ratings"]?>";
+        //     if (ratings_updated!=""){
+        //     ratings_field.setAttribute("value","<?php echo htmlentities($_POST["ratings"])?>");
+        //     }
+        // }
 
         ratings_field.setAttribute("min","1");	
         ratings_field.setAttribute("max","10");	

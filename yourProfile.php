@@ -78,11 +78,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
                 elseif (!empty($_POST["newDOB"]) && date_create_from_format("Y-m-d",trim($_POST["newDOB"]))){
                     
-                    $maxdate=Date("Y-m-d",strtotime('-18 year'));
-                    print_r($maxdate);
-                    
-                    $newDOB_checked = Date("Y-m-d",date_create_from_format("Y-m-d", $_POST["newDOB"]));
+                    $maxdate=date("Y-m-d",strtotime('-18 year'));
+
+                    // $maxdate=new Date($maxdaate);
                 
+                    
+                    echo "trying";
+
+                    $newDOB_checked="";
+                    echo gettype($newDOB_checked);
+                    echo gettype($maxdate);
+                    // $newDOB_checked = date_format(date_create_from_format("Y-m-d", $_POST["DOB"]),"Y-m-d");
+                    $newDOB_checked = date("Y-m-d",date_create_from_format("Y-m-d", $_POST["newDOB"]));
+                    
+                    echo $newDOB_checked;
+     
                     
                     if ($newDOB_checked>$maxdate){
                         $DOBErr= "You must be over 18 years old to use this website.";
@@ -98,7 +108,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $result_DOB = mysqli_prepare($connection, $sql_DOB);
                         mysqli_stmt_bind_param($result_DOB, 's', $userID);
                         mysqli_stmt_execute($result_DOB);
-                        echo "Date of Birth has been modified in database"."<br>";
+                        // echo "Date of Birth has been modified in database"."<br>";
                         $updated = TRUE;
                     }
                 }
