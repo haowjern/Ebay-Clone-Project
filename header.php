@@ -17,7 +17,7 @@ table {
 
 body{
     margin:auto;
-    width:90%;
+    width:95%;
 }
 
 #general,#seller_menu, #buyer_menu {
