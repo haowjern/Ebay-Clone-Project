@@ -36,10 +36,12 @@ function send_email_updating_watchers($bid_arr){
         while ($row=$result1->fetch_assoc()) {
             $watcherID = $row['buyerID'];
             $sql = "SELECT * FROM User WHERE userID = '$watcherID'";
-                $result2 = $connection->query($sql);
+            $result2 = $connection->query($sql);
+            if ($result2){
                 while ($row=$result2->fetch_assoc()) {
                     $email_to_arr['watcherName'] = $row['username'];
                     $email_to_arr['watcherEmail'] = $row['email'];
+                }
             }
         }
     }
@@ -63,10 +65,12 @@ function send_email_updating_watchers($bid_arr){
         while ($row=$result3->fetch_assoc()) {
             $bidderID = $row['buyerID'];
             $sql = "SELECT * FROM User WHERE userID = '$bidderID'";
-                $result4 = $connection->query($sql);
+            $result4 = $connection->query($sql);
+            if($result4){
                 while ($row=$result4->fetch_assoc()) {
                     $email_to_arr['bidderName'] = $row['username'];
                     $email_to_arr['bidderEmail'] = $row['email'];
+                }
             }
         }
     }
