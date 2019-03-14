@@ -16,6 +16,55 @@ if ($count==0){
     echo "no result found";
 }
 
+//check the seller comments which have been submitted by form
+$buyer_comment_err=$buyer_comment=$ratings_err=$ratings=$checked="";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+//validate buyer comment before database query
+
+    $archiveID=$_POST["archiveID"];
+
+    $ratings=$_POST["ratings"];
+    $buyer_comment=$_POST["buyer_comment"];
+
+    if (strlen($_POST["buyer_comment"])>150){
+        $buyer_comment_err="comment cannot exceed 150 characters.";
+        $buyer_comment="";
+        $checked="invalidated";
+    } else{
+        //trim all sensitive html special characters
+        $buyer_comment=$_POST["buyer_comment"];
+        $buyer_comment = trim($buyer_comment);
+        $buyer_comment = stripslashes($buyer_comment);
+        $buyer_comment = htmlspecialchars($buyer_comment);
+        $buyer_comment_err="";
+        $checked="validated";
+    }
+
+//validate ratings before database query
+
+        if (!(is_numeric($_POST["ratings"]))) {
+            $ratings_err = "ratings must be between 1 and 10.";
+            $ratings="";
+            $checked="invalidated";
+          } elseif ((integer)$_POST["ratings"]<1||(integer)$_POST["ratings"]>10){
+            $ratings_err="ratings must be between 1 and 10.";
+            $ratings="";
+            $checked="invalidated";
+          }else {
+            $ratings = (integer)$_POST["ratings"];
+            $ratings_err="";
+            $checked="validated";
+          }
+    
+   
+    if ($checked=="validated"){
+        $_SESSION["aftersale_buyer"]=[$archiveID,$buyer_comment,$ratings];
+        include "aftersale.php";
+    }
+}
+
 ?>
 
 <html>
@@ -34,6 +83,7 @@ th {
 <body>
 
 <p id="t"></p>
+<p><font color="red"><?php echo $buyer_comment_err."<br>".$ratings_err?></p>
 
 
 <!-- create table header -->
@@ -104,10 +154,10 @@ for (i=0;i<count;i++){
 
     //create the form to edit item
     var fm_edit=document.createElement('form');
-    //name the form with productID
-    fm_edit.setAttribute("name","form_edit"+each_listing[i]["productID"]);
+    //name the form with archiveID
+    fm_edit.setAttribute("name","form_edit"+each_listing[i]["archiveID"]);
     fm_edit.setAttribute("method","post");
-    fm_edit.setAttribute("action","aftersale.php");
+    fm_edit.setAttribute("action","<?php echo htmlentities($_SERVER['PHP_SELF']); ?>");
 
     fm_edit.appendChild(document.createTextNode("ratings (1 to 10): "));
     fm_edit.appendChild(document.createElement("br"));
@@ -117,6 +167,14 @@ for (i=0;i<count;i++){
         ratings_field.setAttribute("type","number");
         ratings_field.setAttribute("name","ratings");
         ratings_field.setAttribute("value",each_listing[i]["ratings"]);
+
+        if (each_listing[i]["archiveID"]=="<?php echo $_POST["archiveID"]?>"){
+            var ratings_updated="<?php echo $_POST["ratings"]?>";
+            if (ratings_updated!=""){
+            ratings_field.setAttribute("value","<?php echo htmlentities($_POST["ratings"])?>");
+            }
+        }
+
         ratings_field.setAttribute("min","1");
         ratings_field.setAttribute("max","10");
         ratings_field.setAttribute("step","1");
@@ -134,6 +192,14 @@ for (i=0;i<count;i++){
         buyer_comment_field.setAttribute("type","text");
         buyer_comment_field.setAttribute("name","buyer_comment");
         buyer_comment_field.setAttribute("value",each_listing[i]["buyer_comment"]);
+
+        if (each_listing[i]["archiveID"]=="<?php echo $_POST["archiveID"]?>"){
+            var buyer_comment_updated="<?php echo $_POST['buyer_comment']?>";
+            if (buyer_comment_updated!=""){
+            buyer_comment_field.setAttribute("value","<?php echo htmlentities($_POST["buyer_comment"])?>");
+            }
+        }
+        
         buyer_comment_field.setAttribute("maxlength","150");
         buyer_comment_field.setAttribute("size","50");
 
@@ -157,7 +223,6 @@ for (i=0;i<count;i++){
     fm_edit.appendChild(document.createElement("br"));
     fm_edit.appendChild(edit_button);
     cell_buyer_ratings_comment.appendChild(fm_edit);
-
 
 
     //insert seller comment into the 8th column (seller comment)

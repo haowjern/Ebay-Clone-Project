@@ -41,7 +41,8 @@ if (isset($_SESSION["archive_search_criteria"])){
 
         $buyerID=mysqli_real_escape_string($connection,$_SESSION['userID']);
 
-        $sql="SELECT a.product_name,
+        $sql="SELECT a.archiveID, 
+                    a.product_name,
                     a.product_description,
                     a.dealprice,
                     a.quantity,
@@ -54,7 +55,7 @@ if (isset($_SESSION["archive_search_criteria"])){
                     a.seller_comment,
                     u.username
         FROM Archive a,Users u
-        WHERE a.sellerID=u.userID AND a.sellerID='$buyerID'";
+        WHERE a.sellerID=u.userID AND a.buyerID='$buyerID'";
 
     }
 
