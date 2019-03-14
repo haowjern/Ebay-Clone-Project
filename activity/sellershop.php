@@ -4,12 +4,14 @@ session_start();
 include '../header.php';
 
 //fetch all the active listing related to this seller
-$_SESSION["userID"]=1;
+// $_SESSION["userID"]=1;
 
 unset($_SESSION["product_search_criteria"]);
+unset($_SESSION["original_start_price"]);
 $_SESSION["product_search_criteria"]=["sellerID",""];
 
 include 'fetchactivelisting.php';
+
 
 $count=count($_SESSION["all_active_listings"]);
 if ($count==0){
