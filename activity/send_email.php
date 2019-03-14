@@ -2,9 +2,9 @@
     use PHPMailer\PHPMailer\PHPMailer;
     use PHPMailer\PHPMailer\Exception;
 
-    require 'mail/src/Exception.php';
-    require 'mail/src/PHPMailer.php';
-    require 'mail/src/SMTP.php';
+    include 'mail/src/Exception.php';
+    include 'mail/src/PHPMailer.php';
+    include 'mail/src/SMTP.php';
 
 function send_to_email($email_address, $subject, $body, $altbody, $emailee_name) {
 
