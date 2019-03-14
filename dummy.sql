@@ -71,6 +71,7 @@ CREATE TABLE IF NOT EXISTS Archive
     ratings INTEGER,
     buyer_comment VARCHAR(150),
     seller_comment VARCHAR(150),
+	FOREIGN KEY (productID) REFERENCES Product(productID) ON UPDATE CASCADE,
 	FOREIGN KEY (sellerID) REFERENCES Users(userID) ON UPDATE CASCADE,
     FOREIGN KEY (categoryID) REFERENCES Category(categoryID) ON UPDATE CASCADE,
     FOREIGN KEY (conditionID) REFERENCES Conditionindex(conditionID) ON UPDATE CASCADE
