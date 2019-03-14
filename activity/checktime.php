@@ -11,7 +11,6 @@ $_SESSION["expired_listings"]=array();
 //set $t to the current hour, $today to today
 $t=ltrim(date("H",time()),"0").":00:00";
 $today=new DateTime();
-$today=new DateTime("2019-05-01"); 
 
 //select all the products (non-bidding) that expires at current hour today
 

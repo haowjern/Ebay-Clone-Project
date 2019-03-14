@@ -221,4 +221,17 @@ function get_ratings($userID="") {
     $connection->close();
     return $array;
 }
+
+function set_ratings($userID, $productID, $rating) {
+    if (file_exists('../database.php')){
+        include '../database.php';
+    } else {
+        include './database.php';
+    }
+    
+    $sql = "INSERT INTO Ratings (userID, productID, rating_value) VALUES ($userID, $productID, $rating)";
+    $result = $connection->query($sql);
+    $connection->close();
+    return $array;
+}
 ?> 
