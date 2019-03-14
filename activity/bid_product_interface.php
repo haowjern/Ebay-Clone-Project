@@ -45,7 +45,7 @@ function set_bidEvent($bid_arr, $instr) {
             send_email_updating_watchers($bid_arr);
 
 
-            echo("Inserted new bid events.\n");
+            // echo("Inserted new bid events.\n");
         } else {
             echo("Error: " . $sql . "<br>" . $connection->error);
         }
@@ -53,20 +53,22 @@ function set_bidEvent($bid_arr, $instr) {
     } elseif ($instr === "update") {
         $sql = "INSERT INTO bidEvents (productID,  buyerID, payment, bidPrice) VALUES ('$productID', '$buyerID', '$payment', '$bidPrice');
         WHERE bidID = '$bidID'";
-        if ($connection->query($sql)==TRUE) {
-            echo("Updated bid events.");
-        } else {
-            echo("Error: " . $sql . "<br>" . $connection->error);
-        }
+        $connection->query($sql);
+        // if () {
+        //     echo("Updated bid events.");
+        // } else {
+        //     echo("Error: " . $sql . "<br>" . $connection->error);
+        // }
     // delete 
     } elseif ($instr === "delete") {
         $sql="DELETE FROM bidEvents WHERE bidID = '$bidID'";
+        $connection->query($sql);
         
-        if ($connection->query($sql)==TRUE) {
-            echo("Deleted bid event successfully.");
-        } else {
-            echo("Error: " . $sql . "<br>" . $connection->error);
-        }
+        // if (==TRUE) {
+        //     echo("Deleted bid event successfully.");
+        // } else {
+        //     echo("Error: " . $sql . "<br>" . $connection->error);
+        // }
     } else {
         echo("Error: Selected wrong instruction for set_bidEvent.");
     }

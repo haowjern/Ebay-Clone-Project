@@ -1,5 +1,5 @@
 ﻿userID,username,password1,email,phone,accountbalance,DOB
-1,user1,$2y$10$FidAZZJGcfw8Cu98VM7rR.JDBa58eaC.rlRUGdCkHOaxwfS.ov6ya,siu.ko.18@ucl.ac.uk,4565464364,0,1995-01-06
-2,user2,$2y$10$8zfvN6pb1AWFYjzvt1vLtON4d4AmfqHlfgSxXELkdxtNJikznNiQW,ucabwts@ucl.ac.uk,2456376576,0,1993-08-19
-3,user3,$2y$10$HUNFAIelMw4QJzAKEnwma.Kp6ktCy.aMWRz/ykRizT4rEpn30Zdm2,haow.tee.18@ucl.ac.uk,8793853453,0,1997-02-13
-4,user4,$2y$10$.zegT.EI109fUiXgFTjs2OmwZTub.Fsexq.0nLZ6auiM5cQWW5fQC,sergi.bray@gmail.com,8713451346,0,1991-08-29
+1,user1,$2y$10$FidAZZJGcfw8Cu98VM7rR.JDBa58eaC.rlRUGdCkHOaxwfS.ov6ya,siu.ko.18@ucl.ac.uk,4565464364,2000,06/01/1995
+2,user2,$2y$10$8zfvN6pb1AWFYjzvt1vLtON4d4AmfqHlfgSxXELkdxtNJikznNiQW,ucabwts@ucl.ac.uk,2456376576,2000,19/08/1993
+3,user3,$2y$10$HUNFAIelMw4QJzAKEnwma.Kp6ktCy.aMWRz/ykRizT4rEpn30Zdm2,haow.tee.18@ucl.ac.uk,8793853453,2000,13/02/1997
+4,user4,$2y$10$.zegT.EI109fUiXgFTjs2OmwZTub.Fsexq.0nLZ6auiM5cQWW5fQC,sergi.bray@gmail.com,8713451346,2000,29/08/1991

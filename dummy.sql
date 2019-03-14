@@ -68,7 +68,6 @@ CREATE TABLE IF NOT EXISTS Archive
     sellerID INTEGER NOT NULL,
     auctionable BOOLEAN NOT NULL,
     dealdate VARCHAR(40) NOT NULL,
-    ratings INTEGER,
     buyer_comment VARCHAR(150),
     seller_comment VARCHAR(150),
 	FOREIGN KEY (sellerID) REFERENCES Users(userID) ON UPDATE CASCADE,
@@ -150,3 +149,10 @@ CREATE TABLE IF NOT EXISTS Popularity_diff (
     sum int(11) NOT NULL default '0',
     PRIMARY KEY (productID1, productID2)
 ) ENGINE=INNODB;
+
+CREATE TABLE IF NOT EXISTS Ratings (
+	userID INT NOT NULL,
+    productID INT NOT NULL, 
+    rating_value INT default '5', 
+    PRIMARY KEY (userID, productID)
+)

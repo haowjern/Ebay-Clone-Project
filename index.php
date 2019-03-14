@@ -7,8 +7,8 @@ include "activity/probability_diff_interface.php";
 $userID = $_SESSION["userID"];
 $n = 10; 
 
-$list_of_archive = get_archive(); // get list of items to predict what will $userID rate these items for
-$list_of_bought_archive = get_archive($userID);
+$list_of_archive = get_ratings(); // get list of items to predict what will $userID rate these items for
+$list_of_bought_archive = get_ratings($userID);
 $suggestions = [];
 foreach ($list_of_archive as $item) {
     $value = get_personalised_recommendations($userID, $item, $n); 

@@ -11,9 +11,9 @@ function set_popularity_diff($some_arr, $instr) {
 
     if ($instr === "insert") {
         // get all of the users' rating pairs
-        $sql = "SELECT DISTINCT a1.productID, a2.ratings - a1.ratings as rating_diff
-                FROM archive as a1, archive as a2
-                WHERE a1.buyerID = '$userID' AND a2.buyerID = '$userID' AND a2.productID='$productID'"; 
+        $sql = "SELECT DISTINCT a1.productID, a2.rating_value - a1.rating_value as rating_diff
+                FROM Ratings as a1, Ratings as a2
+                WHERE a1.userID = '$userID' AND a2.userID = '$userID' AND a2.productID='$productID'"; 
         $result = $connection->query($sql); 
         if ($result->num_rows>0) {        
             // for every one of the users' rating pairs, update popularity_diff table
@@ -145,15 +145,15 @@ function get_personalised_recommendations($userID, $current_productID, $n) {//$c
 
     $denom = 0.0; // denominator 
     $numer = 0.0; // numerator
-    $sql = "SELECT a.productID, a.ratings
-            FROM archive a
-            WHERE a.buyerID=$userID AND a.productID != $current_productID";
+    $sql = "SELECT a.productID, a.rating_value
+            FROM Ratings a
+            WHERE a.userID=$userID AND a.productID != $current_productID";
     $result = $connection->query($sql);
 
     // for all items that the user has rated
     while ($row=$result->fetch_assoc()) {
         $fetched_productID = $row["productID"];
-        $ratings = $row["ratings"];
+        $ratings = $row["rating_value"];
 
         // get the number of times both products have been rated by the user
         $sql = "SELECT pd.count, pd.sum 
@@ -187,7 +187,7 @@ function get_personalised_recommendations($userID, $current_productID, $n) {//$c
 
 }   
 
-function get_archive($userID="") {
+function get_ratings($userID="") {
     if (file_exists('../database.php')){
         include '../database.php';
     } else {
@@ -196,28 +196,41 @@ function get_archive($userID="") {
     $array = [];
     if (empty($userID)) {
         
-        $sql = "SELECT DISTINCT productID FROM Archive"; // find the items that are bought
+        $sql = "SELECT DISTINCT productID FROM Ratings"; // find the items that are bought
         $result = $connection->query($sql);
         if ($result->num_rows>0) {
             while ($row = $result->fetch_assoc()) {
                 array_push($array, $row["productID"]);
             }
         } else {
-            "Get archive returns nothing";
+            "Get ratings returns nothing";
         }
         
     } else { 
-        $sql = "SELECT DISTINCT productID FROM Archive WHERE buyerID = '$userID'"; // find the items that are bought
+        $sql = "SELECT DISTINCT productID FROM Ratings WHERE userID = '$userID'"; // find the items that are bought
         $result = $connection->query($sql);
         if ($result->num_rows>0) {
             while ($row = $result->fetch_assoc()) {
                 array_push($array, $row["productID"]);
             }
         } else {
-            "Get archive returns nothing";
+            "Get ratings returns nothing";
         }
     }
 
+    $connection->close();
+    return $array;
+}
+
+function set_ratings($userID, $productID, $rating) {
+    if (file_exists('../database.php')){
+        include '../database.php';
+    } else {
+        include './database.php';
+    }
+    
+    $sql = "INSERT INTO Ratings (userID, productID, rating_value) VALUES ($userID, $productID, $rating)";
+    $result = $connection->query($sql);
     $connection->close();
     return $array;
 }
