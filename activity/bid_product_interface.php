@@ -7,7 +7,8 @@ function set_bidEvent($bid_arr, $instr) {
     - <$instr>: 
     */ 
     include '../database.php';
-    include './update_watching.php';
+    include 'update_watching.php';
+    
     // check object has the correct properties
     $properties = ["bidID", "productID", "buyerID", "payment", "price"];
     foreach ($properties as $value) {
@@ -27,8 +28,10 @@ function set_bidEvent($bid_arr, $instr) {
         if ($result==TRUE) {
             
             // send email to all watchers and all who have already bid on this product
-            include 'update_watching.php';
-            //send_email_updating_watchers($bid_arr);
+            //include 'update_watching.php';
+
+            send_email_updating_watchers($bid_arr);
+
 
             echo("Inserted new bid events.\n");
         } else {

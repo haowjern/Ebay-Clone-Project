@@ -38,15 +38,13 @@ float: left;
     </div>
     <div id="buyer_menu">
     I'm buying:
-    <button onclick="window.location.href = '/show_my_watchlist.php';" type="button">My Watchlist</button>
+    <button onclick="window.location.href = '/activity/watchlist_table_display.php';" type="button">My Watchlist</button>
     <button onclick="window.location.href = '/activity/purchasehistory.php';"type="button">Purchase History</button>
     <button onclick="window.location.href = '/activity/buyer_item.php';" type="button">Buyer Item </button>
     <button type="button">Cart</button>
     </div>
-    <br><br>
-    <div>
-    <p>You are signed in as: <?php echo $_SESSION["username"] ;?></p>
-    </div>
+    <br>
+    <p>You are signed in as: <?php echo $_SESSION["userName"] ;?></p>
 
 <script>
 if (<?php echo isset($_SESSION["userID"]);?>){

@@ -1,4 +1,7 @@
 <?php 
+// THIS FILE MAY BE UNNECESSARY ...
+// haow puts things into a list of arrays and then foreach list in the array, echo 
+// see refreshable_bidtable and buyer_item
 function show_watchlist($current_user) {
     include "database.php";
     $sql="SELECT * FROM Watchlist";
