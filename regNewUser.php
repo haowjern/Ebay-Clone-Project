@@ -70,17 +70,45 @@ if (!isset($_POST['email']) or !isset($_POST['confEmail'])) {
 $hash = password_hash($password, PASSWORD_BCRYPT);
 
 
-// Sanitise Date of Birth
-if (!empty($_POST["DOB"]) && date_create_from_format("Y-m-d",$_POST["DOB"])){
-    $DOB=date_create_from_format("Y-m-d",$_POST["DOB"]);  
-    $DOB_year = (integer)date_format($DOB,"Y");
-    $DOB_month = (integer)date_format($DOB,"m");
-    $DOB_day = (integer)date_format($DOB,"d");
-    $DOB_str = (string)$DOB_year . "-" . (string)$DOB_month . "-" . (string)$DOB_day;
+// // Sanitise Date of Birth
+// if (!empty($_POST["DOB"]) && date_create_from_format("Y-m-d",$_POST["DOB"])){
+//     $DOB=date_create_from_format("Y-m-d",$_POST["DOB"]);  
+//     $DOB_year = (integer)date_format($DOB,"Y");
+//     $DOB_month = (integer)date_format($DOB,"m");
+//     $DOB_day = (integer)date_format($DOB,"d");
+//     $DOB_str = (string)$DOB_year . "-" . (string)$DOB_month . "-" . (string)$DOB_day;
+// }
+// else {
+//     $DOBErr = "Please enter a valid date in YYYY-MM-DD format";
+//     // echo "User-entered date of birth is NOT SAFE!";
+// }
+
+ // newDOB
+ if (!isset($_POST['DOB']) or trim($_POST['DOB']) == '') {
+    // Nothing entered for DOB
+}
+elseif (!empty($_POST["DOB"]) && date_create_from_format("Y-m-d",trim($_POST["DOB"]))){
+    
+    $maxdate=Date("Y-m-d",strtotime('-18 year'));
+    
+    $newDOB_checked = Date("Y-m-d",date_create_from_format("Y-m-d", $_POST["DOB"]));
+
+    
+    if ($newDOB_checked>$maxdate){
+        $DOBErr= "You must be over 18 years old to use this website.";
+    }else{
+        $newDOB=date_create_from_format("Y-m-d", $_POST["DOB"]);
+        $DOB_year = (integer)date_format($newDOB,"Y");
+        $DOB_month = (integer)date_format($newDOB,"m");
+        $DOB_day = (integer)date_format($newDOB,"d");
+        $DOB_str = (string)$DOB_year . "-" . (string)$DOB_month . "-" . (string)$DOB_day;
+
+        
+    }
 }
 else {
     $DOBErr = "Please enter a valid date in YYYY-MM-DD format";
-    // echo "User-entered date of birth is NOT SAFE!";
+    // return FALSE;
 }
 
 
@@ -179,6 +207,7 @@ else {
         <label for="userName">Username:</label><br>
         <input type="text" name="userName" placeholder="Username" pattern=".{3,}" required title="Minimum 3 characters or more" maxlength=15>
         <br>
+        <p><?php echo $usernameErr?><p>
         <br>
         <label for="email">Email Address:</label><br>
         <input type="email" name="email" placeholder="Email" required>
@@ -187,6 +216,7 @@ else {
         <label for="confEmail">Confirm Email Address:</label><br>
         <input type="email" name="confEmail" placeholder="Re-Enter Email" required>
         <br>
+        <p><?php echo $emailErr?><p>
         <br>
         <label for="passWord">Password:</label><br>
         <input type="password" name="passWord" placeholder="Password" pattern=".{6,}" required title="Minimum 6 characters or more">
@@ -195,14 +225,17 @@ else {
         <label for="confPassWord">Confirm Password:</label><br>
         <input type="password" name="confPassWord" placeholder="Re-Enter Password" pattern=".{6,}" required title="Minimum 6 characters or more"> 
         <br>
+        <p><p>
         <br>
         <label for="DOB">Date of Birth:</label><br>
         <input type="date" name="DOB" required>
         <br>
+        <p><?php echo $DOBErr?><p>
         <br>
         <label for="phoneNo">Phone Number:</label><br>
         + <input type="text" name="phoneNo" pattern="(.*\d)" placeholder="Phone Number" maxlength=15 required title="Numeric characters only, up to 15 characters">
         <br>
+        <p><?php echo $phoneErr?><p>
         <br>
         <p><input type="submit" name="regNewUser" value="Register"></p>
         <br>
@@ -212,7 +245,3 @@ else {
 
     </body>
 </html>
-
-<?php
-include "footer.php";
-?>
