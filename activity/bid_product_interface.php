@@ -6,10 +6,21 @@ function set_bidEvent($bid_arr, $instr) {
     - <$product_arr>: Object with attributes - 
     - <$instr>: 
     */ 
+
     if (file_exists('../database.php')){
         include '../database.php';
     } else {
         include './database.php';
+    }
+    include 'update_watching.php';
+    
+    
+    // check object has the correct properties
+    $properties = ["bidID", "productID", "buyerID", "payment", "price"];
+    foreach ($properties as $value) {
+        if (!array_key_exists($value, $bid_arr)) {
+            echo "Parameter is not an object with the correct properties\n"; 
+        }
     }
     // include './update_watching.php';
     // check object has the correct properties
@@ -29,8 +40,10 @@ function set_bidEvent($bid_arr, $instr) {
         if ($result==TRUE) {
             
             // send email to all watchers and all who have already bid on this product
-            // include 'update_watching.php';
-            //send_email_updating_watchers($bid_arr);
+            //include 'update_watching.php';
+
+            send_email_updating_watchers($bid_arr);
+
 
             echo("Inserted new bid events.\n");
         } else {

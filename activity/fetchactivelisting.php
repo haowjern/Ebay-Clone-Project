@@ -43,9 +43,15 @@ if (!isset($_SESSION["category_all"])||!isset($_SESSION["condition_all"])){
 
             $sql="SELECT * FROM Product WHERE categoryID='$value'";
 
-        } elseif ($criteria=="auctionable"){
+        } elseif ($criteria=="condition"){
 
-            $sql="SELECT * FROM Product WHERE auctionable='$value'";
+            $sql="SELECT * FROM Product WHERE conditionID='$value'";
+
+        } elseif ($criteria=="c&c"){
+
+            $condition=mysqli_real_escape_string($connection,$_SESSION["product_search_criteria"][2]);
+
+            $sql="SELECT * FROM Product WHERE categoryID='$value' AND conditionID='$condition'";
 
         } elseif ($criteria=="all"){
 
@@ -63,6 +69,7 @@ if (!isset($_SESSION["category_all"])||!isset($_SESSION["condition_all"])){
                         SELECT con.conditionID FROM Conditionindex as con
                         WHERE con.conditionID LIKE '%$value$'
                     )";
+
         } elseif ($criteria=="productID") {
             $values = join("','" , $value);
             $sql = "SELECT * FROM Product WHERE productID IN ('$values')";

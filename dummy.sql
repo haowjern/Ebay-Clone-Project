@@ -9,12 +9,12 @@ IDENTIFIED BY '123';
 USE ebayDB;
 
 CREATE TABLE IF NOT EXISTS Users (
-    userID INTEGER NOT NULL,
+    userID INTEGER NOT NULL AUTO_INCREMENT,
     username TEXT,
     password1 TEXT,
     email TEXT,
     phone TEXT,
-    accountbalance INTEGER,
+    accountbalance INT,
     DOB TEXT,
     PRIMARY KEY (userID)
 ) ENGINE=INNODB;
@@ -125,12 +125,6 @@ CREATE TABLE IF NOT EXISTS Photos (
 	FOREIGN KEY (productID) REFERENCES Product(productID) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=INNODB;
 
-/*
-CREATE USERS TABLE ......?
-*/
-
-
-
 CREATE TABLE IF NOT EXISTS BidEvents (
 	bidID INT NOT NULL AUTO_INCREMENT,
     productID INT NOT NULL,
@@ -158,11 +152,11 @@ CREATE TABLE IF NOT EXISTS Watchlist (
 ) ENGINE=INNODB;
 
 CREATE TABLE IF NOT EXISTS Popularity_diff (
-	archiveID1 INT NOT NULL,
-    archiveID2 INT NOT NULL, 
+	productID1 INT NOT NULL,
+    productID2 INT NOT NULL, 
     count int(11) NOT NULL default '0',
     sum int(11) NOT NULL default '0',
-    PRIMARY KEY (archiveID1, archiveID2)
+    PRIMARY KEY (productID1, productID2)
 ) ENGINE=INNODB;
 
 

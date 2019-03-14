@@ -90,7 +90,6 @@ $product_description = $start_price = $reserve_price=$quantity = $categoryname =
 $uploadOk = 1; // to verify if file can upload
 
 if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
-      unset($_SESSION["original_start_price"]);
       unset($_SESSION["editlisting"]);
       if (empty($_POST["product_name"])) {
         $nameErr = "Product name is required";
@@ -129,7 +128,10 @@ if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
       if (isset($_POST["productID"])){
             if (!isset($_SESSION["original_start_price"])){
               //store the original start price as session variable
-                $_SESSION["original_start_price"]=$_POST["start_price"];
+                $_SESSION["original_start_price"]=(float)$_POST["start_price"];
+                echo $_SESSION["original_start_price"];
+                echo "set price";
+
             } else{
                   //reject any changes to start price for auction event
                   if ($_POST["auctionable"]=="Yes" && $_SESSION["original_start_price"]!=$_POST["start_price"]){
@@ -324,10 +326,10 @@ if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
         } else {
           $uploadOk = 0;
         }
-      } else {
-        $uploadOk = 0;
-      }
+      } 
     }
+    echo("TESTING: ");
+    var_dump($uploadOk);
 
     
     
@@ -354,9 +356,10 @@ if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
                   "enddate"=>$enddate,
                   "endtime"=>$endtime
                   );
-      
-    //check if any value is missing
-    foreach(array_values($details)as $value){
+    
+                  
+   
+    foreach(array_values($details)as $key => $value){
       if (empty($value)){
         $er="missing";
         break;
@@ -365,6 +368,7 @@ if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
         
     if ($er=="filled"){
       $_SESSION["editlisting"]=$details;
+      unset($_SESSION["original_start_price"]);
       } 
 }
     

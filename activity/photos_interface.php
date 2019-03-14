@@ -88,10 +88,10 @@ function get_photo($productID) {
         }
 
     } else {
-        echo("Error: " . $sql . "<br>" . $connection->error);
+        // echo("Error: " . $sql . "<br>" . $connection->error);
     }
 
-    echo("Returned new photos.\n");
+    // echo("Returned new photos.\n");
     return $photos;
 
     $connection->close();
