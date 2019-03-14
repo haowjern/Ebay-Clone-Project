@@ -139,8 +139,10 @@ if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
                     $s_priceErr="Start price cannot be changed for auction event";
                     $_POST["start_price"]=$_SESSION["original_start_price"];
                     
+                    
                   
             }
+            $start_price=(float)$_POST["start_price"];
       } else{
                 if (!empty($_POST["start_price"])&&is_numeric($_POST["start_price"])) {
                   if ((float)$_POST["start_price"]>=0.01 && (float)$_POST["start_price"]<=10000){
@@ -334,10 +336,6 @@ if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
       } 
     }
 
-    echo "testing";
-    echo $photoErr;
-
-
 
     
     
@@ -366,9 +364,9 @@ if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
                   );
     
                   
-   
+    print_r($details);
     foreach(array_values($details)as $key => $value){
-      if (empty($value)){
+      if (empty($value)&&($key!=3)){
         $er="missing";
         break;
       }
