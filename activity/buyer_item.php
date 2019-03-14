@@ -145,7 +145,7 @@ if (strtolower($auctionable) == 1) {
             <p>Name: Seller Name</p>
             <?php // have to wait to see how we get userID, is it form sessions? ?>
             <input id='bid' type="submit" value="Bid" onclick="return validateForm(this)" formaction="bid_product.php" formmethod="post" <?php if (!$is_bidding || $cannot_buy) {echo "disabled";} ?>>
-            <input id='buy' type="submit" value="Buy" onclick="return validateForm(this)" formaction="" formmethod="post" <?php if ($is_bidding || $cannot_buy) {echo "disabled";} ?>>
+            <!-- <input id='buy' type="submit" value="Buy" onclick="return validateForm(this)" formaction="" formmethod="post" <?php if ($is_bidding || $cannot_buy) {echo "disabled";} ?>> -->
 
             
             <input type="submit" value="Cart" <?php if ($is_bidding) {echo "disabled";} ?>>     

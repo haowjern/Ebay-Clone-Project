@@ -3,7 +3,7 @@ session_start();
 
 include './bid_product_interface.php';
 
-$_SESSION['userID'] = 1; // TODO: FOR TESTING ONLY - TO BE REMOVED
+// $_SESSION['userID'] = 1; // TODO: FOR TESTING ONLY - TO BE REMOVED
 
 // bidding ONLY
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
