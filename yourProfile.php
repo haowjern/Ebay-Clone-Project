@@ -89,9 +89,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     echo gettype($newDOB_checked);
                     echo gettype($maxdate);
                     // $newDOB_checked = date_format(date_create_from_format("Y-m-d", $_POST["DOB"]),"Y-m-d");
-                    $newDOB_checked = date("Y-m-d",date_create_from_format("Y-m-d", $_POST["newDOB"]));
+                    //$a= date_create_from_format("Y-m-d", $_POST["newDOB"]);
+                    //$newDOB_checked = date("Y-m-d", $a);
+
+                    $newDOB_checked = new Datetime($_POST["newDOB"]);                    
+                    $maxdate = new Datetime($maxdate);
                     
-                    echo $newDOB_checked;
+     
      
                     
                     if ($newDOB_checked>$maxdate){

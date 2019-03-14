@@ -158,6 +158,8 @@ $sql = "SELECT username FROM users WHERE userID = $sellerID";
                 Bid Price: <input name="price" id="price" type="number" step="0.01" min="0" max="10000" required> <span id="error_price"></span>
                 Current Bid:
                 <?php echo $start_price?>
+                <br>
+                Rating:   <input name="rating" id="rating" type="number" value="5" step="1" min="1" max="10"><span id="error_price"></span>
                 <br><br>
                 <input id='bid' type="submit" value="Bid" onclick="return validateForm(this)" formaction="bid_product.php" formmethod="post">
            
@@ -165,12 +167,14 @@ $sql = "SELECT username FROM users WHERE userID = $sellerID";
                 Price:
             <?php echo $start_price?>
             <input name="price" type="hidden" value=<?php echo $start_price?>>
+            <br>
+            Rating:   <input name="rating" id="rating" type="number" value="5" step="1" min="1" max="10"><span id="error_price"></span>
             <br><br>
             <input id='buy' type="submit" value="Buy" onclick="return validateForm(this)" formaction="addarchive.php" formmethod="post">
-
             <?php } ?>
 
 
+            
 
 
             <!-- <input id='bid' type="submit" value="Bid" onclick="return validateForm(this)" formaction="bid_product.php" formmethod="post" <?php if (!($is_bidding=="yes") || $cannot_buy) {echo "disabled";} ?>>
