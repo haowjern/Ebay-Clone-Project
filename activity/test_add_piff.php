@@ -1,7 +1,11 @@
 <?php
 
-include "../database.php";
-include "probability_diff_interface.php"; 
+if (file_exists('../database.php')){
+    include '../database.php';
+} else {
+    include './database.php';
+}
+include_once "probability_diff_interface.php"; 
 $sql="SELECT * FROM archive";
 $result = $connection->query($sql);
 

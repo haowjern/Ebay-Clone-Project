@@ -30,6 +30,11 @@ if ($count==0){
     echo "no result found";
 }
 
+if (!isset($_SESSION["popularity_diff"])) {
+    include "./activity/test_add_piff.php";
+    $_SESSION["popularity_diff"] = 1;
+}
+
 
 ?>
 

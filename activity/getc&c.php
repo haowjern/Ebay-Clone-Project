@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
 //script to fetch all category and condition indices and names in session variables.
 if (isset($_SESSION["category_all"])){
