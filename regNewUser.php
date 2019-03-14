@@ -23,7 +23,7 @@ else {
  $phoneNo = trim($_POST["phoneNo"]);
  $DOB = trim($_POST["DOB"]);
 
- echo $username ."<br>";
+//  echo $username ."<br>";
 
 // Sanitise username
 $username = mysqli_real_escape_string($connection, $username);
@@ -35,24 +35,24 @@ mysqli_stmt_bind_param($result_users, 's', $username);
 mysqli_stmt_execute($result_users);
 $result = mysqli_stmt_get_result($result_users);
 $rows_users = ($result->num_rows);
-echo "connected to users" . "<br>";
+// echo "connected to users" . "<br>";
 
 if ($rows_users == 0) {
-    echo ($username . " is available" . "<br>"); // Delete this ########
+    // echo ($username . " is available" . "<br>"); // Delete this ########
 }
 else {
     $usernameErr = $username . " - duplicate found. Please choose another username" . "<br>";
-    echo ($username . " - duplicate found. Please choose another username" . "<br>"); // Delete this ######## 
+    // echo ($username . " - duplicate found. Please choose another username" . "<br>"); // Delete this ######## 
 }
 
 
 // Sanitize email
 if (!isset($_POST['email']) or !isset($_POST['confEmail'])) {
     $emailErr = "Please enter matching valid email addresses";
-    echo "Please enter matching valid email addresses";
+    // echo "Please enter matching valid email addresses";
 } elseif (trim($_POST['email']) !== trim($_POST['confEmail'])) {
     $emailErr = "Please enter matching valid email addresses";
-    echo "Please enter matching valid email addresses";
+    // echo "Please enter matching valid email addresses";
 } else {
     $orig_email = trim($_POST['email']);
     $clean_email = filter_var(trim($_POST['confEmail']), FILTER_SANITIZE_EMAIL);
@@ -62,7 +62,7 @@ if (!isset($_POST['email']) or !isset($_POST['confEmail'])) {
     }
     else {
         $emailErr = "Please enter valid email addresses";
-        echo "User-entered email address NOT SAFE!";
+        // echo "User-entered email address NOT SAFE!";
     }
 }
 
@@ -80,7 +80,7 @@ if (!empty($_POST["DOB"]) && date_create_from_format("Y-m-d",$_POST["DOB"])){
 }
 else {
     $DOBErr = "Please enter a valid date in YYYY-MM-DD format";
-    echo "User-entered date of birth is NOT SAFE!";
+    // echo "User-entered date of birth is NOT SAFE!";
 }
 
 
@@ -90,12 +90,12 @@ if (!empty($_POST["phoneNo"]) && is_numeric($_POST["phoneNo"])){
 }
 else {
     $phoneErr = "Please enter a valid phone number (all numeric input)";
-    echo "User-entered Phone Number is NOT SAFE!";
+    // echo "User-entered Phone Number is NOT SAFE!";
 }
 
 if ($emailErr === "" and $DOBErr === "" and $phoneErr === "" and $usernameErr === "") {
 // INSERT new row to database
-echo("Trying to instantiate session variables -- ."."<br>");
+// echo("Trying to instantiate session variables -- ."."<br>");
 $sql_insert = "INSERT INTO users (username, password1, email, phone, accountbalance, DOB) VALUES (?, ?, ?, ?, ?, ?)";
 $insert_user = mysqli_prepare($connection, $sql_insert);
 $zero = 0;
@@ -103,22 +103,22 @@ mysqli_stmt_bind_param($insert_user, 'ssssis', $username, $hash, $email, $phoneN
 $result = mysqli_stmt_execute($insert_user);
  
 // INSTANTIATE SESSION variables
-echo("Trying to instantiate session variables."."<br>");
+// echo("Trying to instantiate session variables."."<br>");
 $sql_users = "SELECT userID FROM users WHERE username = ?";
 $result_users = mysqli_prepare($connection, $sql_users);
 mysqli_stmt_bind_param($result_users, 's', $username);
 mysqli_stmt_execute($result_users);
 $result = mysqli_stmt_get_result($result_users);
 $rows_users = ($result->num_rows);
-echo "$rows_users";
+// echo "$rows_users";
     if ($rows_users == 1) {
-        echo("Successfully inserted new user."."<br>");
+        // echo("Successfully inserted new user."."<br>");
 
         while($row = $result->fetch_assoc()) {
             $userID = $row['userID'];
             $_SESSION["userID"] = $userID;
             $_SESSION["userName"] = $username;
-            echo("Successfully created SESSION variables."."<br>");
+            // echo("Successfully created SESSION variables."."<br>");
 
             $host  = $_SERVER['HTTP_HOST'];
             $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
@@ -131,7 +131,7 @@ echo "$rows_users";
 }
 else {
     // echo("Error: " . $sql_insert . "<br>" . $connection->error);
-    echo("Please provide valid inputs to register as a new user");
+    // echo("Please provide valid inputs to register as a new user");
     }
 }
 ?>

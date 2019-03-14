@@ -374,49 +374,12 @@ th {
             
         }
         </script>
-
-
-        <br> 
-        <br>
-        <p>to be removed
-
-            <button onclick="window.location.href = 'https://ebaydatabasegithub.azurewebsites.net/';">azure homepage</button>
-            <a href="database.php" title="placeholder mouseover text">
-                database.php
-            </a> 
-            <br>
-            <a>print out all session variables: </a><br><br>
-            <?php 
-
-            // print_r($_SESSION);
-            
-            foreach ($_SESSION as $key => $val){
-                print_r("session variable name: ".$key."<br>");  
-                print_r("session variable value: <br>"); 
-
-                if (is_array($val)){
-                    foreach ($val as $v){
-                        print_r($v);
-                        echo "<br>";
-                    }
-                } else{
-                    print_r($val."<br>");
-                }
-                print_r("<br>");
                 
-            }
-            
-
-            ?>
-
     
         </p>
     </body>
 
-    <!-- <footer>
-        <button type="button">About Us</button>
-        <button type="button">Contact Us</button>
-    </footer> -->
+
 </html>
 
 <?php

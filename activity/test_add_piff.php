@@ -14,9 +14,9 @@ if ($result->num_rows>0) {
         $productID = $row["productID"];
         $userID = $row["buyerID"];
 
-        echo "<br>";
-        echo $productID;
-        echo "<br>";
+        // echo "<br>";
+        // echo $productID;
+        // echo "<br>";
 
         $array = [];
         $array["productID"] = $productID;

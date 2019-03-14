@@ -6,19 +6,6 @@ include_once "header.php";
 // $_SESSION["userID"]=1;
 ?>
 
-<!-- Troubleshooting / To dos:
-// ********* Database will continue to update, even if NOT all fields to be modified are correct 
-1) How do I include multiple error messages for each input box? WITHOUT CLEARING ENTIRE FORM
-
-2) include database.php and check SQL ../ or ./   - all pages
-4) onclick / href button all links into index.php
-5) <form id="form1" method="post" action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>"><br> calls upon own PHP
-3) editlisting php - copy Annie's warning message replication to all pages with user input
-7) MAKE SURE Back end validation works - front-end validation is for user only
-
-
-3) SEPARATE PAGES for the individual fields the User can modify -->
-
         
 <?php
 
@@ -92,11 +79,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 elseif (!empty($_POST["newDOB"]) && date_create_from_format("Y-m-d",trim($_POST["newDOB"]))){
                     
                     $maxdate=Date("Y-m-d",strtotime('-18 year'));
+                    print_r($maxdate);
                     
-                    $newDOB = date_create_from_format("Y-m-d", trim($_POST["newDOB"]));
-                    if ($newDOB>$maxdate){
+                    $newDOB_checked = Date("Y-m-d",date_create_from_format("Y-m-d", $_POST["newDOB"]));
+                
+                    
+                    if ($newDOB_checked>$maxdate){
                         $DOBErr= "You must be over 18 years old to use this website.";
                     }else{
+                        $newDOB=date_create_from_format("Y-m-d", $_POST["newDOB"]);
                         $DOB_year = (integer)date_format($newDOB,"Y");
                         $DOB_month = (integer)date_format($newDOB,"m");
                         $DOB_day = (integer)date_format($newDOB,"d");
@@ -285,7 +276,7 @@ else {
         <label>Username:</label><br>
         <?php echo $username; ?><br><br>
         <label>Password:</label><br>
-        <?php echo $password; ?><br>
+        <?php echo "XXXXXXXXX"; ?><br><br>
         <label>Email:</label><br>
         <?php echo $email; ?><br>
         <label>Date of Birth:</label><br>
