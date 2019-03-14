@@ -16,6 +16,40 @@ if ($count==0){
     echo "no result found";
 }
 
+//check the seller comments which have been submitted by form
+$seller_comment_err=$seller_comment="";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+//validate seller comment before database query
+
+    $archiveID=$_POST["archiveID"];
+    $seller_comment=$_POST["seller_comment"];
+
+    if (strlen($_POST["seller_comment"])>150){
+        $seller_comment_err="comment cannot exceed 150 characters.";
+        $seller_comment="";
+        $checked="invalidated";
+    } else{
+        //trim all sensitive html special characters
+        $seller_comment=$_POST["seller_comment"];
+        $seller_comment = trim($seller_comment);
+        $seller_comment = stripslashes($seller_comment);
+        $seller_comment = htmlspecialchars($seller_comment);
+        $checked="validated";
+    }
+
+    if ($checked=="validated"){
+        $_SESSION["aftersale_seller"]=[$archiveID,$seller_comment];
+        include "aftersale.php";
+    }
+
+    
+
+
+
+}   
+
 ?>
 
 <html>
@@ -34,6 +68,7 @@ th {
 <body>
 
 <p id="t"></p>
+<p><font color="red"><?php echo $seller_comment_err?></p>
 
 
 <!-- create table header -->
@@ -115,20 +150,31 @@ for (i=0;i<count;i++){
     //create the form to edit item
     var fm_edit=document.createElement('form');
     //name the form with productID
-    fm_edit.setAttribute("name","form_edit"+each_listing[i]["productID"]);
+    fm_edit.setAttribute("name","form_edit"+each_listing[i]["archiveID"]);
     fm_edit.setAttribute("method","post");
-    fm_edit.setAttribute("action","aftersale.php");
+    fm_edit.setAttribute("action","<?php echo htmlentities($_SERVER['PHP_SELF']); ?>");
 
     //add the text field to edit comment
     var seller_comment_field=document.createElement("input");
         seller_comment_field.setAttribute("type","text");
         seller_comment_field.setAttribute("name","seller_comment");
+
+        
         seller_comment_field.setAttribute("value",each_listing[i]["seller_comment"]);
+
+        if (each_listing[i]["archiveID"]=="<?php echo $_POST["archiveID"]?>"){
+            var seller_comment_updated="<?php echo $_POST['seller_comment']?>";
+            if (seller_comment_updated!=""){
+            seller_comment_field.setAttribute("value","<?php echo htmlentities($_POST["seller_comment"])?>");
+            }
+        }
+        
         seller_comment_field.setAttribute("maxlength","150");
         seller_comment_field.setAttribute("size","50");
 
         fm_edit.appendChild(seller_comment_field);
-
+        fm_edit.appendChild(document.createElement("br"));
+    
 
     //add the hidden field: archiveID
     var hiddenField_archiveID=document.createElement("input");
