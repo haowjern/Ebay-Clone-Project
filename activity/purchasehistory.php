@@ -4,7 +4,6 @@ session_start();
 include "../header.php";
 
 //fetch all the archive listing related to this buyer
-$_SESSION["userID"]=1;
 
 unset($_SESSION["archive_search_criteria"]);
 $_SESSION["archive_search_criteria"]="buyerID";
