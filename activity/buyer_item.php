@@ -38,6 +38,14 @@ if (strtolower($auctionable) == 1) {
     // get latest bid price from bid event; 
 }
 
+//get the bidding end date and time
+$sql = "SELECT enddate,endtime FROM Product WHERE productID = $productID";
+        $result = $connection->query($sql); 
+
+        $row=$result->fetch_assoc();
+        $bidding_enddate=$row["enddate"];
+        $bidding_endtime=$row["endtime"];
+
 
 
 ?>
@@ -130,8 +138,12 @@ if (strtolower($auctionable) == 1) {
             </div>
             <h3>Product Name: <?php echo $name?></h3>
             <p>Description: <?php echo $description ?></p>
+            <p>Bidding Until: <?php echo $bidding_enddate." ".$bidding_endtime ?></p>
+            <br>
+                    
             Quantity:
             <input id='quantity' type="number" name="quantity" placeholders="1" min="1" max="10" required>
+            <br>
             <?php if ($is_bidding) {?>
                 Bid Price: <input name="price" id="price" type="number" step="0.01" min="0" max="10000" required> <span id="error_price"></span>
                 Current Bid:
@@ -145,6 +157,7 @@ if (strtolower($auctionable) == 1) {
 
             <h3>Seller Details</h3>
             <p>Name: Seller Name</p>
+            
             <?php // have to wait to see how we get userID, is it form sessions? ?>
             <input id='bid' type="submit" value="Bid" onclick="return validateForm(this)" formaction="bid_product.php" formmethod="post" <?php if (!$is_bidding || $cannot_buy) {echo "disabled";} ?>>
             <!-- <input id='buy' type="submit" value="Buy" onclick="return validateForm(this)" formaction="" formmethod="post" <?php if ($is_bidding || $cannot_buy) {echo "disabled";} ?>> -->
@@ -156,7 +169,7 @@ if (strtolower($auctionable) == 1) {
                 // code for watch/stop_watching button switch
                 $buyerID = $_SESSION['userID'];
 
-                $sql = "SELECT COUNT(*) FROM watchlist WHERE productID = $productID AND buyerID = $buyerID";
+                $sql = "SELECT COUNT(*) FROM Watchlist WHERE productID = $productID AND buyerID = $buyerID";
                 $result = $connection->query($sql); 
                 $row = mysqli_fetch_row($result);
                 if (implode(null,$row)==0) {

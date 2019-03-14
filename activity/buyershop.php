@@ -37,7 +37,7 @@ elseif (!empty($search_unique_words)) {
     $s_all_active_listings = []; // array has pID as its keys to identify unique items that has been searched
 
     foreach ($search_unique_words as $word) {
-        echo "<br>word: ".$word;
+        // echo "<br>word: ".$word;
         $_SESSION["product_search_criteria"]=["keyword",$word]; 
         include 'fetchactivelisting.php';
         
@@ -125,6 +125,7 @@ if ($count==0){
     echo "no result found";
 }
 
+unset($_SESSION["product_search_criteria"]);
 ?>
 
 
@@ -225,7 +226,6 @@ input,form {
         <input type="date" id="search_enddate" onchange="search_filter('search_enddate',6,'enddate')">
         <br><span style="font-size:12px">(on/before)</span>
         </th>
-        <th>Auctionable?</th>
         <th>Action</th>
     </tr>   
 
@@ -274,8 +274,7 @@ for (i=0;i<count;i++){
     var cell_latest_bid_price=row.insertCell(4);
     var cell_startdate=row.insertCell(5);
     var cell_enddate=row.insertCell(6);
-    var cell_auctionable=row.insertCell(7);
-    var cell_action=row.insertCell(8);
+    var cell_action=row.insertCell(7);
 
  
     //insert image iin the 1st column (image)
@@ -322,17 +321,9 @@ for (i=0;i<count;i++){
     cell_enddate.style.textAlign="center";
     cell_enddate.innerHTML=each_listing[i]["enddate"]+"<br>"+each_listing[i]["endtime"];
 
-    //insert listing auction status into the 8th column (auction)
-    cell_auctionable.style.textAlign="center";
 
-    if (each_listing[i]["auctionable"]==="0"){
-        each_listing[i]["auctionable"]="No";
-        cell_auctionable.innerHTML="No";
-    } else {
-        cell_auctionable.innerHTML="Yes";
-    }
 
-    //insert forms with buttons in 9th column (action)
+    //insert forms with buttons in 8th column (action)
     cell_action.style.textAlign="center";
 
     //create the form to see more details of item
@@ -363,7 +354,13 @@ for (i=0;i<count;i++){
 
     var go_details_button=document.createElement("input");
     go_details_button.setAttribute("type","submit");
-    go_details_button.setAttribute("value","Details");
+
+    if (each_listing[i]["auctionable"]==="0"){
+        go_details_button.setAttribute("value","Details");
+    } else {
+        go_details_button.setAttribute("value","Go to auction");
+    }
+    go_details_button.style.width = '100px';
     fm_go_details.appendChild(go_details_button);
 
     cell_action.appendChild(fm_go_details);

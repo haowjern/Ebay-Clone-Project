@@ -397,7 +397,7 @@ function test_input($data) {
 
 <form id="form1" method="post" action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>" enctype="multipart/form-data"><br>
 
-<input name="productID" type="text" value="<?php
+<input name="productID" type="hidden" value="<?php
     if(isset($_POST["productID"])){
       echo $_POST["productID"];
     }else{

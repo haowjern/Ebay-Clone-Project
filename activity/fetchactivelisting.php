@@ -117,5 +117,7 @@ if (!isset($_SESSION["category_all"])||!isset($_SESSION["condition_all"])){
         $connection->close();
     }
 
+unset($_SESSION["product_search_criteria"]);
+
 ?>
 </html>
