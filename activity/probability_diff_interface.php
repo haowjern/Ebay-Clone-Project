@@ -44,26 +44,26 @@ function set_popularity_diff($some_arr, $instr) {
                         $result_update = $connection->query($sql);
 
                         if ($result_update) {
-                            echo "<br>updated 2 success"; 
+                            // echo "<br>updated 2 success"; 
                         } else {
-                            echo "<br>updated 2 failed";
-                            echo "<br>";
-                            echo $sql;
+                            // echo "<br>updated 2 failed";
+                            // echo "<br>";
+                            // echo $sql;
                         }
                     }
                     
                 } else {
-                    echo "inserting"; 
+                    // echo "inserting"; 
                     // insert first row for this pair 
                     $sql = "INSERT INTO popularity_diff VALUES ('$productID', '$other_productID', 1, '$rating_diff')";
                     $result_insert = $connection->query($sql);
 
                     if ($result_insert) {
-                        echo "<br>inserted success"; 
+                        // echo "<br>inserted success"; 
                     } else {
-                        echo "<br>inserted failed";
-                        echo "<br>";
-                        echo $sql;
+                        // echo "<br>inserted failed";
+                        // echo "<br>";
+                        // echo $sql;
                     }
 
                     // insert second row for this pair if they are not the same 
@@ -72,20 +72,20 @@ function set_popularity_diff($some_arr, $instr) {
                         $result_insert = $connection->query($sql);
 
                         if ($result_insert) {
-                            echo "<br>inserted 2 success"; 
+                            // echo "<br>inserted 2 success"; 
                         } else {
-                            echo "<br>inserted 2 failed";
-                            echo "<br>";
-                            echo $sql;
+                            // echo "<br>inserted 2 failed";
+                            // echo "<br>";
+                            // echo $sql;
                         }
                     }
                 }
             }
         } else {
-            echo("None selected");
+            // echo("None selected");
         }
     } else {
-        echo("Error: Selected wrong instruction for set_popularity_diff");
+        // echo("Error: Selected wrong instruction for set_popularity_diff");
     }
     $connection->close();
 }

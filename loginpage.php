@@ -14,8 +14,8 @@ else {
     function createSession($userID, $username) {
         $_SESSION["userID"] = $userID;
         $_SESSION["username"] = $username;
-        echo $_SESSION["userID"]."<br>";
-        echo $_SESSION["username"]."<br>";
+        // echo $_SESSION["userID"]."<br>";
+        // echo $_SESSION["username"]."<br>";
     }        
 
     // Recognise user input
@@ -31,7 +31,7 @@ else {
         }
         
         if ($usernameErr == "" and $passwordErr == "") {
-            echo $_POST['userName'] . " and " . $_POST['passWord'] ." successfully submitted to server-side validation"."<br>"; // Delete this ########
+            // echo $_POST['userName'] . " and " . $_POST['passWord'] ." successfully submitted to server-side validation"."<br>"; // Delete this ########
             return TRUE;
         }
     }
@@ -45,8 +45,8 @@ else {
         $username = trim($_POST["userName"]);
         $username = mysqli_escape_string($connection, $username);
         $user_pass = trim($_POST["passWord"]);
-        echo $username."<br>";
-        echo $user_pass."<br>";
+        // echo $username."<br>";
+        // echo $user_pass."<br>";
 
         // Step 2 - Search for username and password in users database
 
@@ -58,13 +58,13 @@ else {
         $result = mysqli_stmt_get_result($result_users);
         $rows_users = ($result->num_rows);
         if ($rows_users > 0) {
-            echo $rows_users;
+            // echo $rows_users;
         }
-        echo "connected to users" . "<br>";
+        // echo "connected to users" . "<br>";
 
         // Username found in users table
         if ($rows_users == 1) {
-            echo ($username . " has been found in users table" . "<br>"); // Delete this ########
+            // echo ($username . " has been found in users table" . "<br>"); // Delete this ########
             
             // Check if password matches in users table
             $sql_users_pw = "SELECT * FROM users WHERE username = ?";
@@ -75,10 +75,10 @@ else {
             
             while($row = $result->fetch_assoc()) {
                 if (password_verify($user_pass, $row["password1"])) {
-                    echo "Successfully logged in"."<br>";
+                    // echo "Successfully logged in"."<br>";
                     $userID = $row["userID"]; 
                     createSession($userID, $username);
-                    echo "Successfully created Session variable"."<br>";
+                    // echo "Successfully created Session variable"."<br>";
 
                     $host  = $_SERVER['HTTP_HOST'];
                     $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
@@ -89,18 +89,18 @@ else {
                 }
                 else {
                     $loginErr = "Invalid username and password entered.";
-                    echo "Invalid password entered"."<br>";
+                    // echo "Invalid password entered"."<br>";
                 }
             }
         }
         else {
             $loginErr = $username . " is not a registered user. Please register as a new user." . "<br>"; // Delete this ########
-            echo ($username . " is not registered in the database. Do you wish to register as a new user?" . "<br>"); // Delete this ########
+            // echo ($username . " is not registered in the database. Do you wish to register as a new user?" . "<br>"); // Delete this ########
         }
     }
     else {
         $loginErr = "Invalid username or password entered.";
-        echo "Data did not pass validation";
+        // echo "Data did not pass validation";
     }
 }
 ?>

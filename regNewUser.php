@@ -23,7 +23,7 @@ else {
  $phoneNo = trim($_POST["phoneNo"]);
  $DOB = trim($_POST["DOB"]);
 
- echo $username ."<br>";
+//  echo $username ."<br>";
 
 // Sanitise username
 $username = mysqli_real_escape_string($connection, $username);
@@ -35,24 +35,24 @@ mysqli_stmt_bind_param($result_users, 's', $username);
 mysqli_stmt_execute($result_users);
 $result = mysqli_stmt_get_result($result_users);
 $rows_users = ($result->num_rows);
-echo "connected to users" . "<br>";
+// echo "connected to users" . "<br>";
 
 if ($rows_users == 0) {
-    echo ($username . " is available" . "<br>"); // Delete this ########
+    // echo ($username . " is available" . "<br>"); // Delete this ########
 }
 else {
     $usernameErr = $username . " - duplicate found. Please choose another username" . "<br>";
-    echo ($username . " - duplicate found. Please choose another username" . "<br>"); // Delete this ######## 
+    // echo ($username . " - duplicate found. Please choose another username" . "<br>"); // Delete this ######## 
 }
 
 
 // Sanitize email
 if (!isset($_POST['email']) or !isset($_POST['confEmail'])) {
     $emailErr = "Please enter matching valid email addresses";
-    echo "Please enter matching valid email addresses";
+    // echo "Please enter matching valid email addresses";
 } elseif (trim($_POST['email']) !== trim($_POST['confEmail'])) {
     $emailErr = "Please enter matching valid email addresses";
-    echo "Please enter matching valid email addresses";
+    // echo "Please enter matching valid email addresses";
 } else {
     $orig_email = trim($_POST['email']);
     $clean_email = filter_var(trim($_POST['confEmail']), FILTER_SANITIZE_EMAIL);
@@ -62,7 +62,7 @@ if (!isset($_POST['email']) or !isset($_POST['confEmail'])) {
     }
     else {
         $emailErr = "Please enter valid email addresses";
-        echo "User-entered email address NOT SAFE!";
+        // echo "User-entered email address NOT SAFE!";
     }
 }
 
@@ -70,17 +70,45 @@ if (!isset($_POST['email']) or !isset($_POST['confEmail'])) {
 $hash = password_hash($password, PASSWORD_BCRYPT);
 
 
-// Sanitise Date of Birth
-if (!empty($_POST["DOB"]) && date_create_from_format("Y-m-d",$_POST["DOB"])){
-    $DOB=date_create_from_format("Y-m-d",$_POST["DOB"]);  
-    $DOB_year = (integer)date_format($DOB,"Y");
-    $DOB_month = (integer)date_format($DOB,"m");
-    $DOB_day = (integer)date_format($DOB,"d");
-    $DOB_str = (string)$DOB_year . "-" . (string)$DOB_month . "-" . (string)$DOB_day;
+// // Sanitise Date of Birth
+// if (!empty($_POST["DOB"]) && date_create_from_format("Y-m-d",$_POST["DOB"])){
+//     $DOB=date_create_from_format("Y-m-d",$_POST["DOB"]);  
+//     $DOB_year = (integer)date_format($DOB,"Y");
+//     $DOB_month = (integer)date_format($DOB,"m");
+//     $DOB_day = (integer)date_format($DOB,"d");
+//     $DOB_str = (string)$DOB_year . "-" . (string)$DOB_month . "-" . (string)$DOB_day;
+// }
+// else {
+//     $DOBErr = "Please enter a valid date in YYYY-MM-DD format";
+//     // echo "User-entered date of birth is NOT SAFE!";
+// }
+
+ // newDOB
+ if (!isset($_POST['DOB']) or trim($_POST['DOB']) == '') {
+    // Nothing entered for DOB
+}
+elseif (!empty($_POST["DOB"]) && date_create_from_format("Y-m-d",trim($_POST["DOB"]))){
+    
+    $maxdate=Date("Y-m-d",strtotime('-18 year'));
+    
+    $newDOB_checked = Date("Y-m-d",date_create_from_format("Y-m-d", $_POST["DOB"]));
+
+    
+    if ($newDOB_checked>$maxdate){
+        $DOBErr= "You must be over 18 years old to use this website.";
+    }else{
+        $newDOB=date_create_from_format("Y-m-d", $_POST["DOB"]);
+        $DOB_year = (integer)date_format($newDOB,"Y");
+        $DOB_month = (integer)date_format($newDOB,"m");
+        $DOB_day = (integer)date_format($newDOB,"d");
+        $DOB_str = (string)$DOB_year . "-" . (string)$DOB_month . "-" . (string)$DOB_day;
+
+        
+    }
 }
 else {
     $DOBErr = "Please enter a valid date in YYYY-MM-DD format";
-    echo "User-entered date of birth is NOT SAFE!";
+    // return FALSE;
 }
 
 
@@ -90,12 +118,12 @@ if (!empty($_POST["phoneNo"]) && is_numeric($_POST["phoneNo"])){
 }
 else {
     $phoneErr = "Please enter a valid phone number (all numeric input)";
-    echo "User-entered Phone Number is NOT SAFE!";
+    // echo "User-entered Phone Number is NOT SAFE!";
 }
 
 if ($emailErr === "" and $DOBErr === "" and $phoneErr === "" and $usernameErr === "") {
 // INSERT new row to database
-echo("Trying to instantiate session variables -- ."."<br>");
+// echo("Trying to instantiate session variables -- ."."<br>");
 $sql_insert = "INSERT INTO users (username, password1, email, phone, accountbalance, DOB) VALUES (?, ?, ?, ?, ?, ?)";
 $insert_user = mysqli_prepare($connection, $sql_insert);
 $zero = 0;
@@ -103,22 +131,22 @@ mysqli_stmt_bind_param($insert_user, 'ssssis', $username, $hash, $email, $phoneN
 $result = mysqli_stmt_execute($insert_user);
  
 // INSTANTIATE SESSION variables
-echo("Trying to instantiate session variables."."<br>");
+// echo("Trying to instantiate session variables."."<br>");
 $sql_users = "SELECT userID FROM users WHERE username = ?";
 $result_users = mysqli_prepare($connection, $sql_users);
 mysqli_stmt_bind_param($result_users, 's', $username);
 mysqli_stmt_execute($result_users);
 $result = mysqli_stmt_get_result($result_users);
 $rows_users = ($result->num_rows);
-echo "$rows_users";
+// echo "$rows_users";
     if ($rows_users == 1) {
-        echo("Successfully inserted new user."."<br>");
+        // echo("Successfully inserted new user."."<br>");
 
         while($row = $result->fetch_assoc()) {
             $userID = $row['userID'];
             $_SESSION["userID"] = $userID;
             $_SESSION["userName"] = $username;
-            echo("Successfully created SESSION variables."."<br>");
+            // echo("Successfully created SESSION variables."."<br>");
 
             $host  = $_SERVER['HTTP_HOST'];
             $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
@@ -131,7 +159,7 @@ echo "$rows_users";
 }
 else {
     // echo("Error: " . $sql_insert . "<br>" . $connection->error);
-    echo("Please provide valid inputs to register as a new user");
+    // echo("Please provide valid inputs to register as a new user");
     }
 }
 ?>
@@ -179,6 +207,7 @@ else {
         <label for="userName">Username:</label><br>
         <input type="text" name="userName" placeholder="Username" pattern=".{3,}" required title="Minimum 3 characters or more" maxlength=15>
         <br>
+        <p><?php echo $usernameErr?><p>
         <br>
         <label for="email">Email Address:</label><br>
         <input type="email" name="email" placeholder="Email" required>
@@ -187,6 +216,7 @@ else {
         <label for="confEmail">Confirm Email Address:</label><br>
         <input type="email" name="confEmail" placeholder="Re-Enter Email" required>
         <br>
+        <p><?php echo $emailErr?><p>
         <br>
         <label for="passWord">Password:</label><br>
         <input type="password" name="passWord" placeholder="Password" pattern=".{6,}" required title="Minimum 6 characters or more">
@@ -195,14 +225,17 @@ else {
         <label for="confPassWord">Confirm Password:</label><br>
         <input type="password" name="confPassWord" placeholder="Re-Enter Password" pattern=".{6,}" required title="Minimum 6 characters or more"> 
         <br>
+        <p><p>
         <br>
         <label for="DOB">Date of Birth:</label><br>
         <input type="date" name="DOB" required>
         <br>
+        <p><?php echo $DOBErr?><p>
         <br>
         <label for="phoneNo">Phone Number:</label><br>
         + <input type="text" name="phoneNo" pattern="(.*\d)" placeholder="Phone Number" maxlength=15 required title="Numeric characters only, up to 15 characters">
         <br>
+        <p><?php echo $phoneErr?><p>
         <br>
         <p><input type="submit" name="regNewUser" value="Register"></p>
         <br>
@@ -212,7 +245,3 @@ else {
 
     </body>
 </html>
-
-<?php
-include "footer.php";
-?>
