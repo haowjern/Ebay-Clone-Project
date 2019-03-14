@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC>
 <?php
 session_start();
-include "header.php";
+include_once "header.php";
 
 // $_SESSION["userID"]=1;
 ?>
@@ -338,5 +338,5 @@ else {
     </body>
 </html>
 <?php
-include "footer.php";
+include_once "footer.php";
 ?> 

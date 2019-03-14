@@ -102,10 +102,13 @@ for (i=0;i<count;i++){
  
     //insert image iin the 1st column (image)
     if(each_listing[i]['photos'][0]!=null){
-        cell_image.innerHTML=`<img src=${each_listing[i]['photos'][0]['file_path']} alt='Image' style=max-height:100%; max-width:100%>`
-    } else{
-        cell_image.innerHTML="No image";
-    }
+                cell_image.innerHTML=`<img src=${each_listing[i]['photos'][0]['file_path']} alt='Image' style=max-height:100%; max-width:100%>`
+                cell_image.height=100; // scale size
+                cell_image.width=100; // scale size
+            
+            } else{
+                cell_image.innerHTML="No image";
+            }
    
 
     cell_image.height=100; // scale size
