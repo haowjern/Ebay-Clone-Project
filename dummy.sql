@@ -54,7 +54,6 @@ CREATE TABLE IF NOT EXISTS Product
 ) 
 ENGINE = InnoDB;
 
-
 CREATE TABLE IF NOT EXISTS Archive
 (
     archiveID INTEGER AUTO_INCREMENT PRIMARY KEY,
@@ -113,9 +112,6 @@ VALUES ('Refurbished');
 
 INSERT INTO ConditionIndex (conditionname)
 VALUES ('Used / Worn');
-/*
-CREATE PHOTOS TABLE 
-*/ 
 
 CREATE TABLE IF NOT EXISTS Photos (
 	photoID INT NOT NULL AUTO_INCREMENT,
@@ -138,17 +134,13 @@ CREATE TABLE IF NOT EXISTS BidEvents (
     FOREIGN KEY (buyerID) REFERENCES Users(userID) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=INNODB;
 
-/*
-CREATE WATCHLIST TABLE
-*/
-
 CREATE TABLE IF NOT EXISTS Watchlist (
     watchID INT NOT NULL AUTO_INCREMENT,
-
     productID INT NOT NULL,
     buyerID INT NOT NULL,
-
-    PRIMARY KEY (watchID)
+    PRIMARY KEY (watchID),  
+    FOREIGN KEY (productID) REFERENCES Product(productID) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (buyerID) REFERENCES Users(userID) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=INNODB;
 
 CREATE TABLE IF NOT EXISTS Popularity_diff (
@@ -158,12 +150,3 @@ CREATE TABLE IF NOT EXISTS Popularity_diff (
     sum int(11) NOT NULL default '0',
     PRIMARY KEY (productID1, productID2)
 ) ENGINE=INNODB;
-
-
-
-
-
-
-/* interest categories? and do we parse input before adding to this or is it something to do with configuring the table? (eg password..?) we'll figure it out :) */
-
-
