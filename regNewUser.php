@@ -89,17 +89,9 @@ $hash = password_hash($password, PASSWORD_BCRYPT);
 }
 elseif (!empty($_POST["DOB"]) && date_create_from_format("Y-m-d",trim($_POST["DOB"]))){
     
-    $maxdate=Date("Y-m-d",strtotime('-18 year'));
-
-    echo "trying";
-
-    $newDOB_checked="";
-    echo gettype($newDOB_checked);
-    echo gettype($maxdate);
-    $newDOB_checked = date_format(date_create_from_format("Y-m-d", $_POST["DOB"]),"Y-m-d");
-    // $newDOB_checked = Date("Y-m-d",date_create_from_format("Y-m-d", $_POST["DOB"]));
-
-    if ($newDOB_checked>$maxdate){
+    $maxdate=date("Y-m-d",strtotime('-18 year'));
+    
+    if ($_POST["DOB"]>$maxdate){
         $DOBErr= "You must be over 18 years old to use this website.";
     }else{
         $newDOB=date_create_from_format("Y-m-d", $_POST["DOB"]);
@@ -110,6 +102,7 @@ elseif (!empty($_POST["DOB"]) && date_create_from_format("Y-m-d",trim($_POST["DO
 
         
     }
+
 }
 else {
     $DOBErr = "Please enter a valid date in YYYY-MM-DD format";
@@ -128,7 +121,7 @@ else {
 
 if ($emailErr === "" and $DOBErr === "" and $phoneErr === "" and $usernameErr === "") {
 // INSERT new row to database
-// echo("Trying to instantiate session variables -- ."."<br>");
+echo("Trying to instantiate session variables -- ."."<br>");
 $sql_insert = "INSERT INTO users (username, password1, email, phone, accountbalance, DOB) VALUES (?, ?, ?, ?, ?, ?)";
 $insert_user = mysqli_prepare($connection, $sql_insert);
 $zero = 0;
@@ -208,7 +201,7 @@ else {
         <br>
         <div align="center">
         <h3> New User Registration </h3>
-        <form name="register_form" action="" onsubmit="return validateForm()" method="post">
+        <form name="register_form" action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>" onsubmit="return validateForm()" method="post">
         <label for="userName">Username:</label><br>
         <input type="text" name="userName" placeholder="Username" pattern=".{3,}" required title="Minimum 3 characters or more" maxlength=15>
         <br>

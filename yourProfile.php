@@ -79,22 +79,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 elseif (!empty($_POST["newDOB"]) && date_create_from_format("Y-m-d",trim($_POST["newDOB"]))){
                     
                     $maxdate=date("Y-m-d",strtotime('-18 year'));
-
-                    // $maxdate=new Date($maxdaate);
-                
-                    
-                    echo "trying";
-
-                    $newDOB_checked="";
-                    echo gettype($newDOB_checked);
-                    echo gettype($maxdate);
-                    // $newDOB_checked = date_format(date_create_from_format("Y-m-d", $_POST["DOB"]),"Y-m-d");
-                    $newDOB_checked = date("Y-m-d",date_create_from_format("Y-m-d", $_POST["newDOB"]));
-                    
-                    echo $newDOB_checked;
      
-                    
-                    if ($newDOB_checked>$maxdate){
+                    if ($_POST["newDOB"]>$maxdate){
                         $DOBErr= "You must be over 18 years old to use this website.";
                     }else{
                         $newDOB=date_create_from_format("Y-m-d", $_POST["newDOB"]);
