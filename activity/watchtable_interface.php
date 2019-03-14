@@ -1,5 +1,4 @@
 <?php
-
 function get_watchtable($buyerID) {
     include '../database.php';
     
@@ -30,18 +29,13 @@ function get_watchtable($buyerID) {
                         $watch_arr['sellerName'] = $row['username'];
                     }
                 }
-                
                 array_push($watches, $watch_arr);
             }
-            //echo("Received watchlist item successfully.");
         } else {
-            // does this work fine? test...
-
             $watch_arr['productName'] = "None";
             $watch_arr['sellerName'] = "-"; 
             $watch_arr['endDate'] = "-";
             $watch_arr['endTime'] = "-";
-                    
             array_push($watches, $watch_arr);
         }
     return $watches;

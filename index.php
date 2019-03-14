@@ -122,9 +122,15 @@ th {
         
             //insert image iin the 1st column (image)
             cell_image.style.textAlign="center";
-            cell_image.innerHTML=`<img src=${each_listing[i]['photos'][0]['file_path']} alt='Image' style=max-height:100%; max-width:100%>`
-            cell_image.height=100; // scale size
-            cell_image.width=100; // scale size 
+            if(each_listing[i]['photos'][0]!=null){
+                cell_image.innerHTML=`<img src=${each_listing[i]['photos'][0]['file_path']} alt='Image' style=max-height:100%; max-width:100%>`
+                cell_image.height=100; // scale size
+                cell_image.width=100; // scale size
+            
+            } else{
+                cell_image.innerHTML="No image";
+            }
+             
 
             //insert product name into the 2nd column (Product Name)
             cell_productname.style.textAlign="center";

@@ -1,7 +1,6 @@
 <?php session_start(); 
 include "../header.php";
 include '../database.php';
-//$_SESSION['userID']=11;
 ?>
 <html>
     <head>

@@ -18,9 +18,10 @@ $enddate = $_POST["enddate"];
 $endtime = $_POST["endtime"];
 $categoryname = $_POST["categoryname"];
 $conditionname = $_POST["conditionname"]; 
-$userID = $_SESSION['current_user']; 
+$userID = $_SESSION['userID']; 
 
 // do not allow the seller to buy/bid their own items.
+
 $cannot_buy = false;
 if (!empty($userID)) {
     if ($userID == $sellerID) {
@@ -62,7 +63,8 @@ $sql = "SELECT enddate,endtime FROM Product WHERE productID = $productID";
                     let new_price = document.forms["buyer_item"]["price"].value;
                     let current_price = '<?php echo $start_price?>';
                     let error_msg = document.getElementById('error_price');
-
+                    console.log(new_price);
+                    console.log(current_price);
                     if (new_price > current_price) {
                         error_msg.innerText = "";
                         return true;
