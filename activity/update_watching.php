@@ -1,5 +1,9 @@
 <?php
+function send_email_updating_watchers($bid_arr){
     include '../database.php';
+    include 'send_email.php';
+
+    // $bid_arr gives   bidID, productID, buyerID, price
 
     $bidID = $bid_arr['bidID'];
     $productID = $bid_arr['productID'];
@@ -9,54 +13,61 @@
 
     // get username of user who placed the bid
     $sql="SELECT * FROM Users WHERE userID = '$bidderID'";
-    $result = mysqli_query($connection, $sql);
-    $bidderName=mysqli_fetch_array($result)['username'];
+    $result = $connection->query($sql);
+    if ($result->num_rows>0) { 
+        while ($row=$result->fetch_assoc()) {
+            $latestBidderName = $row['username'];
+        }
+    }
+ 
+    // get name of product being bid on / watched
+    $sql="SELECT * FROM Product WHERE productID = '$productID'";
+    $result = $connection->query($sql);
+    if ($result->num_rows>0) { 
+        while ($row=$result->fetch_assoc()) {
+            $productName = $row['product_name'];
+        }
+    }
+ 
 
-
-    // specify email subject, body, and altbody
-    $subject = "Test email subject";
-    $body = "Test email body...";
-    $altbody = "Test email altbody......";
-
+    $email_to_arr = [];
     // get emails of all users watching this product
     $sql="SELECT * FROM Watchlist WHERE productID = '$productID'";
-    $result = mysqli_query($connection, $sql);
-
-    // for each user who is watching this product:
-    while ($row=mysqli_fetch_array($result)) {
-        $watchingUserID = $row['buyerID'];
-
-        $sql="SELECT * FROM Users WHERE userID = '$watchingUserID'";
-        $result = mysqli_query($connection, $sql);
-        $watchingUserEmail=mysqli_fetch_array($result)['email'];
-        
-        echo $watchingUserEmail;
-        
-        // send email to this user
-        send_to_email($watchingUserEmail, $subject, $body, $altbody);
+    $result1 = $connection->query($sql);
+    if ($result1->num_rows>0) { 
+        while ($row=$result1->fetch_assoc()) {
+            $watcherID = $row['buyerID'];
+            $sql = "SELECT * FROM User WHERE userID = '$watcherID'";
+                $result2 = $connection->query($sql);
+                while ($row=$result2->fetch_assoc()) {
+                    $email_to_arr['watcherName'] = $row['username'];
+                    $email_to_arr['watcherEmail'] = $row['email'];
+            }
+        }
     }
-       
-
-    // get emails of all users who have made a bid on this product          .... for all vars when SQL querying, use single quote
-    $sql="SELECT * FROM BidEvents WHERE productID = '$productID'";
-    $result = mysqli_query($connection, $sql);
     
-    // for each user who has made a bid on this product:
-    while ($row=mysqli_fetch_array($result)) {
-        $watchingUserID = $row['buyerID'];
+    foreach ($email_to_arr as $email_to) {
+        // $productName     $email_to_arr['watcherName']     $bidPrice  $latestBidderName
 
-        $sql="SELECT * FROM Users WHERE userID = '$watchingUserID'";
-        $result = mysqli_query($connection, $sql);
-        $watchingUserEmail=mysqli_fetch_array($result)['email'];
-        
-        echo $watchingUserEmail;
+        // want to tell users that User has made BidPrice on Product
 
-        // send email to this user
-        send_to_email($watchingUserEmail, $subject, $body, $altbody);
-       
+        $subject = "New bid on ".$productName;
+        $body = "Hey ".$email_to['watcherName']."!\nUser ".$latestBidderName." has made a new bid of ".$bidPrice." on ".$productName;
+        $altbody = "Someone has made a bid on a product that you are watching!";
 
+        $watchingUserEmail = $email_to['watcherEmail'];
+        $emailee_name = $email_to['watcherName'];
+
+        send_to_email($watchingUserEmail, $subject, $body, $altbody, $emailee_name);
     }
 
 
+   
+    // for each user who has made a bid on this product:
+        // replicate above but for bid!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        
+    
+
+}
 
 ?>

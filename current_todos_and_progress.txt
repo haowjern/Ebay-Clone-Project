@@ -24,7 +24,7 @@ PAGES:
     - See product details ---- DONE
     - Buy item -- EXTRA 
     - Add to cart - EXTRA 
-    - Watch 
+    - Watch ---- DONE
     - Bid for an auctionable item ---- DONE
     - Seller cannot bid/buy an item they have listed – DONE 
     - I don't want to see the reserve price. ---- DONE
@@ -171,7 +171,14 @@ Haow Jern
 
 
 Sergi
+
+    does email update need to send if bid UPDATE? (bid_product_interface.php)
     
+    check emails send (when bidmake & bidend)
+    add subject body etc to emails
+
+    ./ finish watchlist table
+
     ./ - when bid make, update users watching AND users that have made bids
     .  - when bid end, update users watching AND users that have made bids 
 

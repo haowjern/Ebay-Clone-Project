@@ -93,8 +93,9 @@ else {
     echo "User-entered Phone Number is NOT SAFE!";
 }
 
-if ($emailErr == "" and $DOBErr == "" and $phoneErr == "" and $usernameErr == "") {
+if ($emailErr === "" and $DOBErr === "" and $phoneErr === "" and $usernameErr === "") {
 // INSERT new row to database
+echo("Trying to instantiate session variables -- ."."<br>");
 $sql_insert = "INSERT INTO users (username, password1, email, phone, accountbalance, DOB) VALUES (?, ?, ?, ?, ?, ?)";
 $insert_user = mysqli_prepare($connection, $sql_insert);
 $zero = 0;
@@ -119,12 +120,12 @@ echo "$rows_users";
             $_SESSION["userName"] = $username;
             echo("Successfully created SESSION variables."."<br>");
 
-            // $host  = $_SERVER['HTTP_HOST'];
-            // $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
-            // $extra = 'index.php';
-            // $link="http://".$host.$uri."/".$extra;
+            $host  = $_SERVER['HTTP_HOST'];
+            $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+            $extra = 'index.php';
+            $link="http://".$host.$uri."/".$extra;
         
-            // header("Location: http://$host$uri/$extra");
+            header("Location: http://$host$uri/$extra");
         }
     }
 }
