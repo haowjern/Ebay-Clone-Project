@@ -329,10 +329,10 @@ if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
         } else {
           $uploadOk = 0;
         }
-      } else {
-        $uploadOk = 0;
-      }
+      } 
     }
+    echo("TESTING: ");
+    var_dump($uploadOk);
 
     
     

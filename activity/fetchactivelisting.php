@@ -1,5 +1,8 @@
 <?php 
-session_start();
+if(session_id() == ''){
+    //session has not started
+    session_start();
+}
 
 include_once "bid_product_interface.php";
 
@@ -9,7 +12,11 @@ include_once "bid_product_interface.php";
 if (!isset($_SESSION["category_all"])||!isset($_SESSION["condition_all"])){
     include "getc&c.php";}
 
-    include '../database.php';
+    if (file_exists('../database.php')){
+        include '../database.php';
+    } else {
+        include './database.php';
+    }
 
     include_once "photos_interface.php"; // this is to get the get photo function 
 
@@ -20,7 +27,10 @@ if (!isset($_SESSION["category_all"])||!isset($_SESSION["condition_all"])){
 
     if (isset($_SESSION["product_search_criteria"])){
         $criteria=$_SESSION["product_search_criteria"][0];
-        $value=mysqli_real_escape_string($connection,$_SESSION["product_search_criteria"][1]);
+        $value=$_SESSION["product_search_criteria"][1];
+        if (!is_array($value)) {
+            $value=mysqli_real_escape_string($connection,$value);
+        }
 
     // write the query according to search criteria
         if ($criteria=="sellerID"){
@@ -63,6 +73,10 @@ if (!isset($_SESSION["category_all"])||!isset($_SESSION["condition_all"])){
                         SELECT con.conditionID FROM Conditionindex as con
                         WHERE con.conditionID LIKE '%$value$'
                     )";
+
+        } elseif ($criteria=="productID") {
+            $values = join("','" , $value);
+            $sql = "SELECT * FROM Product WHERE productID IN ('$values')";
         }
 
         $result=$connection->query($sql);

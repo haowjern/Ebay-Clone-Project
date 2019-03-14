@@ -6,8 +6,14 @@ function set_bidEvent($bid_arr, $instr) {
     - <$product_arr>: Object with attributes - 
     - <$instr>: 
     */ 
-    include '../database.php';
+
+    if (file_exists('../database.php')){
+        include '../database.php';
+    } else {
+        include './database.php';
+    }
     include 'update_watching.php';
+    
     
     // check object has the correct properties
     $properties = ["bidID", "productID", "buyerID", "payment", "price"];
@@ -16,14 +22,20 @@ function set_bidEvent($bid_arr, $instr) {
             echo "Parameter is not an object with the correct properties\n"; 
         }
     }
+    // include './update_watching.php';
+    // check object has the correct properties
     $bidID = $bid_arr['bidID'];
     $productID = $bid_arr['productID'];
     $buyerID = $bid_arr['buyerID'];
     $payment = $bid_arr['payment'];
     $bidPrice = $bid_arr['price'];
+    $date_today = date("Y/m/d");
+    $time_today = date("H:i:s");
     // add new 
     if ($instr === "insert") {
-        $sql = "INSERT INTO bidEvents (productID, buyerID, payment, bidPrice) VALUES ('$productID', '$buyerID', '$payment', '$bidPrice')";
+        $sql = "INSERT INTO bidEvents (productID, buyerID, payment, bidPrice, bidDate, bidTime) 
+                VALUES ('$productID', '$buyerID', '$payment', '$bidPrice', '$date_today', 
+                        '$time_today')";
         $result = $connection->query($sql); 
         if ($result==TRUE) {
             
@@ -63,7 +75,11 @@ function set_bidEvent($bid_arr, $instr) {
 }
 
 function get_bidEvent($condition, $productID) {
-    include '../database.php';
+    if (file_exists('../database.php')){
+        include '../database.php';
+    } else {
+        include './database.php';
+    }
     
     $bids = []; 
     if ($condition == "latest") {
@@ -103,6 +119,8 @@ function get_bidEvent($condition, $productID) {
                 $bid_arr['buyerID'] = $row['buyerID'];
                 $bid_arr['payment'] = $row['payment'];
                 $bid_arr['bidPrice'] = $row['bidPrice'];
+                $bid_arr['bidDate'] = $row['bidDate'];
+                $bid_arr['bidTime'] = $row['bidTime'];
                 array_push($bids, $bid_arr);
             }
             echo("Received bid event successfully.");
@@ -112,6 +130,8 @@ function get_bidEvent($condition, $productID) {
             $bid_arr['buyerID'] = 0;
             $bid_arr['payment'] = 0;
             $bid_arr['bidPrice'] = 0;
+            $bid_arr['bidDate'] = 0;
+            $bid_arr['bidTime'] = 0;
             array_push($bids, $bid_arr);
         }
     }

@@ -1,4 +1,7 @@
-<?php session_start();?>
+<?php if(session_id() == ''){
+    //session has not started
+    session_start();
+};?>
 <head>
 <style>
 button {

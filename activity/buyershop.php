@@ -370,10 +370,6 @@ for (i=0;i<count;i++){
     
 }
 
-function warning_msg(){
-    return confirm("confirm remove this listing?");
-    }
-
 //remove all filtering
 function reset_filter(){
     tr = table.getElementsByTagName("tr");

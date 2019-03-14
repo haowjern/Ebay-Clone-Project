@@ -66,7 +66,11 @@ function get_photo($productID) {
     /* Return result of SQL query for each row for photos of the same productID.
 
     */
-    include '../database.php';
+    if (file_exists('../database.php')){
+        include '../database.php';
+    } else {
+        include './database.php';
+    }
 
     // select and return photo array
     // there are two cases - select user ID, or u select photo ID - currently I just want to select for productID

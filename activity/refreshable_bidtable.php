@@ -5,7 +5,7 @@
     $bids = get_bidEvent("all", $productID); // get all bid elements 
     
     foreach ($bids as $bid) {
-        echo ("<tr> <td> ".$bid["buyerID"]."</td> <td>"."£".$bid["bidPrice"]."</td> </tr>");
+        echo ("<tr> <td> ".$bid["buyerID"]."</td> <td>"."£".$bid["bidPrice"]."</td> <td>".$bid["bidDate"]."</td> <td>".$bid["bidTime"]."</td> </tr>");
     }
     // testing use - echo ("<tr> <td> "."Testing-delete this: "."</td> <td>".time()."</td> </tr>");
 ?> 
