@@ -56,7 +56,6 @@ if (isset($_SESSION["archive_search_criteria"])){
                     u.username
         FROM Archive a,Users u
         WHERE a.sellerID=u.userID AND a.buyerID='$buyerID'";
-
     }
 
     $result=$connection->query($sql);
