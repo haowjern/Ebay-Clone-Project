@@ -56,9 +56,6 @@ function send_email_updating_watchers($bid_arr){
         send_to_email($watchingUserEmail, $subject, $body, $altbody, $emailee_name);
     }
 
-    echo "next";
-    var_dump($email_to_arr);
-
     // for each user who has made a bid on this product:
     // get names and emails of all users who have made a bid on this product
     $sql="SELECT * FROM BidEvents WHERE productID = '$productID'";
@@ -77,9 +74,6 @@ function send_email_updating_watchers($bid_arr){
         }
     }
 
-    echo "test";
-    var_dump($email_to_arr);
-    
     foreach ($email_to_arr as $email_to=>$val) {
         // want to tell users that User has made BidPrice on Product
         $subject = "New bid on ".$productName;
