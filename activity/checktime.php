@@ -11,11 +11,7 @@ $_SESSION["expired_listings"]=array();
 $t=ltrim(date("H",time()),"0").":00:00";
 $today=date("Y-m-d"); 
 
-<<<<<<< HEAD
 //select all the products (non-bidding) that expires at current hour today
-=======
-//select all the products that expire at current hour today
->>>>>>> addd6f05215f72f3036ff88b394b52f771a7baef
 
 $sql="SELECT p.product_name,p.product_description,p.startdate,p.enddate,p.endtime,u.username,u.email
         FROM Product p,Users u
