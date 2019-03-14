@@ -26,7 +26,13 @@ foreach ($search_words as $word) {
 
 $search_unique_words = array_keys($set_words);
 
-if (!empty($search_unique_words)) {
+//auction event search takes precedent 
+if ($_POST["submit"]=="Search items on bid only"){
+    $_SESSION["product_search_criteria"]=["auctionable",""]; 
+    include "fetchactivelisting.php";
+}
+
+elseif (!empty($search_unique_words)) {
     // FIND ALL RELEVANT LISTINGS 
     $s_all_active_listings = []; // array has pID as its keys to identify unique items that has been searched
 
@@ -155,10 +161,18 @@ input,form {
 
 <body>
 
+<!-- search auction only-->
+
+<div>
+            <form action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>" method="post">
+            <input type="submit" name="submit" value="Search items on bid only"> 
+</div>
+<br>
+
 <!-- search based on keywords -->
 <div>
             <form action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>" method="post">
-                <input id="search_box" name="search_box" type="text" placeholder="Type anything!! to start searching for products">
+                <input id="search_box" name="search_box" type="text" placeholder="Or type anything!! to start searching for products">
                 <input type="submit" value="Search"> 
             </form>
 </div>
@@ -176,10 +190,10 @@ input,form {
             <select id="conditionlist" name="conditionlist">
             <option><?php if(isset($_POST["conditionlist"])){echo $_POST["conditionlist"];}else{echo "Condition";}?></option>
             </select>
-
-
             <input type="submit" value="Search"> 
 </div>
+
+
 
 <p id="t"></p>
 <button onclick="reset_filter()">Reset all filters</button>
