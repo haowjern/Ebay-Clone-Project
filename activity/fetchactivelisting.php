@@ -53,6 +53,10 @@ if (!isset($_SESSION["category_all"])||!isset($_SESSION["condition_all"])){
 
             $sql="SELECT * FROM Product WHERE categoryID='$value' AND conditionID='$condition'";
 
+        } elseif ($criteria=="auctionable"){
+
+            $sql="SELECT * FROM Product WHERE auctionable=1";
+
         } elseif ($criteria=="all"){
 
             $sql="SELECT * FROM Product";

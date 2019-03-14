@@ -10,7 +10,11 @@ if (isset($_SESSION["condition_all"])){
     unset($_SESSION["condition_all"]);
 };
 
-include "../database.php";
+if (file_exists('../database.php')){
+    include '../database.php';
+} else {
+    include './database.php';
+}
 
 
 $sql="SELECT * FROM Category";
