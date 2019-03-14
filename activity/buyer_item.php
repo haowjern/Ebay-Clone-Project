@@ -55,7 +55,8 @@ if (strtolower($auctionable) == 1) {
                     let new_price = document.forms["buyer_item"]["price"].value;
                     let current_price = '<?php echo $start_price?>';
                     let error_msg = document.getElementById('error_price');
-
+                    console.log(new_price);
+                    console.log(current_price);
                     if (new_price > current_price) {
                         error_msg.innerText = "";
                         return true;
