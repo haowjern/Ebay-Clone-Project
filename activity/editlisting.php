@@ -81,13 +81,20 @@ include "photos_interface.php";
 <body>
 <?php
 //testing. This line will be removed.
-$_SESSION["userID"]=1;
+// $_SESSION["userID"]=1;
 $er="missing";
 //validate the input
   
 $desErr = $s_priceErr=$r_priceErr=$qErr=$caErr=$conErr=$auErr=$dateErr=$timeErr=$photoErr="";
 $product_description = $start_price = $reserve_price=$quantity = $categoryname =$conditionname = $auctionable = $startdate=$enddate = $endtime = $photos = $photoMsg="";
 $uploadOk = 1; // to verify if file can upload
+
+
+if (isset($_POST["productID"]) &&!isset($_SESSION["original_start_price"])){
+    //store the original start price as session variable
+    $_SESSION["original_start_price"]=(float)$_POST["start_price"];
+      
+    }
 
 if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
       unset($_SESSION["editlisting"]);
@@ -126,34 +133,30 @@ if (($_SERVER["REQUEST_METHOD"] == "POST") &&(isset($_POST["submit"]))) {
       }
       //When updating existing product, start price cannot be changed.
       if (isset($_POST["productID"])){
-            if (!isset($_SESSION["original_start_price"])){
-              //store the original start price as session variable
-                $_SESSION["original_start_price"]=(float)$_POST["start_price"];
-                echo $_SESSION["original_start_price"];
-                echo "set price";
-
-            } else{
                   //reject any changes to start price for auction event
+                  echo "original_start_price is".$_SESSION["original_start_price"];
                   if ($_POST["auctionable"]=="Yes" && $_SESSION["original_start_price"]!=$_POST["start_price"]){
                     $s_priceErr="Start price cannot be changed for auction event";
                     $_POST["start_price"]=$_SESSION["original_start_price"];
-                  }
+                    
+                  
             }
-      }
-      if (!empty($_POST["start_price"])&&is_numeric($_POST["start_price"])) {
-        if ((float)$_POST["start_price"]>=0.01 && (float)$_POST["start_price"]<=10000){
-        $s_priceErr="";
-        $start_price=(float)$_POST["start_price"];
-        } else {
-        $s_priceErr="Start price must be between £0.01 and £10000";
-        $start_price="";
-        $uploadOk = 0;
+      } else{
+                if (!empty($_POST["start_price"])&&is_numeric($_POST["start_price"])) {
+                  if ((float)$_POST["start_price"]>=0.01 && (float)$_POST["start_price"]<=10000){
+                  $s_priceErr="";
+                  $start_price=(float)$_POST["start_price"];
+                  } else {
+                  $s_priceErr="Start price must be between £0.01 and £10000";
+                  $start_price="";
+                  $uploadOk = 0;
+                  }
+                } else {
+                  $s_priceErr="Start price must be between £0.01 and £10000";
+                  $start_price="";
+                  $uploadOk = 0;
+                }
         }
-      } else {
-        $s_priceErr="Start price must be between £0.01 and £10000";
-        $start_price="";
-        $uploadOk = 0;
-      }
       if (empty($_POST["quantity"])||!(is_numeric($_POST["quantity"]))) {
         $qErr = "quantity must be between 1 and 10000.";
         $quantity="";
@@ -384,7 +387,7 @@ function test_input($data) {
 
 <form id="form1" method="post" action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>" enctype="multipart/form-data"><br>
 
-<input name="productID" type="hidden" value="<?php
+<input name="productID" type="text" value="<?php
     if(isset($_POST["productID"])){
       echo $_POST["productID"];
     }else{
