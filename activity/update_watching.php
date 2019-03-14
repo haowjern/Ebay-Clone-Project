@@ -35,7 +35,7 @@ function send_email_updating_watchers($bid_arr){
     if ($result1->num_rows>0) { 
         while ($row=$result1->fetch_assoc()) {
             $watcherID = $row['buyerID'];
-            $sql = "SELECT * FROM User WHERE userID = '$watcherID'";
+            $sql = "SELECT * FROM Users WHERE userID = '$watcherID'";
             $result2 = $connection->query($sql);
             if ($result2){
                 while ($row=$result2->fetch_assoc()) {
@@ -64,7 +64,7 @@ function send_email_updating_watchers($bid_arr){
     if ($result3->num_rows>0) { 
         while ($row=$result3->fetch_assoc()) {
             $bidderID = $row['buyerID'];
-            $sql = "SELECT * FROM User WHERE userID = '$bidderID'";
+            $sql = "SELECT * FROM Users WHERE userID = '$bidderID'";
             $result4 = $connection->query($sql);
             if($result4){
                 while ($row=$result4->fetch_assoc()) {
