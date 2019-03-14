@@ -6,7 +6,11 @@ function set_bidEvent($bid_arr, $instr) {
     - <$product_arr>: Object with attributes - 
     - <$instr>: 
     */ 
-    include '../database.php';
+    if (file_exists('../database.php')){
+        include '../database.php';
+    } else {
+        include './database.php';
+    }
     // include './update_watching.php';
     // check object has the correct properties
     $bidID = $bid_arr['bidID'];
@@ -58,7 +62,11 @@ function set_bidEvent($bid_arr, $instr) {
 }
 
 function get_bidEvent($condition, $productID) {
-    include '../database.php';
+    if (file_exists('../database.php')){
+        include '../database.php';
+    } else {
+        include './database.php';
+    }
     
     $bids = []; 
     if ($condition == "latest") {

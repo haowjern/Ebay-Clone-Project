@@ -8,23 +8,16 @@ TO 'at'@'localhost'
 IDENTIFIED BY '123';
 USE ebayDB;
 
-CREATE TABLE IF NOT EXISTS Product
-(
-    productID INTEGER AUTO_INCREMENT PRIMARY KEY,
-    product_name VARCHAR(20),
-    product_description VARCHAR(150),
-    start_price DECIMAL(8,2),
-    reserve_price DECIMAL(8,2),
-    quantity INTEGER,
-    categoryID INTEGER,
-    conditionID INTEGER,
-    sellerID INTEGER,
-    auctionable BOOLEAN,
-    startdate TEXT,
-    enddate TEXT,
-    endtime TEXT
-) 
-ENGINE = InnoDB;
+CREATE TABLE IF NOT EXISTS Users (
+    userID INTEGER NOT NULL,
+    username TEXT,
+    password1 TEXT,
+    email TEXT,
+    phone TEXT,
+    accountbalance INTEGER,
+    DOB TEXT,
+    PRIMARY KEY (userID)
+) ENGINE=INNODB;
 
 CREATE TABLE IF NOT EXISTS Category
 (
@@ -39,6 +32,28 @@ CREATE TABLE IF NOT EXISTS ConditionIndex
     conditionname VARCHAR(40) NOT NULL
 ) 
 ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS Product
+(
+    productID INTEGER AUTO_INCREMENT PRIMARY KEY,
+    product_name VARCHAR(20),
+    product_description VARCHAR(150),
+    start_price DECIMAL(8,2),
+    reserve_price DECIMAL(8,2),
+    quantity INTEGER,
+    categoryID INTEGER,
+    conditionID INTEGER,
+    sellerID INTEGER,
+    auctionable BOOLEAN,
+    startdate TEXT,
+    enddate TEXT,
+    endtime TEXT,
+    FOREIGN KEY (sellerID) REFERENCES Users(userID) ON UPDATE CASCADE,
+    FOREIGN KEY (categoryID) REFERENCES Category(categoryID) ON UPDATE CASCADE,
+    FOREIGN KEY (conditionID) REFERENCES Conditionindex(conditionID) ON UPDATE CASCADE
+) 
+ENGINE = InnoDB;
+
 
 CREATE TABLE IF NOT EXISTS Archive
 (
@@ -56,7 +71,10 @@ CREATE TABLE IF NOT EXISTS Archive
     dealdate VARCHAR(40) NOT NULL,
     ratings INTEGER,
     buyer_comment VARCHAR(150),
-    seller_comment VARCHAR(150)
+    seller_comment VARCHAR(150),
+	FOREIGN KEY (sellerID) REFERENCES Users(userID) ON UPDATE CASCADE,
+    FOREIGN KEY (categoryID) REFERENCES Category(categoryID) ON UPDATE CASCADE,
+    FOREIGN KEY (conditionID) REFERENCES Conditionindex(conditionID) ON UPDATE CASCADE
 ) 
 ENGINE = InnoDB;
 
@@ -111,16 +129,7 @@ CREATE TABLE IF NOT EXISTS Photos (
 CREATE USERS TABLE ......?
 */
 
-CREATE TABLE IF NOT EXISTS Users (
-    userID INTEGER NOT NULL,
-    username TEXT,
-    password1 TEXT,
-    email TEXT,
-    phone TEXT,
-    accountbalance INTEGER,
-    DOB TEXT,
-    PRIMARY KEY (userID)
-) ENGINE=INNODB;
+
 
 CREATE TABLE IF NOT EXISTS BidEvents (
 	bidID INT NOT NULL AUTO_INCREMENT,
@@ -148,24 +157,12 @@ CREATE TABLE IF NOT EXISTS Watchlist (
     PRIMARY KEY (watchID)
 ) ENGINE=INNODB;
 
-CREATE TABLE IF NOT EXISTS rating (
-	buyerID INT NOT NULL, 
-    productID INT NOT NULL,
-    ratingValue INT NOT NULL,
-    datetimestamp TIMESTAMP NOT NULL,
-    PRIMARY KEY (buyerID, productID),
-    FOREIGN KEY (buyerID) REFERENCES Users(userID) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (productID) REFERENCES Product(productID) ON UPDATE CASCADE ON DELETE CASCADE
-) ENGINE=INNODB;
-
-CREATE TABLE IF NOT EXISTS popularity_diff (
-	productID1 INT NOT NULL,
-    productID2 INT NOT NULL, 
+CREATE TABLE IF NOT EXISTS Popularity_diff (
+	archiveID1 INT NOT NULL,
+    archiveID2 INT NOT NULL, 
     count int(11) NOT NULL default '0',
     sum int(11) NOT NULL default '0',
-    PRIMARY KEY (productID1, productID2),
-    FOREIGN KEY (productID1) REFERENCES Product(productID) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (productID2) REFERENCES Product(productID) ON UPDATE CASCADE ON DELETE CASCADE
+    PRIMARY KEY (archiveID1, archiveID2)
 ) ENGINE=INNODB;
 
 

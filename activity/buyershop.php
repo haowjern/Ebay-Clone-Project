@@ -26,7 +26,6 @@ foreach ($search_words as $word) {
 
 $search_unique_words = array_keys($set_words);
 
-
 if (!empty($search_unique_words)) {
     // FIND ALL RELEVANT LISTINGS 
     $s_all_active_listings = []; // array has pID as its keys to identify unique items that has been searched
@@ -245,10 +244,6 @@ for (i=0;i<count;i++){
     cell_action.appendChild(fm_go_details);
     
 }
-
-function warning_msg(){
-    return confirm("confirm remove this listing?");
-    }
 
 //remove all filtering
 function reset_filter(){
