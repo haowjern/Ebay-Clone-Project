@@ -8,7 +8,7 @@ TO 'at'@'localhost'
 IDENTIFIED BY '123';
 USE ebayDB;
 
-CREATE TABLE IF NOT EXISTS Users (
+CREATE TABLE IF NOT EXISTS users (
     userID INTEGER NOT NULL AUTO_INCREMENT,
     username TEXT,
     password1 TEXT,
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS Archive
     ratings INTEGER,
     buyer_comment VARCHAR(150),
     seller_comment VARCHAR(150),
-	FOREIGN KEY (productID) REFERENCES Product(productID) ON UPDATE CASCADE,
+	FOREIGN KEY (productID) REFERENCES Product(userID) ON UPDATE CASCADE,
 	FOREIGN KEY (sellerID) REFERENCES Users(userID) ON UPDATE CASCADE,
     FOREIGN KEY (categoryID) REFERENCES Category(categoryID) ON UPDATE CASCADE,
     FOREIGN KEY (conditionID) REFERENCES Conditionindex(conditionID) ON UPDATE CASCADE
