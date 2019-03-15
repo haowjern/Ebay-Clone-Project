@@ -85,8 +85,13 @@ if ($result_all->num_rows>0){
         $endtime = $value["endtime"];
         
         // first check if buyer enddate has ended
+        $today1=$today->format("Y-m-d H:i:s");
+
+
+
         if ($today >= new DateTime($enddate." ".$endtime)) {
-            $sql = "SELECT * FROM BidEvents 
+
+            $sql = "SELECT * FROM bidEvents 
                 WHERE productID = '$productID'
                 ORDER BY bidPrice DESC";
             $result = $connection->query($sql);
@@ -99,6 +104,7 @@ if ($result_all->num_rows>0){
                     $bidDate = $row["bidDate"];
                     $bidTime = $row["bidTime"]; 
                     $dealprice = $bidPrice; 
+                 
                     //get the user's email address
                     $sql = "SELECT username, email, accountbalance FROM Users WHERE userID = $buyerID"; 
                     $result_user=$connection->query($sql); 
@@ -156,6 +162,7 @@ if ($result_all->num_rows>0){
                                         $auctionable,
                                         '$dealdate'
                                         )";
+                                        var_dump($sql);
                                 $result_move = $connection->query($sql);
                                 // delete item from product
                                 $sql = "DELETE FROM Product WHERE productID=$productID";
