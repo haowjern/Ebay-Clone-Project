@@ -147,7 +147,7 @@ $sql = "SELECT username FROM users WHERE userID = $sellerID";
                 </div>
                 <?php } ?>
             </div>
-            <p>ProductID: <?php echo $_SESSION['product']['productID']?></p>
+          
             <h3>Product Name: <?php echo $name?></h3>
             <p>Description: <?php echo $description ?></p>
             <p>Seller: <?php echo $sellername?></p>
