@@ -4,6 +4,7 @@ session_start();
 include_once './bid_product_interface.php';
 include_once './probability_diff_interface.php';
 include_once './send_email.php';
+include_once '../database.php';
 
 // $_SESSION['userID'] = 1; // TODO: FOR TESTING ONLY - TO BE REMOVED
 
@@ -29,6 +30,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result->num_rows >0) {
         while ($row=$result->fetch_assoc()) {
             $email=$row["email"];
+            $productName = $row["product_name"];
+            $latestBidderName = $row["username"];
+
             
             // for each user, get their emails, and send this to them
             $subject = "New bid on ".$productName;

@@ -1,7 +1,7 @@
 <?php
 function send_email_updating_watchers($bid_arr){
     include '../database.php';
-    include 'send_email.php';
+    include_once 'send_email.php';
 
     $bidID = $bid_arr['bidID'];
     $productID = $bid_arr['productID'];
