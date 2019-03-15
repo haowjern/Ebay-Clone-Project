@@ -4,9 +4,10 @@ include 'email_sellers_autobidextend.php';
 include 'send_email.php';
 //this script runs every hour (from cron-jobs.txt) to search for listings that are expiring
 
-$myfile = fopen("/Applications/MAMP/anniebranch/ebay-database-system-project/cron-test.txt", "w");
+$myfile = fopen("/Applications/MAMP/anniebranch/ebay-database-system-project/cron-test.txt", "a");
 
-fwrite($myfile, mktime());
+fwrite($myfile, "a");
+fclose($myfile);
 
 $connection = mysqli_connect("localhost", "root", "", "ebaydb");
 
@@ -21,6 +22,8 @@ if ($t!="00"){
 } else{
     $t=$t.":00:00";
 }
+
+echo $t;
 
 $today=new DateTime();
 $today_str = $today->format('Y-m-d');
