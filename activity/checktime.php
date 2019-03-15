@@ -3,9 +3,14 @@ session_start();
 include 'email_sellers_autobidextend.php';
 include 'send_email.php';
 //this script runs every hour (from cron-jobs.txt) to search for listings that are expiring
+
 $myfile = fopen("/Applications/MAMP/anniebranch/ebay-database-system-project/cron-test.txt", "w");
+
 fwrite($myfile, mktime());
+
 $connection = mysqli_connect("localhost", "root", "", "ebaydb");
+
+
 $_SESSION["expired_listings"]=array();
 //set $t to the current hour, $today to today
 $t=date("H",time());
@@ -20,9 +25,14 @@ $today_str = $today->format('Y-m-d');
 $sql="SELECT p.productID, p.product_name,p.product_description,p.startdate,p.enddate,p.endtime,u.username,u.email
         FROM Product p,Users u
         WHERE p.sellerID=u.userID AND p.auctionable=0 AND p.enddate='$today_str' AND endtime='$t'" ;
+
+
 $result=$connection->query($sql);
+
+
 if ($result->num_rows>0){
     $_SESSION["expired_nonauction_listings"]=array();
+
     //output data of each row in table
     while($row=$result->fetch_assoc()){
         $v=array();
@@ -32,8 +42,10 @@ if ($result->num_rows>0){
         
         array_push($_SESSION["expired_nonauction_listings"],$v);
     }
+
     print_r($_SESSION["expired_nonauction_listings"]);
     $newdate=date('Y-m-d', strtotime('+1 months'));
+
     foreach ($_SESSION["expired_nonauction_listings"]as $value){
         $current_productID = $value["productID"];
         $current_product_name = $value["product_name"];
@@ -50,7 +62,10 @@ if ($result->num_rows>0){
     }
  //send email to the sellers involved, and notify them that the expiry date is now extended by a month by default. They can log in to view/change the date.
 }
+
 // //select all the products (bidding) that expires at current hour today
+
+
 // $sql="SELECT p.productID, p.product_name,p.product_description,p.quantity, p.categoryID, p.conditionID, p.sellerID, p.auctionable, p.startdate,p.enddate,p.endtime,b.buyerID
 //         FROM Product p,BidEvents b
 //         WHERE p.auctionable=1";
@@ -156,8 +171,8 @@ if ($result->num_rows>0){
 //         }
 //     }
 // }
-// $connection->close();
-// unset($_SESSION["expired_nonauction_listings"]);
+$connection->close();
+unset($_SESSION["expired_nonauction_listings"]);
 // unset($_SESSION["expired_auction_listings"]);
 // unset($_SESSION["remove_productID"]);
 ?>
