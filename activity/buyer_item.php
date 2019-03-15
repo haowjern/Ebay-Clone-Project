@@ -244,7 +244,17 @@ $sql = "SELECT username FROM users WHERE userID = $sellerID";
         
         $g_rec = get_general_recommendations($productID, $n);
         $g_suggestions = array_keys($g_rec);
-        $g_suggestions = array_values(array_diff($g_suggestions, array($productID)));
+        $g_suggestions = array_diff($g_suggestions, array($productID));
+
+        // get list of items that this user is selling
+        $sql = "SELECT productID FROM Product WHERE sellerID=$userID"; 
+        $result_p = $connection->query($sql);
+        $my_list_of_items = [];
+        while ($row = $result_p->fetch_assoc()) {
+            array_push($my_list_of_items, $row["productID"]);
+        }
+
+        $g_suggestions = array_values(array_diff($g_suggestions, $my_list_of_items));
 
         unset($_SESSION["product_search_criteria"]);
         $_SESSION["product_search_criteria"]=["productID", $g_suggestions];
