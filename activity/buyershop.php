@@ -15,16 +15,22 @@ if ($_POST["search_box"] === "") {
 */ 
 unset($_SESSION["product_search_criteria"]);
 
-$search_words = explode(" ", $_POST["search_box"]);
+if(isset($_POST["search_box"])){
 
-$set_words = [];
-foreach ($search_words as $word) {
-    if (!empty($word)) {
-        $set_words[$word]=1; // get unique set of words - no duplication
-    }
-}
+    $search_words = explode(" ", $_POST["search_box"]);
 
-$search_unique_words = array_keys($set_words);
+        $set_words = [];
+        foreach ($search_words as $word) {
+            if (!empty($word)) {
+                $set_words[$word]=1; // get unique set of words - no duplication
+            }
+        }
+
+        $search_unique_words = array_keys($set_words);
+
+};
+
+
 
 //auction event search takes precedent 
 if ($_POST["submit"]=="Search items on bid only"){
@@ -32,7 +38,7 @@ if ($_POST["submit"]=="Search items on bid only"){
     include "fetchactivelisting.php";
 }
 
-elseif (!empty($search_unique_words)) {
+elseif (isset($_POST["search_box"])&&!empty($search_unique_words)) {
     // FIND ALL RELEVANT LISTINGS 
     $s_all_active_listings = []; // array has pID as its keys to identify unique items that has been searched
 
