@@ -3,9 +3,11 @@ session_start();
 
 include "header.php";
 include "activity/probability_diff_interface.php";
+include_once "./database.php";
 
 $userID = $_SESSION["userID"];
 $n = 10; 
+
 
 $list_of_archive = get_ratings(); // get list of items to predict what will $userID rate these items for
 $list_of_bought_archive = get_ratings($userID);
@@ -16,8 +18,20 @@ foreach ($list_of_archive as $item) {
 }
 arsort($suggestions);
 $v_suggestions = array_keys($suggestions);
-$p_new_suggestions = array_values(array_diff($v_suggestions, $list_of_bought_archive));
-$p_buy_again_suggestions = array_values(array_intersect($v_suggestions, $list_of_bought_archive));
+$p_new_suggestions = array_diff($v_suggestions, $list_of_bought_archive);
+
+// get list of items that this user is selling
+$sql = "SELECT productID FROM Product WHERE sellerID=$userID"; 
+$result_p = $connection->query($sql);
+$my_list_of_items = [];
+while ($row = $result_p->fetch_assoc()) {
+    array_push($my_list_of_items, $row["productID"]);
+}
+
+
+$p_new_suggestions = array_values(array_diff($p_new_suggestions, $my_list_of_items));
+$p_buy_again_suggestions = array_intersect($v_suggestions, $list_of_bought_archive);
+$p_buy_again_suggestions = array_values(array_diff($p_buy_again_suggestions, $my_list_of_items));
 // get products to be displayed
 
 unset($_SESSION["product_search_criteria"]);
