@@ -4,12 +4,24 @@ include 'email_sellers_autobidextend.php';
 include 'send_email.php';
 //this script runs every hour (from cron-jobs.txt) to search for listings that are expiring
 
+$myfile = fopen("/Applications/MAMP/anniebranch/ebay-database-system-project/cron-test.txt", "w");
+
+fwrite($myfile, mktime());
+
 $connection = mysqli_connect("localhost", "root", "", "ebaydb");
+
 
 $_SESSION["expired_listings"]=array();
 
 //set $t to the current hour, $today to today
-$t=ltrim(date("H",time()),"0").":00:00";
+
+$t=date("H",time());
+if ($t!="00"){
+    $t=ltrim(date("H",time()),"0").":00:00";
+} else{
+    $t=$t.":00:00";
+}
+
 $today=new DateTime();
 $today_str = $today->format('Y-m-d');
 
@@ -19,13 +31,12 @@ $sql="SELECT p.productID, p.product_name,p.product_description,p.startdate,p.end
         FROM Product p,Users u
         WHERE p.sellerID=u.userID AND p.auctionable=0 AND p.enddate='$today_str' AND endtime='$t'" ;
 
-$result=$connection->query($sql);
 
-var_dump($sql);
+$result=$connection->query($sql);
 
 
 if ($result->num_rows>0){
-    $_SESSION["expired_nonauctionlistings"]=array();
+    $_SESSION["expired_nonauction_listings"]=array();
 
     //output data of each row in table
     while($row=$result->fetch_assoc()){
@@ -38,8 +49,8 @@ if ($result->num_rows>0){
         array_push($_SESSION["expired_nonauction_listings"],$v);
     }
 
-    // print_r($_SESSION["expired_listings"]);
-$newdate=date('Y-m-d', strtotime('+1 months'));
+    print_r($_SESSION["expired_nonauction_listings"]);
+    $newdate=date('Y-m-d', strtotime('+1 months'));
 
     foreach ($_SESSION["expired_nonauction_listings"]as $value){
         $current_productID = $value["productID"];
@@ -65,7 +76,7 @@ $newdate=date('Y-m-d', strtotime('+1 months'));
 
 }
 
-//select all the products (bidding) that expires at current hour today
+// //select all the products (bidding) that expires at current hour today
 
 
 // $sql="SELECT p.productID, p.product_name,p.product_description,p.quantity, p.categoryID, p.conditionID, p.sellerID, p.auctionable, p.startdate,p.enddate,p.endtime,b.buyerID

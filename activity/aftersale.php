@@ -34,10 +34,6 @@ if (isset($_SESSION["aftersale_seller"])||(isset($_SESSION["aftersale_buyer"])))
                 WHERE archiveID=$archiveID";
 
         $result = $connection->query($sql);
-
-        $sql = "INSERT INTO Ratings (userID, productID, rating_value) VALUES ($buyerID, $productID, $ratings)";
-        
-        $result = $connection->query($sql);
         
 
     }

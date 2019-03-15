@@ -26,6 +26,7 @@ $cannot_buy = false;
 if (!empty($userID)) {
     if ($userID == $sellerID) {
         $cannot_buy = true; 
+        $cannot_buy_msg="You cannot bid/buy the product you listed.";
     } 
 }
 
@@ -131,6 +132,8 @@ $sql = "SELECT username FROM users WHERE userID = $sellerID";
     </head>
 
     <body>
+        <h3><?php echo $cannot_buy_msg?></h3>
+
         <form name="buyer_item">
             <div id="container">
                 <?php 
@@ -150,20 +153,24 @@ $sql = "SELECT username FROM users WHERE userID = $sellerID";
             <p>Seller: <?php echo $sellername?></p>
             <p>Listing Until: <?php echo $bidding_enddate." ".$bidding_endtime ?></p>
 
-                    
+            <?php if (!$cannot_buy) {?>
             Quantity:
-            <input id='quantity' type="number" name="quantity" placeholders="1" min="1" max="10" required>
+            <input id='quantity' type="number" name="quantity" value="1" placeholders="1" min="1" max="10" required>
+            <?php }?>
             <br>
             <?php if ($is_bidding=="yes") {?>
-                Bid Price: <input name="price" id="price" type="number" step="0.01" min="0" max="10000" required> <span id="error_price"></span>
                 Current Bid:
-                <?php echo $start_price?>
-                <br>
-                Rating:   <input name="rating" id="rating" type="number" value="5" step="1" min="1" max="10"><span id="error_rating"></span>
-                <br><br>
-                <input id='bid' type="submit" value="Bid" onclick="return validateForm(this)" formaction="bid_product.php" formmethod="post">
-           
+                <?php echo $start_price?>;
+                <?php if (!$cannot_buy) {?>
+                    Bid Price: <input name="price" id="price" type="number" step="0.01" min="0" max="10000" value="0" required> <span id="error_price"></span>
+
+                    <br>
+                    Rating:   <input name="rating" id="rating" type="number" value="5" step="1" min="1" max="10"><span id="error_rating"></span>
+                    <br><br>
+                    <input id='bid' type="submit" value="Bid" onclick="return validateForm(this)" formaction="bid_product.php" formmethod="post">
+                <?php }?>
             <?php } else {?>
+                <?php if (!$cannot_buy) {?>
                 Price:
             <?php echo $start_price?>
             <input name="price" type="hidden" value=<?php echo $start_price?>>
@@ -171,6 +178,7 @@ $sql = "SELECT username FROM users WHERE userID = $sellerID";
             Rating:   <input name="rating" id="rating" type="number" value="5" step="1" min="1" max="10"><span id="error_rating"></span>
             <br><br>
             <input id='buy' type="submit" value="Buy" onclick="return validateForm(this)" formaction="addarchive.php" formmethod="post">
+                <?php } ?>
             <?php } ?>
 
 
@@ -180,8 +188,6 @@ $sql = "SELECT username FROM users WHERE userID = $sellerID";
             <!-- <input id='bid' type="submit" value="Bid" onclick="return validateForm(this)" formaction="bid_product.php" formmethod="post" <?php if (!($is_bidding=="yes") || $cannot_buy) {echo "disabled";} ?>>
             <input id='buy' type="submit" value="Buy" onclick="return validateForm(this)" formaction="addarchive.php" formmethod="post" <?php if (($is_bidding=="yes") || $cannot_buy) {echo "disabled";} ?>> -->
 
-            
-            <input type="submit" value="Cart" <?php if ($is_bidding=="yes") {echo "disabled";} ?>>     
 
             <?php
                 // code for watch/stop_watching button switch
