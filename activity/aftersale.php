@@ -30,7 +30,7 @@ if (isset($_SESSION["aftersale_seller"])||(isset($_SESSION["aftersale_buyer"])))
         $buyerID=mysqli_real_escape_string($connection,$_SESSION["aftersale_buyer"][4]);
         
         $sql="UPDATE Archive
-                SET buyer_comment='$buyercomment',
+                SET buyer_comment='$buyercomment'
                 WHERE archiveID=$archiveID";
 
         $result = $connection->query($sql);

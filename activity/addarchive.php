@@ -35,15 +35,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $row1=$result1->fetch_assoc();
         $accountbalance=$row1["accountbalance"];
 
-        if ($accountbalance<$dealprice){
+        $price_total=$dealprice*$quantity;
+
+        if ($accountbalance<$price_total){
             $message="You don't have enough money in your balance to complete this transaction. Top up your account balance in your profile.";
             $checked="invalid";
+            $accountbalance_new=$accountbalance;
         } else{
             $message="You have enough balance.";
             $checked="valid";
         }
 
         if ($checked=="valid"){
+
+            $accountbalance_new=$accountbalance-$price_total;
+
+            //reduce account balance
+            $sql="UPDATE users
+                        SET accountbalance='$accountbalance_new'
+                        WHERE userID=$buyerID";
+                $connection->query($sql);
 
             //reduce inventory in product table
             $inventory_new=$inventory-$quantity;
@@ -84,22 +95,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 ?>
 
 <html>
-<head>
+<head>  
 </head>
 <body>
     <h1>Your are completing the transaction...</h1>
 
     <p>Product Name: <?php echo $product_name?></p>
     <p>Product Description: <?php echo $product_description?></p>
-    <p>Deal Price: <?php echo $dealprice?></p>
+    <p>Deal Price (£): <?php echo $price_total?></p>
     <p>Quantity: <?php echo $quantity?></p>
     <p>Deal Date: <?php echo $dealdate?></p>
     <br>
-    <p>My Account balance: <?php echo $accountbalance?></p>
+    <p>My Account balance (£): <?php echo $accountbalance?></p>
 
     <p><?php echo $message?></p>
 
     <p><?php echo $message1?></p>
+
+    <p>My New Account balance (£): <?php echo $accountbalance_new?></p>
 
 </body>
 </html>

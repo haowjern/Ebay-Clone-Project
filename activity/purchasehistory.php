@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $checked="validated";
     }
 
-    $ratings=$_POST["ratings"];
+
 
 //validate buyer comment before database query
 
@@ -106,7 +106,7 @@ th {
         <th>Deal Price (£)</th>
         <th>Deal Date</th>
         <th>Seller</th>
-        <th>My Ratings and comment</th>
+        <th>My comment</th>
         <th>Seller's comment</th>
         
 
@@ -171,29 +171,9 @@ for (i=0;i<count;i++){
     fm_edit.setAttribute("method","post");
     fm_edit.setAttribute("action","<?php echo htmlentities($_SERVER['PHP_SELF']); ?>");
 
-    fm_edit.appendChild(document.createTextNode("ratings (1 to 10): "));
-    fm_edit.appendChild(document.createElement("br"));
 
-    //add the number field to edit ratings
-    var ratings_field=document.createElement("input");
-        ratings_field.setAttribute("type","number");
-        ratings_field.setAttribute("name","ratings");
-        // ratings_field.setAttribute("value",each_listing[i]["ratings"]);
 
-        // if (each_listing[i]["archiveID"]=="<?php echo $_POST["archiveID"]?>"){
-        //     var ratings_updated="<?php echo $_POST["ratings"]?>";
-        //     if (ratings_updated!=""){
-        //     ratings_field.setAttribute("value","<?php echo htmlentities($_POST["ratings"])?>");
-        //     }
-        // }
-
-        ratings_field.setAttribute("min","1");	
-        ratings_field.setAttribute("max","10");	
-        ratings_field.setAttribute("step","1");	
-         fm_edit.appendChild(ratings_field);	
-        fm_edit.appendChild(document.createElement("br"));	
-        fm_edit.appendChild(document.createElement("br"));	
-         fm_edit.appendChild(document.createTextNode("my comment (max 150 words): "));	
+        fm_edit.appendChild(document.createTextNode("my comment (max 150 words): "));	
         fm_edit.appendChild(document.createElement("br"));	
      
      //add the text field to edit comment	

@@ -79,7 +79,6 @@ th {
         <th>Deal Price (£)</th>
         <th>Deal Date</th>
         <th>Buyer</th>
-        <th>Buyer's Ratings (1-10)</th>
         <th>Buyer's comment</th>
         <th>My comment</th>
         
@@ -105,9 +104,8 @@ for (i=0;i<count;i++){
     var cell_dealprice=row.insertCell(2);
     var cell_dealdate=row.insertCell(3);
     var cell_buyer=row.insertCell(4);
-    var cell_ratings=row.insertCell(5);
-    var cell_buyer_comment=row.insertCell(6);
-    var cell_seller_comment=row.insertCell(7);
+    var cell_buyer_comment=row.insertCell(5);
+    var cell_seller_comment=row.insertCell(6);
 
 
     //insert product name into the 1st column (product name)
@@ -136,9 +134,6 @@ for (i=0;i<count;i++){
     cell_buyer.style.textAlign="center";
     cell_buyer.innerHTML=each_listing[i]["username"];
 
-    //insert ratings into the 6th column (ratings)
-    cell_ratings.style.textAlign="center";
-    cell_ratings.innerHTML=each_listing[i]["ratings"];
 
     //insert buyer comment into the 7th column (buyer comment)
     cell_buyer_comment.style.textAlign="center";
