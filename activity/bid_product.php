@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     set_popularity_diff($array, "insert");
     echo "done";
 
-    //header('Location: ../index.php'); 
+    header('Location: ../index.php'); 
 
 } else {
     echo "Not posting to bidding.";
