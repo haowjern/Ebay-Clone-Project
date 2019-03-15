@@ -65,7 +65,7 @@ if ($result->num_rows>0){
 
 // //select all the products (bidding) that expires at current hour today
 
-
+$newdate=date('Y-m-d', strtotime('+1 months'));
 $sql="SELECT p.productID, p.product_name,p.product_description,p.quantity, p.categoryID, p.conditionID, p.sellerID, p.auctionable, p.startdate,p.enddate,p.endtime,b.buyerID
         FROM Product p,BidEvents b
         WHERE p.auctionable=1";
