@@ -25,7 +25,6 @@ if ($t!="00"){
 $today=new DateTime();
 $today_str = $today->format('Y-m-d');
 
-
 //select all the products (non-bidding) that expires at current hour today
 
 $sql="SELECT p.productID, p.product_name,p.product_description,p.startdate,p.enddate,p.endtime,u.username,u.email
@@ -45,7 +44,6 @@ if ($result->num_rows>0){
 
         foreach ($row as $key => $value){
             $v[$key]=$value; 
-            echo $value;
         }
         
         array_push($_SESSION["expired_nonauction_listings"],$v);
@@ -73,7 +71,7 @@ if ($result->num_rows>0){
     }
 
 
-//  //send email to the sellers involved, and notify them that the expiry date is now extended by a month by default. They can log in to view/change the date.
+ //send email to the sellers involved, and notify them that the expiry date is now extended by a month by default. They can log in to view/change the date.
 
 
 }
@@ -200,10 +198,10 @@ if ($result->num_rows>0){
 // }
 
 
-$connection->close();
+// $connection->close();
 
-unset($_SESSION["expired_nonauction_listings"]);
-unset($_SESSION["expired_auction_listings"]);
-unset($_SESSION["remove_productID"]);
+// unset($_SESSION["expired_nonauction_listings"]);
+// unset($_SESSION["expired_auction_listings"]);
+// unset($_SESSION["remove_productID"]);
 
 ?>

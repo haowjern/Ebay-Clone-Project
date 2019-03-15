@@ -230,8 +230,8 @@ function set_ratings($userID, $productID, $rating) {
     }
     
     $sql = "INSERT INTO Ratings (userID, productID, rating_value) VALUES ($userID, $productID, $rating)";
+    echo $sql;
     $result = $connection->query($sql);
     $connection->close();
-    return $array;
 }
 ?> 

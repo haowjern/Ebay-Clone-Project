@@ -29,6 +29,7 @@ function send_email_updating_watchers($bid_arr){
  
     // for each user who is watching this product:
     $email_to_arr = [];
+    $is_watching = "yes";
     // get names and emails of all users watching this product
     $sql="SELECT * FROM Watchlist WHERE productID = '$productID'";
     $result1 = $connection->query($sql);
@@ -44,44 +45,49 @@ function send_email_updating_watchers($bid_arr){
                 }
             }
         }
+    } else {
+        $is_watching = "no";
     }
     
-    foreach ($email_to_arr as $email_to=>$val) {
-        // want to tell users that User has made BidPrice on Product
-        $subject = "New bid on ".$productName;
-        $body = "Hey ".$email_to_arr['watcherName']."!\nUser ".$latestBidderName." has made a new bid of ".$bidPrice." on ".$productName."!\nYou are receiving this because this product is in your watchlist.\nHave a nice day!\nFake ebay";
-        $altbody = "Someone has made a bid on a product that you are watching!";
-        $watchingUserEmail = $email_to_arr['watcherEmail'];
-        $emailee_name = $email_to_arr['watcherName'];
-        send_to_email($watchingUserEmail, $subject, $body, $altbody, $emailee_name);
-    }
+    if ($is_watching == "yes") {
+        foreach ($email_to_arr as $email_to=>$val) {
+            // want to tell users that User has made BidPrice on Product
+            $subject = "New bid on ".$productName;
+            $body = "Hey ".$email_to_arr['watcherName']."!\nUser ".$latestBidderName." has made a new bid of ".$bidPrice." on ".$productName."!\nYou are receiving this because this product is in your watchlist.\nHave a nice day!\nFake ebay";
+            $altbody = "Someone has made a bid on a product that you are watching!";
+            $watchingUserEmail = $email_to_arr['watcherEmail'];
+            $emailee_name = $email_to_arr['watcherName'];
+            send_to_email($watchingUserEmail, $subject, $body, $altbody, $emailee_name);
+        }
 
-    // for each user who has made a bid on this product:
-    // get names and emails of all users who have made a bid on this product
-    $sql="SELECT * FROM BidEvents WHERE productID = '$productID'";
-    $result3 = $connection->query($sql);
-    if ($result3->num_rows>0) { 
-        while ($row=$result3->fetch_assoc()) {
-            $bidderID = $row['buyerID'];
-            $sql = "SELECT * FROM Users WHERE userID = '$bidderID'";
-            $result4 = $connection->query($sql);
-            if($result4){
-                while ($row=$result4->fetch_assoc()) {
-                    $email_to_arr['bidderName'] = $row['username'];
-                    $email_to_arr['bidderEmail'] = $row['email'];
+        // for each user who has made a bid on this product:
+        // get names and emails of all users who have made a bid on this product
+        $sql="SELECT * FROM BidEvents WHERE productID = '$productID'";
+        $result3 = $connection->query($sql);
+        if ($result3->num_rows>0) { 
+            while ($row=$result3->fetch_assoc()) {
+                $bidderID = $row['buyerID'];
+                $sql = "SELECT * FROM Users WHERE userID = '$bidderID'";
+                $result4 = $connection->query($sql);
+                if($result4){
+                    while ($row=$result4->fetch_assoc()) {
+                        $email_to_arr['bidderName'] = $row['username'];
+                        $email_to_arr['bidderEmail'] = $row['email'];
+                    }
                 }
             }
         }
-    }
 
-    foreach ($email_to_arr as $email_to=>$val) {
-        // want to tell users that User has made BidPrice on Product
-        $subject = "New bid on ".$productName;
-        $body = "Hey ".$email_to_arr['watcherName']."!\nUser ".$latestBidderName." has made a new bid of ".$bidPrice." on ".$productName."!\nYou are receiving this because you have an active bid on this product.\nHave a nice day!\nFake ebay";
-        $altbody = "Someone has made a bid on a product that you currently have a bid on!";
-        $bidderEmail = $email_to_arr['bidderEmail'];
-        $emailee_name = $email_to_arr['bidderName'];
-        send_to_email($bidderEmail, $subject, $body, $altbody, $emailee_name);
+
+        foreach ($email_to_arr as $email_to=>$val) {
+            // want to tell users that User has made BidPrice on Product
+            $subject = "New bid on ".$productName;
+            $body = "Hey ".$email_to_arr['watcherName']."!\nUser ".$latestBidderName." has made a new bid of ".$bidPrice." on ".$productName."!\nYou are receiving this because you have an active bid on this product.\nHave a nice day!\nFake ebay";
+            $altbody = "Someone has made a bid on a product that you currently have a bid on!";
+            $bidderEmail = $email_to_arr['bidderEmail'];
+            $emailee_name = $email_to_arr['bidderName'];
+            send_to_email($bidderEmail, $subject, $body, $altbody, $emailee_name);
+        }
     }
 }
 ?>
