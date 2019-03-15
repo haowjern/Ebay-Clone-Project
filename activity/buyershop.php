@@ -33,9 +33,11 @@ if(isset($_POST["search_box"])){
 
 
 //auction event search takes precedent 
-if ($_POST["submit"]=="Search items on bid only"){
-    $_SESSION["product_search_criteria"]=["auctionable",""]; 
-    include "fetchactivelisting.php";
+if (isset($_POST["submit"])) {
+    if ($_POST["submit"]=="Search items on bid only"){
+        $_SESSION["product_search_criteria"]=["auctionable",""]; 
+        include "fetchactivelisting.php";
+    }
 }
 
 elseif (isset($_POST["search_box"])&&!empty($search_unique_words)) {
@@ -113,10 +115,11 @@ elseif (isset($_POST["conditionlist"])||isset($_POST["categorylist"])){
                 $_SESSION["product_search_criteria"]=["condition",$condition];
    
                 include 'fetchactivelisting.php';
-            }
 
-        $_SESSION["product_search_criteria"]=["all",""];
-        include 'fetchactivelisting.php';
+            } else {
+                $_SESSION["product_search_criteria"]=["all",""];
+                include 'fetchactivelisting.php';
+            }
             
     }
 }
@@ -126,10 +129,17 @@ else {
     include 'fetchactivelisting.php';
 }
 
+if (empty($_SESSION["all_active_listings"])) {
+    echo "<br>";
+    echo "<br>";
+    echo "No result found.. displaying all listings instead!";
+    $_SESSION["product_search_criteria"]=["all",""];
+    include 'fetchactivelisting.php';
+} 
+
+
+
 $count=count($_SESSION["all_active_listings"]);
-if ($count==0){
-    echo "no result found";
-}
 
 unset($_SESSION["product_search_criteria"]);
 ?>

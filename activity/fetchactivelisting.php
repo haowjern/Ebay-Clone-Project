@@ -51,7 +51,7 @@ if (!isset($_SESSION["category_all"])||!isset($_SESSION["condition_all"])){
 
             $condition=mysqli_real_escape_string($connection,$_SESSION["product_search_criteria"][2]);
 
-            $sql="SELECT * FROM Product WHERE categoryID='$value' AND conditionID='$condition'";
+            $sql="SELECT * FROM Product WHERE categoryID=$value AND conditionID=$condition";
 
         } elseif ($criteria=="auctionable"){
 
