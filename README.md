@@ -1,7 +1,41 @@
 # ebay-database-system-project
-A mock-eBay database project for UCL module COMP0022.
-TO RUN DATABASE
 
+## Overview
+This project is part of our Database and Information Management Systems module at UCL. Working in groups of 4, we were tasked to create a shopping website with buy and sell functionality using the WAMP stack - Windows, Apache, MySQL and PHP over 8 weeks. This was my first experience in these languages, using them to create a website and to link it with a database. 
+
+Grading for this module was primarily focused on functionality and database design, hence less attention is paid to presentation and style of the website. We achieved a mark of 81% on this project. The report and video presentation for this project are located in the files too. 
+
+## Database design
+We employed the traditional Relational Database design methodology following the steps of Conceptual Design followed by Logical Design.
+1. Conceptual Design
+We created a list of entities and their relationships to be turned into an Entity-Relationship Diagram .
+2. Logical Design
+We turned the Entity Relationship Diagram into a 3NF Database Schema following normalisation steps.  
+
+## Functionality
+The complete list of functionality follows:
+ 	
+I. Users can register with the system and create accounts. Users have roles of seller or buyer with different privileges.
+A user can both be a seller and a buyer simulatenously, but depending on the website links they go to, different sell/buy functionality is presented. 
+
+II. Sellers can create auctions for particular items, setting suitable conditions and features of the items including the item description, categorisation, starting price, reserve price, end date and photos.
+
+III. Buyers can search the system for particular kinds of item being auctioned and can browse and visually re-arrange listings of items within categories.
+
+IV. Buyers can bid for items and see the bids other users make as they are received. The system will manage the auction until the set end time and award the item to the highest bidder. The system should confirm to both the winner and seller of an auction its outcome.
+
+V. Buyers can watch auctions on items and receive emailed updates on bids on those items including notifications when they are outbid.
+
+VI. Buyers can receive recommendations for items to bid on based on collaborative filtering (i.e., ‘you might want to bid on the sorts of things other people, who have also bid on the sorts of things you have previously bid on, are currently bidding on).
+Sellers can leave reviews and ratings for items bought. These ratings are then used to implement Ratings Based Collaborative Filtering [1] to generate 'Personalised', 'Generalised', 'New' and 'Buy again' type recommendations served to the user. 
+
+[1] Lemire, Daniel & McGrath, Sean. (2005). Implementing a Rating-Based Item-to-Item Recommender System in PHP/SQL. 
+
+## TO RUN Instructions
+Initialise database
 1. Run dummy.sql
-2. Import product.csv
-3. Import photos.csv
+2. Import files from database/dummy_data to initialise data for the website
+
+Set up server using preferred stack - WAMP/LAMP/MAMP, interact with the website through localhost. 
+
+## Personal thoughts 
