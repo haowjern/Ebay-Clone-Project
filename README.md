@@ -3,14 +3,14 @@
 ## Overview
 This project is part of our Database and Information Management Systems module at UCL. Working in groups of 4, we were tasked to create a shopping website with buy and sell functionality using the WAMP stack - Windows, Apache, MySQL and PHP over 8 weeks. This was my first experience in these languages, using them to create a website and to link it with a database. 
 
-Grading for this module was primarily focused on functionality and database design, hence less attention is paid to presentation and style of the website. We achieved a mark of 81% on this project. The report and video presentation for this project are located in the files too. 
+Grading for this module was primarily focused on functionality and database design, hence less attention is paid to presentation and style of the website. We achieved a mark of 81% on this project. The report and video demo for this project are located in the files for viewing.
 
 ## Database design
 We employed the traditional Relational Database design methodology following the steps of Conceptual Design followed by Logical Design.
 1. Conceptual Design
 We created a list of entities and their relationships to be turned into an Entity-Relationship Diagram .
 2. Logical Design
-We turned the Entity Relationship Diagram into a 3NF Database Schema following normalisation steps.  
+We transformed the Entity Relationship Diagram into a 3NF Database Schema following normalisation steps.  
 
 ## Functionality
 The complete list of functionality follows:
@@ -36,6 +36,9 @@ Initialise database
 1. Run dummy.sql
 2. Import files from database/dummy_data to initialise data for the website
 
-Set up server using preferred stack - WAMP/LAMP/MAMP, interact with the website through localhost. 
+Set up server using preferred stack - WAMP/LAMP/MAMP and interact with the website through localhost. Available users' details are:
+- name: user1 pw: abc123
+- name: user2 pw: abcd1234
 
 ## Personal thoughts 
+I think this was a great learning experience in that I finally knew how to create a website and to link it to a database. It was a huge challenge in learning new languages but I think one of the toughest ones were learning how to work as a group. I learnt a lot about task delegation, project planning, reading & understanding of other members' code, and essentially how to be a better team member. In the future I think I want to incorporate some type of architectural design pattern like MVC to better organise our code which helps to make it easier to delegate tasks. 
