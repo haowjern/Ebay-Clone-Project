@@ -5,7 +5,7 @@ This project is part of our Database and Information Management Systems module a
 
 Grading for this module was primarily focused on functionality and database design, hence less attention is paid to presentation and style of the website. We achieved a mark of 81% on this project. The report and video demo for this project are located in the files for viewing.
 
-## Database design
+## Database Design
 We employed the traditional Relational Database design methodology following the steps of Conceptual Design followed by Logical Design.
 1. Conceptual Design
 We created a list of entities and their relationships to be turned into an Entity-Relationship Diagram .
@@ -31,7 +31,13 @@ Sellers can leave reviews and ratings for items bought. These ratings are then u
 
 [1] Lemire, Daniel & McGrath, Sean. (2005). Implementing a Rating-Based Item-to-Item Recommender System in PHP/SQL. 
 
-## TO RUN Instructions
+## Technology Stack + Software Used
+1. Github
+2. WAMP 
+3. Visual Studio Code
+4. MySQL Workbench
+
+## To Run Instructions
 Initialise database
 1. Run dummy.sql
 2. Import files from database/dummy_data to initialise data for the website
