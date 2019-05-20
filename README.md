@@ -1,4 +1,4 @@
-# ebay-database-system-project
+# Ebay-Clone-Project
 
 ## Overview
 This project is part of our Database and Information Management Systems module at UCL. Working in groups of 4, we were tasked to create a shopping website with buy, auction and sell functionality using the WAMP stack - Windows, Apache, MySQL and PHP over 8 weeks. This was my first experience in these languages, using them to create a website and to link it with a database. 
